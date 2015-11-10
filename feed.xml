@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RoboDock</title>
+    <description>動力船塢工作日誌</description>
+    <link>http://www.robodock.net/</link>
+    <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 10 Nov 2015 22:46:32 +0800</pubDate>
+    <lastBuildDate>Tue, 10 Nov 2015 22:46:32 +0800</lastBuildDate>
+    <generator>Jekyll v3.0.0</generator>
+    
+      <item>
+        <title>Welcome to Jekyll!</title>
+        <description>&lt;p&gt;You’ll find this post in your &lt;code&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;To add new posts, simply add a file in the &lt;code&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Tom&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &#39;Hi, Tom&#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 10 Nov 2015 22:22:07 +0800</pubDate>
+        <link>http://www.robodock.net/jekyll/update/2015/11/10/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/jekyll/update/2015/11/10/welcome-to-jekyll.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>update</category>
+        
+      </item>
+    
+      <item>
+        <title>Fast Create Webserver</title>
+        <description>&lt;h1 id=&quot;section&quot;&gt;快速建立網頁伺服器&lt;/h1&gt;
+
+&lt;p&gt;在許多的網頁程式開發過程中，經常需要快速建立臨時性的 WebServer，又不想動用到 Apache 或 Ngix，底下有兩種分別利用 &lt;strong&gt;Python&lt;/strong&gt; 與 &lt;strong&gt;Node.js&lt;/strong&gt; 的快速建立 WebServer 方法：&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;使用 &lt;strong&gt;Python&lt;/strong&gt;
+在網頁伺服器的目錄下，執行 &lt;code&gt;python -m SimpleHTTPServer 8000 &amp;amp;&lt;/code&gt; ，可建立一個 script 檔如下來啟動 WebServer&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+cd /home/webserver
+/usr/bin/python -m SimpleHTTPServer 8000 &amp;amp;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;使用 &lt;strong&gt;Node.js&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;可透過 node.js 的 &lt;strong&gt;http-server&lt;/strong&gt; 套件輕鬆達成，&lt;/p&gt;
+
+&lt;p&gt;若系統中已有 npm 管理程式:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm install http-server -g
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;若系統中無 npm :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl https://npmjs.org/install.sh | sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;建立一個 script 來啟動 &lt;strong&gt;http-server&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+http-server /home/webserver -p 8000 -i False -s &amp;amp;
+&lt;/code&gt;&lt;/pre&gt;
+
+</description>
+        <pubDate>Tue, 10 Nov 2015 15:01:37 +0800</pubDate>
+        <link>http://www.robodock.net/2015/11/10/fast-create-webserver.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2015/11/10/fast-create-webserver.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>安裝 Phant Data Log Service</title>
+        <description>&lt;h2 id=&quot;phant-&quot;&gt;安裝 Phant 服務程式&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Phant&lt;/strong&gt; 是一個數據資料儲存管理服務的開源軟體，由開源硬體廠商 &lt;strong&gt;SparkFun&lt;/strong&gt; 提供，簡潔易用，相當適合業餘個人玩家建置自己的數據記錄服務。程式以 &lt;strong&gt;node.js&lt;/strong&gt; 開發，所以必須先在安裝主機上確認是否已有 &lt;strong&gt;node.js&lt;/strong&gt; 開發環境。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;node.js&lt;/strong&gt; 是以 javascript 為基礎的網路服務架構，在許多的 Linux 預設發行版本中已內建支援，如果是 CentOS 7，則須先啟用 &lt;strong&gt;EPEL&lt;/strong&gt; repository 方可用 yum 進行安裝：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@centos7 ~]# yum install epel-release
+[root@centos7 ~]# yum install nodejs
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;確認 nodejs 已成功安裝，並把 node.js 套件管理程式 &lt;strong&gt;npm&lt;/strong&gt; 也一併安裝起來：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[root@centos7 ~]# node --version
+v0.10.36
+[root@centos7 ~]# yum install npm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;node.js&lt;/strong&gt; 環境建置完成後，便可使用 &lt;strong&gt;npm&lt;/strong&gt; 套件管理程式來安裝 &lt;strong&gt;Phant&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@beaglebone:~# npm install -g phant
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;phant&quot;&gt;啟動 Phant&lt;/h2&gt;
+&lt;p&gt;啟動 Phant 相當簡單，直接執行 &lt;code&gt;phant&lt;/code&gt; 就可以了:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@beaglebone:~# phant
+phant http server running on port 8080
+phant telnet server running on port 8081
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;預設的網頁管理頁面連接埠為 &lt;code&gt;8080&lt;/code&gt;，文字界面 Telnet server 連接埠則為 &lt;code&gt;8081&lt;/code&gt; 。
+只要透過瀏覽器連至 &lt;code&gt;http://&quot;電腦IP&quot;:8080/&lt;/code&gt; 即可輕鬆管理。&lt;/p&gt;
+
+&lt;p&gt;另外，如果你用的是 CentOS 系列，或許您會想將 &lt;strong&gt;SELinux&lt;/strong&gt; 設定為 &lt;strong&gt;disable&lt;/strong&gt;，以方便存取網路服務。另外 CentOS 7 採用了新的 &lt;strong&gt;firewalld&lt;/strong&gt; 防火牆管理服務，也必須設定開啟對應的服務。&lt;/p&gt;
+
+&lt;p&gt;新增 &lt;strong&gt;firewalld&lt;/strong&gt; 開放項目，在 &lt;code&gt;/etc/firewalld/services&lt;/code&gt; 目錄中建立一名為 &lt;code&gt;Phant.xml&lt;/code&gt; 的防火牆服務設定檔&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/etc/firewalld/services/Phant.xml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;檔案內容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;
+&amp;lt;service&amp;gt;
+  &amp;lt;short&amp;gt;Phant&amp;lt;/short&amp;gt;
+  &amp;lt;description&amp;gt;Phant Log service&amp;lt;/description&amp;gt;
+  &amp;lt;port protocol=&quot;tcp&quot; port=&quot;8080&quot;/&amp;gt;
+  &amp;lt;port protocol=&quot;tcp&quot; port=&quot;8081&quot;/&amp;gt;
+&amp;lt;/service&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;修改 &lt;code&gt;/etc/firewalld/zones&lt;/code&gt; 中相對應的 zone file，我這邊的是 &lt;code&gt;public.xml&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/etc/firewalld/zones/public.xml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;內容加入剛新增的 service 項目&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;
+&amp;lt;zone&amp;gt;
+  &amp;lt;short&amp;gt;Public&amp;lt;/short&amp;gt;
+  &amp;lt;description&amp;gt;For use in public areas. You do not trust the other computers on networks to not harm your computer. Only selected incoming connections are accepted.&amp;lt;/description&amp;gt;
+  &amp;lt;service name=&quot;dhcpv6-client&quot;/&amp;gt;
+  &amp;lt;service name=&quot;ssh&quot;/&amp;gt;
+  &amp;lt;service name=&quot;Phant&quot;/&amp;gt;    \\&amp;lt;-- 新增這行
+&amp;lt;/zone&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重新載入防火牆規則&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;firewall-cmd --reload
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;查看防火牆開放服務清單&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;firewall-cmd --list-services
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;現在的 Linux 發行版本都改用 &lt;strong&gt;systemd&lt;/strong&gt; 來作為系統服務管理，要將 Phant 作為系統服務在 Server 開機時自動執行，先在 &lt;code&gt;/etc/systemd/system&lt;/code&gt; 中建立一個名為 &lt;code&gt;phant.service&lt;/code&gt; 的檔案：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/etc/systemd/system/phant.service
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;檔案內容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=phant service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/phant
+ExecStart=/usr/bin/phant &amp;amp;
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;啟動 phant 服務&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl start phant
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;結束 phant 服務&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl stop phant
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;將 phant 服務加入開機啟動項目&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl enable phant
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;取消 phant 服務開機啟動&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl disable phant
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;phant--stream&quot;&gt;在 Phant 上建立資料流 Stream&lt;/h2&gt;
+&lt;p&gt;每個記錄資料稱為資料流(Stream)，在 Phant 上可對不同的記錄項目建立不同的 Stream。&lt;/p&gt;
+
+&lt;p&gt;透過網頁管理頁面建立 Stream 相當簡單，選取 &lt;code&gt;Create Stream&lt;/code&gt; , 依照畫面說明進行即可。&lt;/p&gt;
+
+&lt;p&gt;底下僅說明使用指令列模式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ telnet beaglebone.local 8081
+ 	Trying 10.0.1.10...
+ 	Connected to beaglebone.local.
+ 	Escape character is &#39;^]&#39;.
+ 	           .-.._
+ 	     __  /`     &#39;.
+ 	  .-&#39;  `/   (   a \
+ 	 /      (    \,_   \
+ 	/|       &#39;---` |\ =|
+ 	` \    /__.-/  /  | |
+ 	  |  / / \ \  \   \_\  jgs
+ 	  |__|_|  |_|__\
+ 	 welcome to phant.
+&lt;/code&gt;&lt;/pre&gt;
+
+ 	Type ‘help’ for a list of available commands
+
+ 	phant&amp;gt;
+
+&lt;p&gt;出現 &lt;code&gt;phant&amp;gt;&lt;/code&gt; 提示符號表示成功進入管理介面, 輸入 &lt;code&gt;create&lt;/code&gt; 建立 Stream 資料流。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;phant&amp;gt; create
+Enter a title&amp;gt; Test
+Enter a description&amp;gt; Testing BeagleBone Black.
+Enter fields (comma separated)&amp;gt; test
+Enter tags (comma separated)&amp;gt; test
+
+Stream created!
+PUBLIC KEY: aAYVpdNaOeu6rQ80Ogeau2vxDKq
+PRIVATE KEY:  PW4OPY5B6Ztjd5wD6zOXuY4BD2L
+DELETE KEY:  lAEwmPboWZuBqa10LQ9wcyz9qn8
+ 	
+If you need help getting started, visit http://phant.io/docs.
+phant&amp;gt; quit
+Connection closed by foreign host.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Stream 資料流建立成功後，會產生三個 &lt;strong&gt;KEY&lt;/strong&gt;，必須將這三個 KEY 妥善保存，往後存取 Stream 資料流時必須用到。&lt;/p&gt;
+
+&lt;p&gt;若是網頁介面，則會提供一個包含這三個 KEY 的 json 檔案供下載保存。&lt;/p&gt;
+
+&lt;h2 id=&quot;phant-server&quot;&gt;將記錄資料送至 Phant server&lt;/h2&gt;
+
+&lt;p&gt;要將記錄資料送至 Phant Server 上，則是以網頁請求的方式：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://beaglebone.local:8080/input/PUBLIC_KEY?private_key=PRIVATE_KEY&amp;amp;test=testvalue
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;記得在每筆上傳的 http 請求中都必須包含 &lt;code&gt;PUBLIC_KEY&lt;/code&gt; 與 &lt;code&gt;PRIVATE_KEY&lt;/code&gt;。
+上傳成功後會看到 &lt;code&gt;1 success&lt;/code&gt; 的回應訊息。&lt;/p&gt;
+
+&lt;h2 id=&quot;phant--1&quot;&gt;從 Phant 取得資料&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt; CSV output&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://beaglebone.local:8080/output/PUBLIC_KEY.csv
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt; JSON output&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://beaglebone.local:8080/output/PUBLIC_KEY.json 
+&lt;/code&gt;&lt;/pre&gt;
+
+</description>
+        <pubDate>Mon, 05 Oct 2015 14:13:31 +0800</pubDate>
+        <link>http://www.robodock.net/2015/10/05/build-phant-log-service.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2015/10/05/build-phant-log-service.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>關閉 BeagleBone Black LED 閃燈</title>
+        <description>&lt;p&gt;早期的 &lt;strong&gt;BeagleBone Black&lt;/strong&gt; 的 &lt;strong&gt;LED&lt;/strong&gt; 指示燈 真的是太閃亮了，特別是在晚上，閃的整個房間像舞廳一樣。
+四個 LED 指示燈的控制項位於&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/sys/class/leds
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;目錄下，usr0~3 分別代表四個指示燈，想要在開機後自動關閉的話，只要在 &lt;code&gt;/etc/rc.local&lt;/code&gt; 中 &lt;code&gt;exit 0&lt;/code&gt; 敘述前加入底下幾行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo none &amp;gt; /sys/class/leds/beaglebone\:green\:usr0/trigger
+echo none &amp;gt; /sys/class/leds/beaglebone\:green\:usr1/trigger
+echo none &amp;gt; /sys/class/leds/beaglebone\:green\:usr2/trigger
+echo none &amp;gt; /sys/class/leds/beaglebone\:green\:usr3/trigger
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;存檔後重新啟動即可。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 22 Aug 2015 20:11:08 +0800</pubDate>
+        <link>http://www.robodock.net/2015/08/22/beaglebone-black-led.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2015/08/22/beaglebone-black-led.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>在 Raspberry Pi 與 BeagleBone Black 上設定使用 Edimax EW-7811Un 迷你無線網卡</title>
+        <description>&lt;p&gt;&lt;strong&gt;Edimax EW-7811Un&lt;/strong&gt; 迷你無線網卡使用 Realtek RTL8188CUS 晶片，在 Linux Kernel 中以相容的 8192cu 驅動程式模組來驅動，體積小，堪稱 Raspberry Pi 與 BeagleBone 的絕配。
+&amp;gt;註：這類迷你 USB 無線網卡在 BeagleBone 上使用時會受到 HDMI 插槽的干擾，請參考&lt;a href=&quot;http://&quot;&gt;這篇&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;但各家 Linux Distribution 中搭配的無線網路管理工具不一，有些使用 &lt;strong&gt;connman&lt;/strong&gt;，有些使用 &lt;strong&gt;wpasupplicant&lt;/strong&gt;，有些則使用 &lt;strong&gt;wicd&lt;/strong&gt;，設定方法也不一。&lt;/p&gt;
+
+&lt;p&gt;在 Raspberry Pi 上使用 Edimax 的 EW-7811Un 迷你無線網卡相當簡單，只要在 /etc/wpa_supplicant/wpa_supplicant.conf 中設定如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;update_config=1
+ctrl_interface=/var/run/wpa_supplicant
+
+network={
+    scan_ssid=1
+    ssid=&quot;your SSID&quot;
+    psk=&quot;your WPA-key&quot;
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中 &lt;code&gt;scan_ssid=1&lt;/code&gt; 用於 “隱藏SSID” 的 WiFi 環境。&lt;/p&gt;
+
+&lt;p&gt;另外如果有安全性的考量的話，記得把 &lt;code&gt;wpa_supplicant.conf&lt;/code&gt; 檔案設定為其他人無法讀取。&lt;/p&gt;
+
+&lt;p&gt;然後編輯 /etc/network/interface，找到有關 WiFi 設定部分，加入 wpa-conf 設定如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;auto wlan0
+iface wlan0 inet dhcp
+wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重新啟動應可順利連線至無線網路。&lt;/p&gt;
+
+&lt;p&gt;本以為同樣的方法應該適用於 &lt;strong&gt;BeagleBone Black&lt;/strong&gt;，沒想到折騰了好久才搞定：&lt;/p&gt;
+
+&lt;p&gt;目前 BeagleBone Black 採用由 Robert Nelson 維護的 &lt;a href=&quot;http://rcn-ee.com/rootfs/bb.org/&quot;&gt;Debian Image&lt;/a&gt;，主要分為二類型，一種為適用於安裝於 SD卡的 Image，另一種為用來寫入內建記憶體(eMMC)的 Flasher Image，但因為新版的 BBB Rev.C 加大為內建 4GB eMMC，所以 Flasher Imager 又分為 4GB 與 2GB 兩種版本。&lt;/p&gt;
+
+&lt;p&gt;另外 Image 檔又可區分為“圖形視窗介面”與“Console介面”，可視自己專案需求選擇適合的 Image。這裏我要做自動控制用的，所以用的是使用 on board eMMC 的精簡 Console 版本，系統裝好不到200MB ，還有很多空間可利用：&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;BBB-eMMC-flasher-debian-7.8-console-armhf-2015-03-01-2gb.img.xz&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;本來以為只要修改網路相關設定組態檔中的一些參數，就可輕鬆讓無線網卡運作，但我錯了。&lt;/p&gt;
+
+&lt;p&gt;這個精簡 Console Image 真的是很精簡，並未包含任何無線網路管理工具， 須先安裝wpasupplicant 工具&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# apt-get update
+# apt-get install wpasupplicant 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然後呢？只要套用上述與 Raspberry Pi 相同的設定就可以了。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 22 Aug 2015 19:53:23 +0800</pubDate>
+        <link>http://www.robodock.net/2015/08/22/setting-edimax-ew-7811un-wifi-with-beaglebone-black-debian-image.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2015/08/22/setting-edimax-ew-7811un-wifi-with-beaglebone-black-debian-image.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>使用 Octopress 3 在 GitHub Pages 上快速建立日誌型Blog</title>
+        <description>&lt;h2 id=&quot;section&quot;&gt;名詞解釋&lt;/h2&gt;
+
+&lt;h3 id=&quot;octopress-3&quot;&gt;&lt;em&gt;Octopress 3&lt;/em&gt;&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;快速建置與部署 &lt;em&gt;Jekyll&lt;/em&gt; blogs 的工具程式。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;jekyll&quot;&gt;&lt;em&gt;Jekyll&lt;/em&gt;&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;使用 &lt;em&gt;Ruby&lt;/em&gt; 語言開發的靜態網站產生器，可將使用 &lt;em&gt;Markdown&lt;/em&gt; 之類標記語言撰寫的文字檔轉換為網頁發佈格式文件，透過樣板套用可自由更換版面。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;github-pages&quot;&gt;&lt;em&gt;GitHub Pages&lt;/em&gt;&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;GitHub&lt;/em&gt; 提供的免費網頁主機服務，主要使用對象為開源社群與資訊技術人員。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;環境需求&lt;/h2&gt;
+
+&lt;h3 id=&quot;git&quot;&gt;&lt;em&gt;Git&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;GitHub Pages&lt;/strong&gt; 的服務是架構在 &lt;strong&gt;Git&lt;/strong&gt; 工具之上，大部份 Linux 系統都已內建 Git 工具，如果使用的作業系統平台還沒安裝 Git 版本管理工具程式，請先安裝。最好也熟悉一下 Git 分支系統的觀念與操作。&lt;/p&gt;
+
+&lt;h3 id=&quot;ruby&quot;&gt;&lt;em&gt;Ruby&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;Octopress 至少需要 Ruby 1.9.3 版以上，Ruby 在各種平台上除了可由原始碼來安裝外，可方便使用相關安裝管理工具進行安裝：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Windows&lt;/strong&gt;: 可使用 &lt;a href=&quot;http://rubyinstaller.org/&quot;&gt;RubyInstaller&lt;/a&gt;。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Linux/UNIX&lt;/strong&gt;: 可使用第三方工具（如 &lt;strong&gt;rbenv&lt;/strong&gt; 或 &lt;strong&gt;RVM&lt;/strong&gt;）或使用系統套件管理工具。&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;OS X&lt;/strong&gt;: 可透過 &lt;strong&gt;Homebrew&lt;/strong&gt; 管理程式來使用第三方工具（如 &lt;strong&gt;rbenv&lt;/strong&gt;)。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;使用 &lt;strong&gt;Homebrew&lt;/strong&gt; 來安裝 &lt;strong&gt;rbenv&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+
+  &lt;p&gt;&lt;code&gt;
+brew update
+brew install rbenv
+brew install ruby-build
+&lt;/code&gt;
+接著使用 &lt;strong&gt;rbenv&lt;/strong&gt; 來安裝 &lt;strong&gt;Ruby&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;code&gt;
+rbenv install 1.9.3-p0
+rbenv local 1.9.3-p0
+rbenv rehash
+&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Ruby 環境建置好後，便可以方便使用 Ruby 的套件管理程式 &lt;strong&gt;gem&lt;/strong&gt;，輕鬆安裝各項工具程式。&lt;/p&gt;
+
+&lt;h3 id=&quot;jekyll-1&quot;&gt;&lt;em&gt;Jekyll&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;首先安裝 Jekyll
+&amp;gt;
+&lt;code&gt;
+gem install jekyll
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;octopress&quot;&gt;&lt;em&gt;Octopress&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;安裝 Octopress 3
+&amp;gt;
+&lt;code&gt;
+gem install octopress
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;基本安裝工作到此告一段落，開始進行設定。&lt;/p&gt;
+
+&lt;h2 id=&quot;octopress-3-cli-command&quot;&gt;Octopress 3 CLI command&lt;/h2&gt;
+&lt;p&gt;在 Octopress 3 中，大幅簡化了網頁建置程序，集中使用一個 &lt;strong&gt;‘octopress’&lt;/strong&gt; 指令來達成。&lt;/p&gt;
+
+&lt;h3 id=&quot;octopress-&quot;&gt;octopress 的命令參數如下:&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;init &amp;lt;PATH&amp;gt;         # 初始化網頁框架檔案
+new &amp;lt;PATH&amp;gt;          # 執行 `jekyll new` + `octopress init`
+new post &amp;lt;TITLE&amp;gt;    # 新增一篇日誌貼文
+new page &amp;lt;PATH&amp;gt;     # 新增一篇網站頁面
+new draft &amp;lt;TITLE&amp;gt;   # 新增日誌貼文草稿
+publish &amp;lt;POST&amp;gt;      # 將草稿從 _drafts 發佈至 _posts
+unpublish &amp;lt;POST&amp;gt;    # 將一篇 post 轉換成 draft
+isolate [POST]      # 除了工作中文稿，隱蔽所有貼文，方便快速建置用
+integrate           # 恢復 isolate 指令隱蔽的所有貼文
+deploy              # 透過 S3, Rsync, 或 GitHub pages 發佈網站
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;github-pages-1&quot;&gt;設定 GitHub pages&lt;/h2&gt;
+
+&lt;p&gt;要使用 GitHub Pages 服務需要有 GitHub 帳號，事實上建置好後的部落格網址就是 &lt;code&gt;http://&amp;lt;GitHub 帳號名稱&amp;gt;.github.io&lt;/code&gt; 如果還沒有 GitHub 帳號，先去註冊一個吧。&lt;/p&gt;
+
+&lt;p&gt;登入 GitHub 網站，新增一個名為 &lt;code&gt;username.github.io&lt;/code&gt; 的 Repository，GitHub pages 會使用這個 Repository 的 &lt;code&gt;master&lt;/code&gt; 分支內容自動作為 &lt;code&gt;http://username.github.io&lt;/code&gt; 的網站內容。將這個 Repository 的網址連結複製下來，待會用得到。&lt;/p&gt;
+
+&lt;p&gt;遠端連線 GitHub 得方式有 HTTPS 與 SSH 等方法，建議使用 &lt;strong&gt;SSH&lt;/strong&gt; 方式，設定好金鑰對後，可方便自動連線登入，不會像使用 HTTPS 方法，每次連線都須詢問密碼。 SSH 連結網址URL看起來像這樣&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;git@github.com:&amp;lt;username&amp;gt;/&amp;lt;username&amp;gt;.github.io.git&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;注意最後方有 git 字尾。&lt;/p&gt;
+
+&lt;h2 id=&quot;octopress-3-&quot;&gt;新增 Octopress 3 工作目錄&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;New&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$octopress new &amp;lt;path&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;基本上是執行 &lt;code&gt;jekyll new&lt;/code&gt; + &lt;code&gt;octopress init&lt;/code&gt; 兩個指令，會在指定的 &amp;lt;path&amp;gt; 目錄下建立 jekyll 與 octopress 網站的基礎目錄架構與檔案。&lt;/p&gt;
+
+&lt;h2 id=&quot;git-&quot;&gt;起始工作目錄 .git 目錄&lt;/h2&gt;
+&lt;p&gt;在新增的 Octopress 3 工作目錄下，起始 git 管理&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git init
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;張貼新文章&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;New Post&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$octpress new post &quot;我的標題&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;新增一篇標題為 “我的標題” 的日誌貼文。這篇文章會存放於 &lt;code&gt;_post&lt;/code&gt; 目錄中，系統預設會用日期來作子目錄分類。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;New Page&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$octopress new page some-page
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;新增一篇網頁頁面，網頁頁面不同於日誌文章，通常用於常時固定於顯示頁面上，存放於 &lt;code&gt;_page&lt;/code&gt; 目錄中。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;New Draft&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$octopress new draft &quot;我的標題&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;新增一篇名為 “我的標題” 的草稿文章，存放於 &lt;code&gt;_draft&lt;/code&gt; 目錄下。網站發佈時，會自動略過 &lt;code&gt;_draft&lt;/code&gt; 目錄。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Publich a draft&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$octopress publish _draft/some-cool-post
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;將 &lt;code&gt;_draft&lt;/code&gt; 資料夾中的 &lt;code&gt;some-cool-post&lt;/code&gt; 草稿文章發佈到 &lt;code&gt;_post&lt;/code&gt; 資料夾中，下次利用 &lt;code&gt;deploy&lt;/code&gt; 指令發佈網頁時，便會發佈到網站上。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Unpublish a post&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$octopress unpublish _post/2015-08-01-some-post
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;將已發佈的 &lt;code&gt;2015-08-01-some-post&lt;/code&gt; 文章改成草稿(移至 &lt;code&gt;_draft&lt;/code&gt; 資料夾，記得網站頁面要在 &lt;code&gt;deploy&lt;/code&gt; 後才會改變。&lt;/p&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;網頁自動建置&lt;/h2&gt;
+
+&lt;p&gt;當文章寫好後，準備發佈&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$jekyll build
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;會利用 &lt;code&gt;jekyll&lt;/code&gt; 靜態網頁產生工具，來將寫好的 &lt;code&gt;markdown&lt;/code&gt; 文章轉換成套用網站樣式模板的 HTML 網頁。產生的網站會存放於 &lt;code&gt;_site&lt;/code&gt; 目錄中。&lt;/p&gt;
+
+&lt;p&gt;jekyll 另外提供了簡單的本地端網站伺服器，方便在本機先行預覽結果。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$jekyll serve
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;執行上述指令後，可在瀏覽器使用下列網址 &lt;code&gt;http://locolhost:4000&lt;/code&gt; 預覽網頁。&lt;/p&gt;
+
+&lt;h2 id=&quot;github-pages-&quot;&gt;將網站發佈到 GitHub Pages 上&lt;/h2&gt;
+
+&lt;p&gt;網頁一切就緒後，便可利用前面建好的 GitHub Pages Repository ，將網頁發佈至 GitHub Pages 上。&lt;/p&gt;
+
+&lt;p&gt;首次發佈，需要初始化相關設定&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$octopress deploy init git@github.com:&amp;lt;username&amp;gt;/&amp;lt;username&amp;gt;.github.io.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;記得將 &amp;lt;username&amp;gt; 替換成你自己的 GitHub 帳號名稱。
+上述動作會在工作目錄下產生 &lt;code&gt;_deploy.yml&lt;/code&gt; 設定檔，如果有需要，可手動編輯設定檔內容。&lt;/p&gt;
+
+&lt;p&gt;爾後發佈時，只要使用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$octopress deploy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;基本上使用 &lt;strong&gt;Octopress + GitHub Pages&lt;/strong&gt; 來建置部落格的過程，到此完成。&lt;/p&gt;
+
+&lt;p&gt;注意上述動作僅將網站 ( &lt;code&gt;_site&lt;/code&gt; 資料夾的內容)發佈至 GitHub Pages上，整個 octopress 工作目錄僅存在於本機上。如果你想在可在多部電腦上寫文章，並讓工作進度維持同步，可利用 GitHub 的分支 (branch) 功能，將工作目錄同步到 GitHub 上的另一個分支下，便可在不同電腦使用 git 的 &lt;code&gt;push&lt;/code&gt; 與 &lt;code&gt;pull&lt;/code&gt; 功能達到同步目的。請參考底下步驟：&lt;/p&gt;
+
+&lt;h2 id=&quot;octopress--github-pages&quot;&gt;在多台電腦上使用 Octopress + GitHub Pages&lt;/h2&gt;
+
+&lt;p&gt;Octopress 使用兩個分支 &lt;code&gt;source&lt;/code&gt; 與 &lt;code&gt;master&lt;/code&gt;, &lt;code&gt;source&lt;/code&gt; 分支包含用來產生網頁的工作目錄，包含草稿資料夾，而 &lt;code&gt;master&lt;/code&gt; 則僅包含網站本身。&lt;/p&gt;
+
+&lt;p&gt;在網站 &lt;code&gt;deploy&lt;/code&gt; 過程中, &lt;code&gt;master&lt;/code&gt; 分支會同步到 GitHub Pages 上 &lt;code&gt;&amp;lt;username&amp;gt;.github.io&lt;/code&gt; &lt;code&gt;Repository&lt;/code&gt; 中的 &lt;code&gt;Master&lt;/code&gt; 分支。
+我們可以另外建立一個名為 &lt;code&gt;source&lt;/code&gt; 的分支，來存放工作目錄，已方便在不同電腦中同步。&lt;/p&gt;
+
+&lt;p&gt;在本機 Octopress 工作目錄下&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git remote add origin &amp;lt;GIT-REPO-URL&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中 &amp;lt;GIT-REPO-URL&amp;gt; 要換成自己的 GitHub Pages Repository 位址&lt;/p&gt;
+
+&lt;p&gt;將本機 Octopress 工作目錄 commit 進 git 資料庫，並 push 到遠端(GitHub)上&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git add .
+$ git commit -am &#39;commit comment&#39;
+$ git checkout -b source
+
+$ git push -u origin source
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;想在其他電腦工作時，首先將遠端 Repository clone 下來&lt;/p&gt;
+
+&lt;p&gt;先 clone &lt;code&gt;source&lt;/code&gt; 分支&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ git clone -b source &amp;lt;GIT-REPO-URL&amp;gt; &amp;lt;本地工作目錄&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;再 clone &lt;code&gt;master&lt;/code&gt; 分支，&lt;code&gt;master&lt;/code&gt; 存放於 Octopress 工作目錄下的 &lt;code&gt;.deploy&lt;/code&gt; 隱藏目錄中。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd &amp;lt;本地工作目錄&amp;gt;
+$ git clone &amp;lt;GIT-REPO-URL&amp;gt; .deploy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;這樣一來，這部電腦上也有了一樣的工作環境，只要記得工作完要將 &lt;code&gt;Source&lt;/code&gt;分支 &lt;code&gt;push&lt;/code&gt; 回 GitHub 遠端即可。&lt;/p&gt;
+
+&lt;p&gt;通常寫完文章後的動作如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ jekyll build				#產生網頁
+
+$ git add .
+$ git commit -am &quot;commit comment&quot;
+$ git push origin source 	#更新遠端 source branch
+
+$ octopress deploy			#更新遠端 master branch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;要在每一台電腦上工作時，只要先把遠端 GitHub 內容 &lt;code&gt;pull&lt;/code&gt; 下來更新本地端即可&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ cd &amp;lt;本地工作目錄&amp;gt;
+$ git pull origin source	#更新本地 source branch
+$ cd .deploy
+$ git pull origin master	#更新本地 master branch
+&lt;/code&gt;&lt;/pre&gt;
+
+</description>
+        <pubDate>Mon, 17 Aug 2015 21:33:56 +0800</pubDate>
+        <link>http://www.robodock.net/2015/08/17/octopress-3-github-pages-blog.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2015/08/17/octopress-3-github-pages-blog.html</guid>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
