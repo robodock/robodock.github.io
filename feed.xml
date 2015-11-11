@@ -5,12 +5,12 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 11 Nov 2015 08:07:31 +0800</pubDate>
-    <lastBuildDate>Wed, 11 Nov 2015 08:07:31 +0800</lastBuildDate>
+    <pubDate>Wed, 11 Nov 2015 08:15:41 +0800</pubDate>
+    <lastBuildDate>Wed, 11 Nov 2015 08:15:41 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
     
       <item>
-        <title>Fast Create Webserver</title>
+        <title>快速建立網頁伺服器</title>
         <description>&lt;h1 id=&quot;section&quot;&gt;快速建立網頁伺服器&lt;/h1&gt;
 
 &lt;p&gt;在許多的網頁程式開發過程中，經常需要快速建立臨時性的 WebServer，又不想動用到 Apache 或 Ngix，底下有兩種分別利用 &lt;strong&gt;Python&lt;/strong&gt; 與 &lt;strong&gt;Node.js&lt;/strong&gt; 的快速建立 WebServer 方法：&lt;/p&gt;
