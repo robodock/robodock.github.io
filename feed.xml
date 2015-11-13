@@ -5,9 +5,63 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 11 Nov 2015 08:15:41 +0800</pubDate>
-    <lastBuildDate>Wed, 11 Nov 2015 08:15:41 +0800</lastBuildDate>
+    <pubDate>Fri, 13 Nov 2015 10:16:23 +0800</pubDate>
+    <lastBuildDate>Fri, 13 Nov 2015 10:16:23 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
+    
+      <item>
+        <title>Screenly System Info Error</title>
+        <description>&lt;h1 id=&quot;screenly-system-info-error-&quot;&gt;解決 Screenly System Info error 問題&lt;/h1&gt;
+
+&lt;p&gt;Screenly 為一套為 Raspberry Pi 量身打造的電子看板軟體，可播放網頁，圖片，影片(限h.264格式)，Screenly Pro 版提供雲端商業服務，而 Screenly OSE 則為開放程式碼的社群版本。&lt;/p&gt;
+
+&lt;p&gt;相較於其他電子看板軟體，Screenly 的操作簡單直覺，每個播放項目稱為 &lt;strong&gt;ASSET&lt;/strong&gt; , 可為每個 ASSET 設定預定播放時間，播放內容(網頁、圖片、影片)，與每個項目的播放長度。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://www.screenlyapp.com/img/screenly-ose-8bcf3db7.png&quot; alt=&quot;screenly&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Screenly 的 Asset Name 是可以輸入中文的，可以清楚標示播放內容。但有個問題是，如果使用中文的 Asset Name, 當選擇管理頁面右上方的 &lt;code&gt;System Info&lt;/code&gt;功能，想查看系統資訊與播放記錄時，則會發生錯誤，觸發 Internal Server Error 500 錯誤訊息。這樣的情形在使用英文 Asset Name 時並不會發生。&lt;/p&gt;
+
+&lt;p&gt;存取 Screenly web server 的 log 記錄存放於 &lt;strong&gt;&lt;em&gt;/var/log/supervisor/screenly-access.log&lt;/em&gt;&lt;/strong&gt; 中，檢視 Log 分析後發現，其中觸發上述錯誤訊息的關鍵 Log 記錄中有一行：&lt;/p&gt;
+
+   	File “system_info”, line 70, in render_body
+&lt;pre&gt;&lt;code&gt;UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe9 in position 40: ordinal not in range(128)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;看來應該是顯示 Log 的網頁程式碼部分無法處理中文，找出 &lt;code&gt;screenly\server.py&lt;/code&gt; 程式檢視，其中處理 Log 顯示部分的程式碼位於 &lt;strong&gt;#View&lt;/strong&gt; 段落內：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@route(&#39;/system_info&#39;)
+@auth_basic(check_creds)
+def system_info():
+viewer_log_file = &#39;/tmp/screenly_viewer.log&#39;
+if path.exists(viewer_log_file):
+    viewlog = check_output([&#39;tail&#39;, &#39;-n&#39;, &#39;20&#39;, viewer_log_file]).split(&#39;\n&#39;)
+    
+else:
+    viewlog = [&quot;(no viewer log present -- is only the screenly server running?)\n&quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在還沒想出更好的方法之前，先在 viewlog 這行後新增一行，強制轉成 UTF-8 編碼，並順便將 Log 顯示順序改成符合一般習慣的最新記錄在最上方的顯示方式。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;viewlog = [unicode(i, encoding=&#39;UTF-8&#39;) for i in reversed(viewlog)]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;修改後這段程式碼看起來像這樣：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if path.exists(viewer_log_file):
+    viewlog = check_output([&#39;tail&#39;, &#39;-n&#39;, &#39;20&#39;, viewer_log_file]).split(&#39;\n&#39;)
+    viewlog = [unicode(i, encoding=&#39;UTF-8&#39;) for i in reversed(viewlog)]
+else:
+    viewlog = [&quot;(no viewer log present -- is only the screenly server running?)\n&quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;爾後選擇管理頁面右上方的 &lt;code&gt;System Info&lt;/code&gt;功能，就可正常查看具有中文 Asset Name 的播放記錄了。&lt;/p&gt;
+</description>
+        <pubDate>Fri, 13 Nov 2015 10:14:54 +0800</pubDate>
+        <link>http://www.robodock.net/2015/11/13/screenly-system-info-error.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2015/11/13/screenly-system-info-error.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>快速建立網頁伺服器</title>
