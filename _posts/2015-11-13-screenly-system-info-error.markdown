@@ -1,6 +1,7 @@
 ---
 layout: post
-title: "Screenly System Info Error"
+title: "解決 Screenly System Info Error 問題"
+date: 2015-11-13T10:14:54+08:00
 ---
 
 # 解決 Screenly System Info error 問題 #
