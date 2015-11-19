@@ -19,7 +19,10 @@ title: "OAuth 2.0"
 	依系統中未包含 Python OpenSSL 模組時還需安裝：
 
 		pip install PyOpenSSL
-
+	
+	在 Raspberry Pi 上還需要安裝 libciff-dev 套件
+	
+		sudo apt-get install libciff-dev
 
 範例：使用 Python gspread 模組存取 Google 試算表
 
