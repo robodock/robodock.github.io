@@ -5,16 +5,46 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 01 Dec 2015 12:17:13 +0800</pubDate>
-    <lastBuildDate>Tue, 01 Dec 2015 12:17:13 +0800</lastBuildDate>
+    <pubDate>Wed, 02 Dec 2015 15:24:16 +0800</pubDate>
+    <lastBuildDate>Wed, 02 Dec 2015 15:24:16 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
+    
+      <item>
+        <title>Screenly Install Nodejs+npm</title>
+        <description>&lt;p&gt;目前的 Screenly 使用 Raspbian (基於Debian 7 Wheezy)版本，系統預設並未安裝 node.js，若直接 apt-get 從預設 repository 安裝 node.js，則版本過於老舊。&lt;/p&gt;
+
+&lt;h3 id=&quot;nodejs-&quot;&gt;手動安裝新的 node.js 版本&lt;/h3&gt;
+&lt;p&gt;直接下載最新的官方的 arm 架構 binary 檔案，
+注意 Raspberry Pi Model A, B, B+ 為 &lt;strong&gt;armv6&lt;/strong&gt; 架構，而 Raspberry Pi 2 則為 &lt;strong&gt;armv7&lt;/strong&gt; 架構，須選用相對應的 binary 檔案。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-armv6l.tar.gz
+tar -xvf node-v4.2.2-linux-armv6l.tar.gz
+cd node-v4.2.2-linux-armv6l
+
+sudo cp -R * /usr/local/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;新版的 nodejs 已包含 npm 套件管理程式。&lt;/p&gt;
+
+&lt;h3 id=&quot;http-server-&quot;&gt;安裝 http-server 套件&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo npm install http-server -g
+&lt;/code&gt;&lt;/pre&gt;
+
+</description>
+        <pubDate>Wed, 02 Dec 2015 15:22:28 +0800</pubDate>
+        <link>http://www.robodock.net/2015/12/02/screenly-install-nodejs-npm.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2015/12/02/screenly-install-nodejs-npm.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>CR2032 or BR2032 ?</title>
         <description>&lt;h1 id=&quot;cr2032-or-br2032&quot;&gt;選擇 CR2032 or BR2032?&lt;/h1&gt;
 
 &lt;h2 id=&quot;cr-2032-&quot;&gt;CR 2032 電池&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;CR&lt;/strong&gt; 型電池的化學成分為鋰-錳(Lithium Manganese Dioxide, LiMnO2)，單位能量密度高，低溫環境可工作，可快速放電，常使用於相機與電腦中。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CR&lt;/strong&gt; 型電池的化學成分為&lt;strong&gt;鋰-錳&lt;/strong&gt;(Lithium Manganese Dioxide, LiMnO2)，單位能量密度高，低溫環境可工作，可快速放電，常使用於相機與電腦中。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://7cf8b85992be18b4f27ce863770978770b1da00a.googledrive.com/host/0B3VMyKy-nGUYTG5rdXM0cm02WFk&quot; alt=&quot;CR2032電池&quot; /&gt;&lt;/p&gt;
 
@@ -24,7 +54,7 @@
 
 &lt;h2 id=&quot;br-2032-&quot;&gt;BR 2032 電池&lt;/h2&gt;
 
-&lt;p&gt;&lt;strong&gt;BR&lt;/strong&gt; 型電池的化學成分為鋰-氟碳化物(Lithium Carbon Monofluoride, Li(CF)x)，優異的低自放電性質(低於0.5%/year)，可保存較久，工作壽命期間電壓一致，常用於時鐘，心律調節器，導向飛彈上。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;BR&lt;/strong&gt; 型電池的化學成分為&lt;strong&gt;鋰-氟碳化物&lt;/strong&gt;(Lithium Carbon Monofluoride, Li(CF)x)，優異的低自放電性質(低於0.5%/year)，可保存較久，工作壽命期間電壓一致，常用於時鐘，心律調節器，導向飛彈上。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://a59cdffc0ff39df755ba511aa049d3f6032603df.googledrive.com/host/0B3VMyKy-nGUYNWhxY3R3UFNXX1U&quot; alt=&quot;BR2032電池&quot; /&gt;&lt;/p&gt;
 
@@ -38,9 +68,10 @@ BR型電池工作溫度範圍較廣，高溫可達80C，但低溫環境時壽命
 BR 型的價格高於 CR型電池。&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;結論:&lt;/h2&gt;
-&lt;p&gt;###依設計工作環境、目的選用相對應的電池。###&lt;/p&gt;
 
-&lt;p&gt;精密儀器設備希望工作時有穩定電壓，BR型應是較好的選擇，只要定期更換電池即可。CR 型價格較低也容易取得，放電量大，適用於一般消費電子產品。&lt;/p&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;依設計工作環境、目的選用相對應的電池。&lt;/h3&gt;
+
+&lt;p&gt;精密儀器設備希望工作時有&lt;strong&gt;穩定電壓&lt;/strong&gt;，BR型應是較好的選擇，只要定期更換電池即可。CR 型價格較低也容易取得，放電量大，適用於一般消費電子產品。&lt;/p&gt;
 
 &lt;p&gt;兩種電池只要工作環境在允許範圍內，臨時使用可具互換性。&lt;/p&gt;
 </description>

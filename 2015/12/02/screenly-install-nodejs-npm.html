@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>RoboDock</title>
-  <meta name="description" content="動力船塢工作日誌">
+  <title>Screenly Install Nodejs+npm</title>
+  <meta name="description" content="目前的 Screenly 使用 Raspbian (基於Debian 7 Wheezy)版本，系統預設並未安裝 node.js，若直接 apt-get 從預設 repository 安裝 node.js，則版本過於老舊。">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.robodock.net/">
+  <link rel="canonical" href="http://www.robodock.net/2015/12/02/screenly-install-nodejs-npm.html">
   <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://www.robodock.net/feed.xml">
 </head>
 
@@ -54,81 +54,38 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Screenly Install Nodejs+npm</h1>
+    <p class="post-meta"><time datetime="2015-12-02T15:22:28+08:00" itemprop="datePublished">Dec 2, 2015</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Dec 2, 2015</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>目前的 Screenly 使用 Raspbian (基於Debian 7 Wheezy)版本，系統預設並未安裝 node.js，若直接 apt-get 從預設 repository 安裝 node.js，則版本過於老舊。</p>
 
-        <h2>
-          <a class="post-link" href="/2015/12/02/screenly-install-nodejs-npm.html">Screenly Install Nodejs+npm</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Dec 1, 2015</span>
+<h3 id="nodejs-">手動安裝新的 node.js 版本</h3>
+<p>直接下載最新的官方的 arm 架構 binary 檔案，
+注意 Raspberry Pi Model A, B, B+ 為 <strong>armv6</strong> 架構，而 Raspberry Pi 2 則為 <strong>armv7</strong> 架構，須選用相對應的 binary 檔案。</p>
 
-        <h2>
-          <a class="post-link" href="/2015/12/01/cr2032-or-br2032.html">CR2032 or BR2032 ?</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 13, 2015</span>
+<pre><code>wget https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-armv6l.tar.gz
+tar -xvf node-v4.2.2-linux-armv6l.tar.gz
+cd node-v4.2.2-linux-armv6l
 
-        <h2>
-          <a class="post-link" href="/2015/11/13/screenly-system-info-error.html">解決 Screenly System Info Error 問題</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 10, 2015</span>
+sudo cp -R * /usr/local/
+</code></pre>
 
-        <h2>
-          <a class="post-link" href="/2015/11/10/fast-create-webserver.html">快速建立網頁伺服器</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Oct 5, 2015</span>
+<p>新版的 nodejs 已包含 npm 套件管理程式。</p>
 
-        <h2>
-          <a class="post-link" href="/2015/10/05/build-phant-log-service.html">安裝 Phant Data Log Service</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 22, 2015</span>
+<h3 id="http-server-">安裝 http-server 套件</h3>
 
-        <h2>
-          <a class="post-link" href="/2015/08/22/beaglebone-black-led.html">關閉 BeagleBone Black LED 閃燈</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 22, 2015</span>
+<pre><code>sudo npm install http-server -g
+</code></pre>
 
-        <h2>
-          <a class="post-link" href="/2015/08/22/setting-edimax-ew-7811un-wifi-with-beaglebone-black-debian-image.html">在 Raspberry Pi 與 BeagleBone Black 上設定使用 Edimax EW-7811Un 迷你無線網卡</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 17, 2015</span>
 
-        <h2>
-          <a class="post-link" href="/2015/08/17/octopress-3-github-pages-blog.html">使用 Octopress 3 在 GitHub Pages 上快速建立日誌型Blog</a>
-        </h2>
-      </li>
-    
-  </ul>
+  </div>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
-</div>
+</article>
 
       </div>
     </div>
