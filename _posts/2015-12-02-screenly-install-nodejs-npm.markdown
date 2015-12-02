@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Screenly Install Nodejs+npm"
+date: 2015-12-02T15:22:28+08:00
 ---
 
 目前的 Screenly 使用 Raspbian (基於Debian 7 Wheezy)版本，系統預設並未安裝 node.js，若直接 apt-get 從預設 repository 安裝 node.js，則版本過於老舊。
