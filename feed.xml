@@ -5,9 +5,24 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 02 Dec 2015 15:24:16 +0800</pubDate>
-    <lastBuildDate>Wed, 02 Dec 2015 15:24:16 +0800</lastBuildDate>
+    <pubDate>Tue, 19 Jan 2016 22:31:00 +0800</pubDate>
+    <lastBuildDate>Tue, 19 Jan 2016 22:31:00 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
+    
+      <item>
+        <title>Download Youtube Video</title>
+        <description>&lt;h2 id=&quot;youtube-&quot;&gt;快速下載 Youtube 影片的方法&lt;/h2&gt;
+
+&lt;p&gt;找到喜愛的 youtube 影片後，暫停播放，直接到上方的網址列，將 &lt;code&gt;www.youtube.com&lt;/code&gt; 改成 &lt;code&gt;ssyoutube.com&lt;/code&gt;，其他部分都不變。&lt;/p&gt;
+
+&lt;p&gt;網頁會轉址到 savefrom.net，並產生下載連結，選取對應的影片大小格式下載即可。&lt;/p&gt;
+</description>
+        <pubDate>Tue, 19 Jan 2016 22:29:53 +0800</pubDate>
+        <link>http://www.robodock.net/2016/01/19/download-youtube-video.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/01/19/download-youtube-video.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Screenly Install Nodejs+npm</title>
