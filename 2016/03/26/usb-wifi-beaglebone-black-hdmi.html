@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>RoboDock</title>
-  <meta name="description" content="動力船塢工作日誌">
+  <title>迷你 USB WiFi 網卡與 BeagleBone Black HDMI 的干擾問題</title>
+  <meta name="description" content="如果你跟我一樣被 BeagleBone Black 與 mini USB 無線網卡搞的灰頭土臉，那你可能要看看這篇。">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.robodock.net/">
+  <link rel="canonical" href="http://www.robodock.net/2016/03/26/usb-wifi-beaglebone-black-hdmi.html">
   <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://www.robodock.net/feed.xml">
 </head>
 
@@ -54,97 +54,45 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">迷你 USB WiFi 網卡與 BeagleBone Black HDMI 的干擾問題</h1>
+    <p class="post-meta"><time datetime="2016-03-26T17:54:59+08:00" itemprop="datePublished">Mar 26, 2016</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Mar 26, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>如果你跟我一樣被 BeagleBone Black 與 mini USB 無線網卡搞的灰頭土臉，那你可能要看看這篇。</p>
 
-        <h2>
-          <a class="post-link" href="/2016/03/26/usb-wifi-beaglebone-black-hdmi.html">迷你 USB WiFi 網卡與 BeagleBone Black HDMI 的干擾問題</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Jan 19, 2016</span>
+<p>在 BeagleBone 上 USB 插槽就在 HDMI 插槽旁邊，當使用如 Edimax EW-7811Un 這類的迷你 USB 無線網卡時，因為 USB 迷你網卡的天線過於接近 HDMI 插槽，HDMI 的訊號射頻會嚴重干擾 WiFi 天線。</p>
 
-        <h2>
-          <a class="post-link" href="/2016/01/19/download-youtube-video.html">Download Youtube Video</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Dec 2, 2015</span>
+<p>我這邊的實際狀況是，當距離 AP 在 2 公尺內時還可正常通訊，到 5 公尺左右就已無法建立穩定的通訊。這種問題有時令人摸不著頭緒，徒勞耗費了許多時間在嘗試不同的組態檔設定。</p>
 
-        <h2>
-          <a class="post-link" href="/2015/12/02/screenly-install-nodejs-npm.html">Screenly Install Nodejs+npm</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Dec 1, 2015</span>
+<p>解決方法有兩種：</p>
 
-        <h2>
-          <a class="post-link" href="/2015/12/01/cr2032-or-br2032.html">CR2032 or BR2032 ?</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 13, 2015</span>
+<p>第一：使用 USB 延長線或延伸出來的 USB 集線器，將 USB 迷你無線網卡遠離 HDMI 插槽，或是改用體積較大，附有外部天線的 USB 無線網卡。</p>
 
-        <h2>
-          <a class="post-link" href="/2015/11/13/screenly-system-info-error.html">解決 Screenly System Info Error 問題</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 10, 2015</span>
+<p>第二：如果 BeagleBone 是當成 Headless 操作，不會連接螢幕使用，那就把 HDMI 輸出關閉，作法如下：</p>
 
-        <h2>
-          <a class="post-link" href="/2015/11/10/fast-create-webserver.html">快速建立網頁伺服器</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Oct 5, 2015</span>
+<p>修改 <code>/boot/uEnv.txt</code></p>
 
-        <h2>
-          <a class="post-link" href="/2015/10/05/build-phant-log-service.html">安裝 Phant Data Log Service</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 22, 2015</span>
+<p>找到 <code>##Disable HDMI</code> 項目，將 <code>##cape_disable=....</code> 前方的 ## 註解拿掉如下：</p>
 
-        <h2>
-          <a class="post-link" href="/2015/08/22/beaglebone-black-led.html">關閉 BeagleBone Black LED 閃燈</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 22, 2015</span>
+<pre><code>##Disable HDMI (v3.8.x)
+cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN 
+</code></pre>
 
-        <h2>
-          <a class="post-link" href="/2015/08/22/setting-edimax-ew-7811un-wifi-with-beaglebone-black-debian-image.html">在 Raspberry Pi 與 BeagleBone Black 上設定使用 Edimax EW-7811Un 迷你無線網卡</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 17, 2015</span>
+<blockquote>
+  <p>注意 uEnv.txt 設定檔中有很多類似的項目，例如 <code>##Disable HDMI/eMMC</code> 等等，不要改錯了，這個設定檔的內容會影響硬體功能的運作。</p>
+</blockquote>
 
-        <h2>
-          <a class="post-link" href="/2015/08/17/octopress-3-github-pages-blog.html">使用 Octopress 3 在 GitHub Pages 上快速建立日誌型Blog</a>
-        </h2>
-      </li>
-    
-  </ul>
+<p>存檔後重新開機。</p>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<p>OK，現在會影響 BeagleBone 與 AP 通訊的就只有距離了。</p>
 
-</div>
+  </div>
+
+</article>
 
       </div>
     </div>

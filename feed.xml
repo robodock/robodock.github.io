@@ -5,9 +5,46 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 19 Jan 2016 22:31:00 +0800</pubDate>
-    <lastBuildDate>Tue, 19 Jan 2016 22:31:00 +0800</lastBuildDate>
+    <pubDate>Sat, 26 Mar 2016 17:55:20 +0800</pubDate>
+    <lastBuildDate>Sat, 26 Mar 2016 17:55:20 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
+    
+      <item>
+        <title>迷你 USB WiFi 網卡與 BeagleBone Black HDMI 的干擾問題</title>
+        <description>&lt;p&gt;如果你跟我一樣被 BeagleBone Black 與 mini USB 無線網卡搞的灰頭土臉，那你可能要看看這篇。&lt;/p&gt;
+
+&lt;p&gt;在 BeagleBone 上 USB 插槽就在 HDMI 插槽旁邊，當使用如 Edimax EW-7811Un 這類的迷你 USB 無線網卡時，因為 USB 迷你網卡的天線過於接近 HDMI 插槽，HDMI 的訊號射頻會嚴重干擾 WiFi 天線。&lt;/p&gt;
+
+&lt;p&gt;我這邊的實際狀況是，當距離 AP 在 2 公尺內時還可正常通訊，到 5 公尺左右就已無法建立穩定的通訊。這種問題有時令人摸不著頭緒，徒勞耗費了許多時間在嘗試不同的組態檔設定。&lt;/p&gt;
+
+&lt;p&gt;解決方法有兩種：&lt;/p&gt;
+
+&lt;p&gt;第一：使用 USB 延長線或延伸出來的 USB 集線器，將 USB 迷你無線網卡遠離 HDMI 插槽，或是改用體積較大，附有外部天線的 USB 無線網卡。&lt;/p&gt;
+
+&lt;p&gt;第二：如果 BeagleBone 是當成 Headless 操作，不會連接螢幕使用，那就把 HDMI 輸出關閉，作法如下：&lt;/p&gt;
+
+&lt;p&gt;修改 &lt;code&gt;/boot/uEnv.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;找到 &lt;code&gt;##Disable HDMI&lt;/code&gt; 項目，將 &lt;code&gt;##cape_disable=....&lt;/code&gt; 前方的 ## 註解拿掉如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;##Disable HDMI (v3.8.x)
+cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;注意 uEnv.txt 設定檔中有很多類似的項目，例如 &lt;code&gt;##Disable HDMI/eMMC&lt;/code&gt; 等等，不要改錯了，這個設定檔的內容會影響硬體功能的運作。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;存檔後重新開機。&lt;/p&gt;
+
+&lt;p&gt;OK，現在會影響 BeagleBone 與 AP 通訊的就只有距離了。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 26 Mar 2016 17:54:59 +0800</pubDate>
+        <link>http://www.robodock.net/2016/03/26/usb-wifi-beaglebone-black-hdmi.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/03/26/usb-wifi-beaglebone-black-hdmi.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Download Youtube Video</title>
