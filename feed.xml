@@ -5,9 +5,83 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 26 Mar 2016 17:55:20 +0800</pubDate>
-    <lastBuildDate>Sat, 26 Mar 2016 17:55:20 +0800</lastBuildDate>
+    <pubDate>Sun, 27 Mar 2016 22:16:27 +0800</pubDate>
+    <lastBuildDate>Sun, 27 Mar 2016 22:16:27 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
+    
+      <item>
+        <title>BeagleBone Black Connman</title>
+        <description>&lt;p&gt;新的 Debian(armhf) for BeagleBone Black (簡稱BBB)改用 ConnMan 來作為網路管理程式，用法如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;connmanctl&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;connmanctl 為 ConnMan 的標準命令列用戶端程式，有兩種使用方式：
+	- connmanctl [arguments] 的方式啟動。
+	- 或直接執行 connmanctl，進入互動模式，在 connmanctl&amp;gt; 提示符號後輸入指令。&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;在 BBB 上通常搭配 USB 無線網卡，接上網卡後須先啟用：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$connmanctl enable wifi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;接下來掃描可用無線網路存取點：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$connmanctl scan wifi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;掃瞄完成後列出可用 AP:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$connmanctl services
+Network1	wifi_dc85de828967_68756773616d_managed_none
+Network2	wifi_dc85de828967_38303944616e69656c73_managed_psk 
+Network3	wifi_dc85de828967_3257495245363836_managed_wep	 接下有兩種情況：
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果連接的是開放式網路(無密碼保護):&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt;  $connmanctl connect wifi_dc85de828967_68756773616d_managed_none
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果連接的是有密碼保護的 AP，必須使用互動模式:&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt;  $connmanctl
+  connmanctl&amp;gt; scan wifi
+	
+  connmanctl&amp;gt; services
+  Network1	wifi_dc85de828967_68756773616d_managed_none
+  Network2	wifi_dc85de828967_38303944616e69656c73_managed_psk 
+              wifi_74da38557d81_hidden_managed_psk
+	
+  connmanctl&amp;gt; connect wifi_dc85de828967_38303944616e69656c73_managed_psk
+  connmanctl&amp;gt; agent on
+  Agent registered
+	
+  connmanctl&amp;gt; connect wifi_dc85de828967_38303944616e69656c73_managed_psk
+  Agent RequestInput wifi_74da38557d81_hidden_managed_psk
+  Name = [ Type=string, Requirement=mandatory, Alternates=[ SSID ] ]
+  SSID = [ Type=ssid, Requirement=alternate ]
+  Passphrase = [ Type=psk, Requirement=mandatory ]
+  Hidden SSID name?
+  Passphrase?
+	
+  connmanctl&amp;gt; quit
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;使用 ifconfig/iwconfig 檢查無線網路連線狀況。&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 27 Mar 2016 20:44:48 +0800</pubDate>
+        <link>http://www.robodock.net/2016/03/27/beaglebone-black-connman.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/03/27/beaglebone-black-connman.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>迷你 USB WiFi 網卡與 BeagleBone Black HDMI 的干擾問題</title>
@@ -509,262 +583,6 @@ wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
         <pubDate>Sat, 22 Aug 2015 19:53:23 +0800</pubDate>
         <link>http://www.robodock.net/2015/08/22/setting-edimax-ew-7811un-wifi-with-beaglebone-black-debian-image.html</link>
         <guid isPermaLink="true">http://www.robodock.net/2015/08/22/setting-edimax-ew-7811un-wifi-with-beaglebone-black-debian-image.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>使用 Octopress 3 在 GitHub Pages 上快速建立日誌型Blog</title>
-        <description>&lt;h2 id=&quot;section&quot;&gt;名詞解釋&lt;/h2&gt;
-
-&lt;h3 id=&quot;octopress-3&quot;&gt;&lt;em&gt;Octopress 3&lt;/em&gt;&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;快速建置與部署 &lt;em&gt;Jekyll&lt;/em&gt; blogs 的工具程式。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;jekyll&quot;&gt;&lt;em&gt;Jekyll&lt;/em&gt;&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;使用 &lt;em&gt;Ruby&lt;/em&gt; 語言開發的靜態網站產生器，可將使用 &lt;em&gt;Markdown&lt;/em&gt; 之類標記語言撰寫的文字檔轉換為網頁發佈格式文件，透過樣板套用可自由更換版面。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;github-pages&quot;&gt;&lt;em&gt;GitHub Pages&lt;/em&gt;&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;GitHub&lt;/em&gt; 提供的免費網頁主機服務，主要使用對象為開源社群與資訊技術人員。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;section-1&quot;&gt;環境需求&lt;/h2&gt;
-
-&lt;h3 id=&quot;git&quot;&gt;&lt;em&gt;Git&lt;/em&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;GitHub Pages&lt;/strong&gt; 的服務是架構在 &lt;strong&gt;Git&lt;/strong&gt; 工具之上，大部份 Linux 系統都已內建 Git 工具，如果使用的作業系統平台還沒安裝 Git 版本管理工具程式，請先安裝。最好也熟悉一下 Git 分支系統的觀念與操作。&lt;/p&gt;
-
-&lt;h3 id=&quot;ruby&quot;&gt;&lt;em&gt;Ruby&lt;/em&gt;&lt;/h3&gt;
-
-&lt;p&gt;Octopress 至少需要 Ruby 1.9.3 版以上，Ruby 在各種平台上除了可由原始碼來安裝外，可方便使用相關安裝管理工具進行安裝：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Windows&lt;/strong&gt;: 可使用 &lt;a href=&quot;http://rubyinstaller.org/&quot;&gt;RubyInstaller&lt;/a&gt;。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Linux/UNIX&lt;/strong&gt;: 可使用第三方工具（如 &lt;strong&gt;rbenv&lt;/strong&gt; 或 &lt;strong&gt;RVM&lt;/strong&gt;）或使用系統套件管理工具。&lt;/li&gt;
-  &lt;li&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;OS X&lt;/strong&gt;: 可透過 &lt;strong&gt;Homebrew&lt;/strong&gt; 管理程式來使用第三方工具（如 &lt;strong&gt;rbenv&lt;/strong&gt;)。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;使用 &lt;strong&gt;Homebrew&lt;/strong&gt; 來安裝 &lt;strong&gt;rbenv&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-
-  &lt;p&gt;&lt;code&gt;
-brew update
-brew install rbenv
-brew install ruby-build
-&lt;/code&gt;
-接著使用 &lt;strong&gt;rbenv&lt;/strong&gt; 來安裝 &lt;strong&gt;Ruby&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;p&gt;&lt;code&gt;
-rbenv install 1.9.3-p0
-rbenv local 1.9.3-p0
-rbenv rehash
-&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Ruby 環境建置好後，便可以方便使用 Ruby 的套件管理程式 &lt;strong&gt;gem&lt;/strong&gt;，輕鬆安裝各項工具程式。&lt;/p&gt;
-
-&lt;h3 id=&quot;jekyll-1&quot;&gt;&lt;em&gt;Jekyll&lt;/em&gt;&lt;/h3&gt;
-&lt;p&gt;首先安裝 Jekyll
-&amp;gt;
-&lt;code&gt;
-gem install jekyll
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;octopress&quot;&gt;&lt;em&gt;Octopress&lt;/em&gt;&lt;/h3&gt;
-&lt;p&gt;安裝 Octopress 3
-&amp;gt;
-&lt;code&gt;
-gem install octopress
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;基本安裝工作到此告一段落，開始進行設定。&lt;/p&gt;
-
-&lt;h2 id=&quot;octopress-3-cli-command&quot;&gt;Octopress 3 CLI command&lt;/h2&gt;
-&lt;p&gt;在 Octopress 3 中，大幅簡化了網頁建置程序，集中使用一個 &lt;strong&gt;‘octopress’&lt;/strong&gt; 指令來達成。&lt;/p&gt;
-
-&lt;h3 id=&quot;octopress-&quot;&gt;octopress 的命令參數如下:&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;init &amp;lt;PATH&amp;gt;         # 初始化網頁框架檔案
-new &amp;lt;PATH&amp;gt;          # 執行 `jekyll new` + `octopress init`
-new post &amp;lt;TITLE&amp;gt;    # 新增一篇日誌貼文
-new page &amp;lt;PATH&amp;gt;     # 新增一篇網站頁面
-new draft &amp;lt;TITLE&amp;gt;   # 新增日誌貼文草稿
-publish &amp;lt;POST&amp;gt;      # 將草稿從 _drafts 發佈至 _posts
-unpublish &amp;lt;POST&amp;gt;    # 將一篇 post 轉換成 draft
-isolate [POST]      # 除了工作中文稿，隱蔽所有貼文，方便快速建置用
-integrate           # 恢復 isolate 指令隱蔽的所有貼文
-deploy              # 透過 S3, Rsync, 或 GitHub pages 發佈網站
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;github-pages-1&quot;&gt;設定 GitHub pages&lt;/h2&gt;
-
-&lt;p&gt;要使用 GitHub Pages 服務需要有 GitHub 帳號，事實上建置好後的部落格網址就是 &lt;code&gt;http://&amp;lt;GitHub 帳號名稱&amp;gt;.github.io&lt;/code&gt; 如果還沒有 GitHub 帳號，先去註冊一個吧。&lt;/p&gt;
-
-&lt;p&gt;登入 GitHub 網站，新增一個名為 &lt;code&gt;username.github.io&lt;/code&gt; 的 Repository，GitHub pages 會使用這個 Repository 的 &lt;code&gt;master&lt;/code&gt; 分支內容自動作為 &lt;code&gt;http://username.github.io&lt;/code&gt; 的網站內容。將這個 Repository 的網址連結複製下來，待會用得到。&lt;/p&gt;
-
-&lt;p&gt;遠端連線 GitHub 得方式有 HTTPS 與 SSH 等方法，建議使用 &lt;strong&gt;SSH&lt;/strong&gt; 方式，設定好金鑰對後，可方便自動連線登入，不會像使用 HTTPS 方法，每次連線都須詢問密碼。 SSH 連結網址URL看起來像這樣&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;git@github.com:&amp;lt;username&amp;gt;/&amp;lt;username&amp;gt;.github.io.git&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;注意最後方有 git 字尾。&lt;/p&gt;
-
-&lt;h2 id=&quot;octopress-3-&quot;&gt;新增 Octopress 3 工作目錄&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;New&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$octopress new &amp;lt;path&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;基本上是執行 &lt;code&gt;jekyll new&lt;/code&gt; + &lt;code&gt;octopress init&lt;/code&gt; 兩個指令，會在指定的 &amp;lt;path&amp;gt; 目錄下建立 jekyll 與 octopress 網站的基礎目錄架構與檔案。&lt;/p&gt;
-
-&lt;h2 id=&quot;git-&quot;&gt;起始工作目錄 .git 目錄&lt;/h2&gt;
-&lt;p&gt;在新增的 Octopress 3 工作目錄下，起始 git 管理&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ git init
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;section-2&quot;&gt;張貼新文章&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;New Post&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$octpress new post &quot;我的標題&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;新增一篇標題為 “我的標題” 的日誌貼文。這篇文章會存放於 &lt;code&gt;_post&lt;/code&gt; 目錄中，系統預設會用日期來作子目錄分類。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;New Page&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$octopress new page some-page
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;新增一篇網頁頁面，網頁頁面不同於日誌文章，通常用於常時固定於顯示頁面上，存放於 &lt;code&gt;_page&lt;/code&gt; 目錄中。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;New Draft&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$octopress new draft &quot;我的標題&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;新增一篇名為 “我的標題” 的草稿文章，存放於 &lt;code&gt;_draft&lt;/code&gt; 目錄下。網站發佈時，會自動略過 &lt;code&gt;_draft&lt;/code&gt; 目錄。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Publich a draft&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$octopress publish _draft/some-cool-post
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;將 &lt;code&gt;_draft&lt;/code&gt; 資料夾中的 &lt;code&gt;some-cool-post&lt;/code&gt; 草稿文章發佈到 &lt;code&gt;_post&lt;/code&gt; 資料夾中，下次利用 &lt;code&gt;deploy&lt;/code&gt; 指令發佈網頁時，便會發佈到網站上。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Unpublish a post&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$octopress unpublish _post/2015-08-01-some-post
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;將已發佈的 &lt;code&gt;2015-08-01-some-post&lt;/code&gt; 文章改成草稿(移至 &lt;code&gt;_draft&lt;/code&gt; 資料夾，記得網站頁面要在 &lt;code&gt;deploy&lt;/code&gt; 後才會改變。&lt;/p&gt;
-
-&lt;h2 id=&quot;section-3&quot;&gt;網頁自動建置&lt;/h2&gt;
-
-&lt;p&gt;當文章寫好後，準備發佈&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$jekyll build
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;會利用 &lt;code&gt;jekyll&lt;/code&gt; 靜態網頁產生工具，來將寫好的 &lt;code&gt;markdown&lt;/code&gt; 文章轉換成套用網站樣式模板的 HTML 網頁。產生的網站會存放於 &lt;code&gt;_site&lt;/code&gt; 目錄中。&lt;/p&gt;
-
-&lt;p&gt;jekyll 另外提供了簡單的本地端網站伺服器，方便在本機先行預覽結果。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$jekyll serve
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;執行上述指令後，可在瀏覽器使用下列網址 &lt;code&gt;http://locolhost:4000&lt;/code&gt; 預覽網頁。&lt;/p&gt;
-
-&lt;h2 id=&quot;github-pages-&quot;&gt;將網站發佈到 GitHub Pages 上&lt;/h2&gt;
-
-&lt;p&gt;網頁一切就緒後，便可利用前面建好的 GitHub Pages Repository ，將網頁發佈至 GitHub Pages 上。&lt;/p&gt;
-
-&lt;p&gt;首次發佈，需要初始化相關設定&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$octopress deploy init git@github.com:&amp;lt;username&amp;gt;/&amp;lt;username&amp;gt;.github.io.git
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;記得將 &amp;lt;username&amp;gt; 替換成你自己的 GitHub 帳號名稱。
-上述動作會在工作目錄下產生 &lt;code&gt;_deploy.yml&lt;/code&gt; 設定檔，如果有需要，可手動編輯設定檔內容。&lt;/p&gt;
-
-&lt;p&gt;爾後發佈時，只要使用&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$octopress deploy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;基本上使用 &lt;strong&gt;Octopress + GitHub Pages&lt;/strong&gt; 來建置部落格的過程，到此完成。&lt;/p&gt;
-
-&lt;p&gt;注意上述動作僅將網站 ( &lt;code&gt;_site&lt;/code&gt; 資料夾的內容)發佈至 GitHub Pages上，整個 octopress 工作目錄僅存在於本機上。如果你想在可在多部電腦上寫文章，並讓工作進度維持同步，可利用 GitHub 的分支 (branch) 功能，將工作目錄同步到 GitHub 上的另一個分支下，便可在不同電腦使用 git 的 &lt;code&gt;push&lt;/code&gt; 與 &lt;code&gt;pull&lt;/code&gt; 功能達到同步目的。請參考底下步驟：&lt;/p&gt;
-
-&lt;h2 id=&quot;octopress--github-pages&quot;&gt;在多台電腦上使用 Octopress + GitHub Pages&lt;/h2&gt;
-
-&lt;p&gt;Octopress 使用兩個分支 &lt;code&gt;source&lt;/code&gt; 與 &lt;code&gt;master&lt;/code&gt;, &lt;code&gt;source&lt;/code&gt; 分支包含用來產生網頁的工作目錄，包含草稿資料夾，而 &lt;code&gt;master&lt;/code&gt; 則僅包含網站本身。&lt;/p&gt;
-
-&lt;p&gt;在網站 &lt;code&gt;deploy&lt;/code&gt; 過程中, &lt;code&gt;master&lt;/code&gt; 分支會同步到 GitHub Pages 上 &lt;code&gt;&amp;lt;username&amp;gt;.github.io&lt;/code&gt; &lt;code&gt;Repository&lt;/code&gt; 中的 &lt;code&gt;Master&lt;/code&gt; 分支。
-我們可以另外建立一個名為 &lt;code&gt;source&lt;/code&gt; 的分支，來存放工作目錄，已方便在不同電腦中同步。&lt;/p&gt;
-
-&lt;p&gt;在本機 Octopress 工作目錄下&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ git remote add origin &amp;lt;GIT-REPO-URL&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;其中 &amp;lt;GIT-REPO-URL&amp;gt; 要換成自己的 GitHub Pages Repository 位址&lt;/p&gt;
-
-&lt;p&gt;將本機 Octopress 工作目錄 commit 進 git 資料庫，並 push 到遠端(GitHub)上&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ git add .
-$ git commit -am &#39;commit comment&#39;
-$ git checkout -b source
-
-$ git push -u origin source
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;想在其他電腦工作時，首先將遠端 Repository clone 下來&lt;/p&gt;
-
-&lt;p&gt;先 clone &lt;code&gt;source&lt;/code&gt; 分支&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ git clone -b source &amp;lt;GIT-REPO-URL&amp;gt; &amp;lt;本地工作目錄&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再 clone &lt;code&gt;master&lt;/code&gt; 分支，&lt;code&gt;master&lt;/code&gt; 存放於 Octopress 工作目錄下的 &lt;code&gt;.deploy&lt;/code&gt; 隱藏目錄中。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ cd &amp;lt;本地工作目錄&amp;gt;
-$ git clone &amp;lt;GIT-REPO-URL&amp;gt; .deploy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;這樣一來，這部電腦上也有了一樣的工作環境，只要記得工作完要將 &lt;code&gt;Source&lt;/code&gt;分支 &lt;code&gt;push&lt;/code&gt; 回 GitHub 遠端即可。&lt;/p&gt;
-
-&lt;p&gt;通常寫完文章後的動作如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ jekyll build				#產生網頁
-
-$ git add .
-$ git commit -am &quot;commit comment&quot;
-$ git push origin source 	#更新遠端 source branch
-
-$ octopress deploy			#更新遠端 master branch
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;要在每一台電腦上工作時，只要先把遠端 GitHub 內容 &lt;code&gt;pull&lt;/code&gt; 下來更新本地端即可&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ cd &amp;lt;本地工作目錄&amp;gt;
-$ git pull origin source	#更新本地 source branch
-$ cd .deploy
-$ git pull origin master	#更新本地 master branch
-&lt;/code&gt;&lt;/pre&gt;
-
-</description>
-        <pubDate>Mon, 17 Aug 2015 21:33:56 +0800</pubDate>
-        <link>http://www.robodock.net/2015/08/17/octopress-3-github-pages-blog.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2015/08/17/octopress-3-github-pages-blog.html</guid>
         
         
       </item>
