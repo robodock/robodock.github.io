@@ -274,38 +274,35 @@ $ git checkout -b source
 $ git push -u origin source
 </code></pre>
 
-<p>想在其他電腦工作時，首先將遠端 Repository clone 下來</p>
+<p>想在其他電腦工作時，首先將遠端 Source Repository clone 下來</p>
 
-<p>先 clone <code>source</code> 分支</p>
+<p>clone <code>source</code> 分支</p>
 
 <pre><code>$ git clone -b source &lt;GIT-REPO-URL&gt; &lt;本地工作目錄&gt;
 </code></pre>
 
-<p>再 clone <code>master</code> 分支，<code>master</code> 存放於 Octopress 工作目錄下的 <code>.deploy</code> 隱藏目錄中。</p>
-
-<pre><code>$ cd &lt;本地工作目錄&gt;
-$ git clone &lt;GIT-REPO-URL&gt; .deploy
-</code></pre>
-
 <p>這樣一來，這部電腦上也有了一樣的工作環境，只要記得工作完要將 <code>Source</code>分支 <code>push</code> 回 GitHub 遠端即可。</p>
 
-<p>通常寫完文章後的動作如下：</p>
+<hr />
+<p>每次使用 Octopress 工作程序如下：</p>
 
-<pre><code>$ jekyll build				#產生網頁
-
-$ git add .
-$ git commit -am "commit comment"
-$ git push origin source 	#更新遠端 source branch
-
-$ octopress deploy			#更新遠端 master branch
-</code></pre>
-
-<p>要在每一台電腦上工作時，只要先把遠端 GitHub 內容 <code>pull</code> 下來更新本地端即可</p>
+<p>先把遠端 GitHub 的 Source branch 內容 <code>pull</code> 下來更新本地端：</p>
 
 <pre><code>$ cd &lt;本地工作目錄&gt;
 $ git pull origin source	#更新本地 source branch
-$ cd .deploy
-$ git pull origin master	#更新本地 master branch
+</code></pre>
+
+<p>寫完文章後的動作如下：</p>
+
+<pre><code>$ jekyll build				#產生網頁
+$ octopress deploy			#更新遠端 master branch
+</code></pre>
+
+<p>再把 Source 更新部分 <code>push</code> 回遠端 GitHub Source 上：</p>
+
+<pre><code>$ git add .
+$ git commit -am "commit comment"
+$ git push origin source 	#更新遠端 source branch
 </code></pre>
 
 
