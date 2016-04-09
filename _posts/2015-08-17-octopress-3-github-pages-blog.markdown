@@ -200,33 +200,34 @@ Octopress 使用兩個分支 `source` 與 `master`, `source` 分支包含用來�
 	$ git push -u origin source
 
 
-想在其他電腦工作時，首先將遠端 Repository clone 下來
+想在其他電腦工作時，首先將遠端 Source Repository clone 下來
 
-先 clone `source` 分支
+clone `source` 分支
 
 	$ git clone -b source <GIT-REPO-URL> <本地工作目錄>
 
-再 clone `master` 分支，`master` 存放於 Octopress 工作目錄下的 `.deploy` 隱藏目錄中。
-
-	$ cd <本地工作目錄>
-	$ git clone <GIT-REPO-URL> .deploy
 
 這樣一來，這部電腦上也有了一樣的工作環境，只要記得工作完要將 `Source`分支 `push` 回 GitHub 遠端即可。
 
-通常寫完文章後的動作如下：
+---
+每次使用 Octopress 工作程序如下：
+
+先把遠端 GitHub 的 Source branch 內容 `pull` 下來更新本地端：
+
+	$ cd <本地工作目錄>
+	$ git pull origin source	#更新本地 source branch
+	
+
+寫完文章後的動作如下：
 
 	$ jekyll build				#產生網頁
+	$ octopress deploy			#更新遠端 master branch
+
+再把 Source 更新部分 `push` 回遠端 GitHub Source 上：
 
 	$ git add .
 	$ git commit -am "commit comment"
 	$ git push origin source 	#更新遠端 source branch
 
-	$ octopress deploy			#更新遠端 master branch
-
-要在每一台電腦上工作時，只要先把遠端 GitHub 內容 `pull` 下來更新本地端即可
-
-	$ cd <本地工作目錄>
-	$ git pull origin source	#更新本地 source branch
-	$ cd .deploy
-	$ git pull origin master	#更新本地 master branch
+	
 	
