@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Use FFmpeg to Create Video From Series of Images</title>
-  <meta name="description" content="使用 FFmpeg 將一系列圖片轉換成影片">
+  <title>使用 FFmpeg 將序列圖片轉換成影片</title>
+  <meta name="description" content="使用 FFmpeg 將序列圖片轉換成影片">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://www.robodock.net/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html">
@@ -57,12 +57,12 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Use FFmpeg to Create Video From Series of Images</h1>
+    <h1 class="post-title" itemprop="name headline">使用 FFmpeg 將序列圖片轉換成影片</h1>
     <p class="post-meta"><time datetime="2016-04-09T15:32:16+08:00" itemprop="datePublished">Apr 9, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h2 id="ffmpeg-">使用 FFmpeg 將一系列圖片轉換成影片</h2>
+    <h2 id="ffmpeg-">使用 FFmpeg 將序列圖片轉換成影片</h2>
 
 <pre><code>ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
 </code></pre>

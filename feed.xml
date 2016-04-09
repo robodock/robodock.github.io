@@ -5,13 +5,13 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 09 Apr 2016 15:41:40 +0800</pubDate>
-    <lastBuildDate>Sat, 09 Apr 2016 15:41:40 +0800</lastBuildDate>
+    <pubDate>Sat, 09 Apr 2016 15:45:21 +0800</pubDate>
+    <lastBuildDate>Sat, 09 Apr 2016 15:45:21 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
     
       <item>
-        <title>Use FFmpeg to Create Video From Series of Images</title>
-        <description>&lt;h2 id=&quot;ffmpeg-&quot;&gt;使用 FFmpeg 將一系列圖片轉換成影片&lt;/h2&gt;
+        <title>使用 FFmpeg 將序列圖片轉換成影片</title>
+        <description>&lt;h2 id=&quot;ffmpeg-&quot;&gt;使用 FFmpeg 將序列圖片轉換成影片&lt;/h2&gt;
 
 &lt;pre&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
 &lt;/code&gt;&lt;/pre&gt;
