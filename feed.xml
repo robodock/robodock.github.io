@@ -5,9 +5,79 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 09 Apr 2016 16:08:27 +0800</pubDate>
-    <lastBuildDate>Sat, 09 Apr 2016 16:08:27 +0800</lastBuildDate>
+    <pubDate>Sat, 09 Apr 2016 19:33:51 +0800</pubDate>
+    <lastBuildDate>Sat, 09 Apr 2016 19:33:51 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
+    
+      <item>
+        <title>OS X 下建置 Ruby 開發應用環境</title>
+        <description>&lt;h2 id=&quot;os-x--ruby-&quot;&gt;OS X 下建置 Ruby 開發應用環境&lt;/h2&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;基本安裝&lt;/h3&gt;
+&lt;p&gt;基本安裝適合只想使用單一 Ruby 版本的使用者，開發人員可直接跳過這一段，直接查看 &lt;em&gt;進階安裝&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;OS X 系統中已內建 Ruby 環境，但通常版本老舊，開放原始碼世界變化快速，建議使用最新穩定版。
+若環境單純，無多版本需求者，可使用 Homebrew 套件管理工具來安裝：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ brew install ruby
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;### 進階安裝 ###&lt;/p&gt;
+
+&lt;p&gt;開發與應用開放原始碼軟體時，經常會遇到安裝多個程式庫版本的問題，在 Ruby 的世界中，我們可以使用 **版本管理工具 rbenv ** 來達成在不同 Ruby 版本中的作業管理：&lt;/p&gt;
+
+&lt;h3 id=&quot;rbenv&quot;&gt;rbenv&lt;/h3&gt;
+
+&lt;p&gt;rbenv 透過在系統路徑最前方加入 &lt;code&gt;~/.rbenv/shims&lt;/code&gt;路徑，透過 shims 程式攔截 ruby 相關指令，再依據所設定的參數，選擇對應的 ruby 版本據以執行。&lt;/p&gt;
+
+&lt;p&gt;rbenv 管理下的不同版本 ruby 系統程式會安裝在 &lt;code&gt;~/.rbenv/versions/x.x.x&lt;/code&gt; 目錄下。&lt;/p&gt;
+
+&lt;p&gt;使用 Homebrew 安裝 rbenv 版本環境管理工具：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ brew install rbenv
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;更新 rbenv&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ brew upgrade rbenv ruby-build
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;第一次使用須執行 &lt;code&gt;rbenv init&lt;/code&gt;，依照說明進行初始化設定。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ rbenv init
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安裝不同版本 Ruby :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ rbenv install -l  //列出可安裝版本
+$ rbenv install 2.2.3	//安裝 ruby 2.2.3 版
+$ rbenv rehash		//在安裝的版本目錄中加入 shims
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;要切換使用的 ruby 版本環境：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ rbenv version	//查看目前使用版本
+$ rbenv local x.x.x	//選擇使用版本
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然後便可正常執行諸如 gem 之類的指令。&lt;/p&gt;
+
+&lt;p&gt;時間一久，系統中可能累積了許多舊版本，移除舊版本可直接清除 &lt;code&gt;~/.rbenv/versions&lt;/code&gt; 底下的目錄或透過 &lt;code&gt;rbenv uninstall&lt;/code&gt; 來移除。&lt;/p&gt;
+
+&lt;p&gt;其他參考指令：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ rbenv versions //查看系統中安裝了哪些版本
+$ rbenv version	//查看目前使用版本
+&lt;/code&gt;&lt;/pre&gt;
+
+</description>
+        <pubDate>Sat, 09 Apr 2016 19:33:41 +0800</pubDate>
+        <link>http://www.robodock.net/2016/04/09/osx-ruby-environment.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/04/09/osx-ruby-environment.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>在 BeagleBone Black 或 Raspberry Pi 上使用 RTL-SDR usb dongle</title>
@@ -365,204 +435,6 @@ http-server /home/webserver -p 8000 -i False -s &amp;amp;
         <pubDate>Tue, 10 Nov 2015 15:01:37 +0800</pubDate>
         <link>http://www.robodock.net/2015/11/10/fast-create-webserver.html</link>
         <guid isPermaLink="true">http://www.robodock.net/2015/11/10/fast-create-webserver.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>安裝 Phant Data Log Service</title>
-        <description>&lt;h2 id=&quot;phant-&quot;&gt;安裝 Phant 服務程式&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Phant&lt;/strong&gt; 是一個數據資料儲存管理服務的開源軟體，由開源硬體廠商 &lt;strong&gt;SparkFun&lt;/strong&gt; 提供，簡潔易用，相當適合業餘個人玩家建置自己的數據記錄服務。程式以 &lt;strong&gt;node.js&lt;/strong&gt; 開發，所以必須先在安裝主機上確認是否已有 &lt;strong&gt;node.js&lt;/strong&gt; 開發環境。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;node.js&lt;/strong&gt; 是以 javascript 為基礎的網路服務架構，在許多的 Linux 預設發行版本中已內建支援，如果是 CentOS 7，則須先啟用 &lt;strong&gt;EPEL&lt;/strong&gt; repository 方可用 yum 進行安裝：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[root@centos7 ~]# yum install epel-release
-[root@centos7 ~]# yum install nodejs
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;確認 nodejs 已成功安裝，並把 node.js 套件管理程式 &lt;strong&gt;npm&lt;/strong&gt; 也一併安裝起來：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[root@centos7 ~]# node --version
-v0.10.36
-[root@centos7 ~]# yum install npm
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;node.js&lt;/strong&gt; 環境建置完成後，便可使用 &lt;strong&gt;npm&lt;/strong&gt; 套件管理程式來安裝 &lt;strong&gt;Phant&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;root@beaglebone:~# npm install -g phant
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;phant&quot;&gt;啟動 Phant&lt;/h2&gt;
-&lt;p&gt;啟動 Phant 相當簡單，直接執行 &lt;code&gt;phant&lt;/code&gt; 就可以了:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;root@beaglebone:~# phant
-phant http server running on port 8080
-phant telnet server running on port 8081
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;預設的網頁管理頁面連接埠為 &lt;code&gt;8080&lt;/code&gt;，文字界面 Telnet server 連接埠則為 &lt;code&gt;8081&lt;/code&gt; 。
-只要透過瀏覽器連至 &lt;code&gt;http://&quot;電腦IP&quot;:8080/&lt;/code&gt; 即可輕鬆管理。&lt;/p&gt;
-
-&lt;p&gt;另外，如果你用的是 CentOS 系列，或許您會想將 &lt;strong&gt;SELinux&lt;/strong&gt; 設定為 &lt;strong&gt;disable&lt;/strong&gt;，以方便存取網路服務。另外 CentOS 7 採用了新的 &lt;strong&gt;firewalld&lt;/strong&gt; 防火牆管理服務，也必須設定開啟對應的服務。&lt;/p&gt;
-
-&lt;p&gt;新增 &lt;strong&gt;firewalld&lt;/strong&gt; 開放項目，在 &lt;code&gt;/etc/firewalld/services&lt;/code&gt; 目錄中建立一名為 &lt;code&gt;Phant.xml&lt;/code&gt; 的防火牆服務設定檔&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;/etc/firewalld/services/Phant.xml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;檔案內容如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;
-&amp;lt;service&amp;gt;
-  &amp;lt;short&amp;gt;Phant&amp;lt;/short&amp;gt;
-  &amp;lt;description&amp;gt;Phant Log service&amp;lt;/description&amp;gt;
-  &amp;lt;port protocol=&quot;tcp&quot; port=&quot;8080&quot;/&amp;gt;
-  &amp;lt;port protocol=&quot;tcp&quot; port=&quot;8081&quot;/&amp;gt;
-&amp;lt;/service&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;修改 &lt;code&gt;/etc/firewalld/zones&lt;/code&gt; 中相對應的 zone file，我這邊的是 &lt;code&gt;public.xml&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;/etc/firewalld/zones/public.xml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;內容加入剛新增的 service 項目&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;
-&amp;lt;zone&amp;gt;
-  &amp;lt;short&amp;gt;Public&amp;lt;/short&amp;gt;
-  &amp;lt;description&amp;gt;For use in public areas. You do not trust the other computers on networks to not harm your computer. Only selected incoming connections are accepted.&amp;lt;/description&amp;gt;
-  &amp;lt;service name=&quot;dhcpv6-client&quot;/&amp;gt;
-  &amp;lt;service name=&quot;ssh&quot;/&amp;gt;
-  &amp;lt;service name=&quot;Phant&quot;/&amp;gt;    \\&amp;lt;-- 新增這行
-&amp;lt;/zone&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;重新載入防火牆規則&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;firewall-cmd --reload
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;查看防火牆開放服務清單&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;firewall-cmd --list-services
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;現在的 Linux 發行版本都改用 &lt;strong&gt;systemd&lt;/strong&gt; 來作為系統服務管理，要將 Phant 作為系統服務在 Server 開機時自動執行，先在 &lt;code&gt;/etc/systemd/system&lt;/code&gt; 中建立一個名為 &lt;code&gt;phant.service&lt;/code&gt; 的檔案：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;/etc/systemd/system/phant.service
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;檔案內容如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[Unit]
-Description=phant service
-After=network.target
-
-[Service]
-Type=simple
-WorkingDirectory=/home/phant
-ExecStart=/usr/bin/phant &amp;amp;
-
-[Install]
-WantedBy=multi-user.target
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;啟動 phant 服務&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;systemctl start phant
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;結束 phant 服務&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;systemctl stop phant
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;將 phant 服務加入開機啟動項目&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;systemctl enable phant
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;取消 phant 服務開機啟動&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;systemctl disable phant
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;phant--stream&quot;&gt;在 Phant 上建立資料流 Stream&lt;/h2&gt;
-&lt;p&gt;每個記錄資料稱為資料流(Stream)，在 Phant 上可對不同的記錄項目建立不同的 Stream。&lt;/p&gt;
-
-&lt;p&gt;透過網頁管理頁面建立 Stream 相當簡單，選取 &lt;code&gt;Create Stream&lt;/code&gt; , 依照畫面說明進行即可。&lt;/p&gt;
-
-&lt;p&gt;底下僅說明使用指令列模式&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ telnet beaglebone.local 8081
- 	Trying 10.0.1.10...
- 	Connected to beaglebone.local.
- 	Escape character is &#39;^]&#39;.
- 	           .-.._
- 	     __  /`     &#39;.
- 	  .-&#39;  `/   (   a \
- 	 /      (    \,_   \
- 	/|       &#39;---` |\ =|
- 	` \    /__.-/  /  | |
- 	  |  / / \ \  \   \_\  jgs
- 	  |__|_|  |_|__\
- 	 welcome to phant.
-&lt;/code&gt;&lt;/pre&gt;
-
- 	Type ‘help’ for a list of available commands
-
- 	phant&amp;gt;
-
-&lt;p&gt;出現 &lt;code&gt;phant&amp;gt;&lt;/code&gt; 提示符號表示成功進入管理介面, 輸入 &lt;code&gt;create&lt;/code&gt; 建立 Stream 資料流。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;phant&amp;gt; create
-Enter a title&amp;gt; Test
-Enter a description&amp;gt; Testing BeagleBone Black.
-Enter fields (comma separated)&amp;gt; test
-Enter tags (comma separated)&amp;gt; test
-
-Stream created!
-PUBLIC KEY: aAYVpdNaOeu6rQ80Ogeau2vxDKq
-PRIVATE KEY:  PW4OPY5B6Ztjd5wD6zOXuY4BD2L
-DELETE KEY:  lAEwmPboWZuBqa10LQ9wcyz9qn8
- 	
-If you need help getting started, visit http://phant.io/docs.
-phant&amp;gt; quit
-Connection closed by foreign host.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Stream 資料流建立成功後，會產生三個 &lt;strong&gt;KEY&lt;/strong&gt;，必須將這三個 KEY 妥善保存，往後存取 Stream 資料流時必須用到。&lt;/p&gt;
-
-&lt;p&gt;若是網頁介面，則會提供一個包含這三個 KEY 的 json 檔案供下載保存。&lt;/p&gt;
-
-&lt;h2 id=&quot;phant-server&quot;&gt;將記錄資料送至 Phant server&lt;/h2&gt;
-
-&lt;p&gt;要將記錄資料送至 Phant Server 上，則是以網頁請求的方式：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;http://beaglebone.local:8080/input/PUBLIC_KEY?private_key=PRIVATE_KEY&amp;amp;test=testvalue
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;記得在每筆上傳的 http 請求中都必須包含 &lt;code&gt;PUBLIC_KEY&lt;/code&gt; 與 &lt;code&gt;PRIVATE_KEY&lt;/code&gt;。
-上傳成功後會看到 &lt;code&gt;1 success&lt;/code&gt; 的回應訊息。&lt;/p&gt;
-
-&lt;h2 id=&quot;phant--1&quot;&gt;從 Phant 取得資料&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt; CSV output&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;http://beaglebone.local:8080/output/PUBLIC_KEY.csv
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt; JSON output&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;http://beaglebone.local:8080/output/PUBLIC_KEY.json 
-&lt;/code&gt;&lt;/pre&gt;
-
-</description>
-        <pubDate>Mon, 05 Oct 2015 14:13:31 +0800</pubDate>
-        <link>http://www.robodock.net/2015/10/05/build-phant-log-service.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2015/10/05/build-phant-log-service.html</guid>
         
         
       </item>

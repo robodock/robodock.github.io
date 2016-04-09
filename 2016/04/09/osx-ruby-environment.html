@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>RoboDock</title>
-  <meta name="description" content="動力船塢工作日誌">
+  <title>OS X 下建置 Ruby 開發應用環境</title>
+  <meta name="description" content="OS X 下建置 Ruby 開發應用環境">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.robodock.net/">
+  <link rel="canonical" href="http://www.robodock.net/2016/04/09/osx-ruby-environment.html">
   <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://www.robodock.net/feed.xml">
 </head>
 
@@ -54,129 +54,78 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">OS X 下建置 Ruby 開發應用環境</h1>
+    <p class="post-meta"><time datetime="2016-04-09T19:33:41+08:00" itemprop="datePublished">Apr 9, 2016</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="os-x--ruby-">OS X 下建置 Ruby 開發應用環境</h2>
 
-        <h2>
-          <a class="post-link" href="/2016/04/09/osx-ruby-environment.html">OS X 下建置 Ruby 開發應用環境</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<h3 id="section">基本安裝</h3>
+<p>基本安裝適合只想使用單一 Ruby 版本的使用者，開發人員可直接跳過這一段，直接查看 <em>進階安裝</em></p>
 
-        <h2>
-          <a class="post-link" href="/2016/04/09/rtl-sdr-usb-dongle.html">在 BeagleBone Black 或 Raspberry Pi 上使用 RTL-SDR usb dongle</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>OS X 系統中已內建 Ruby 環境，但通常版本老舊，開放原始碼世界變化快速，建議使用最新穩定版。
+若環境單純，無多版本需求者，可使用 Homebrew 套件管理工具來安裝：</p>
 
-        <h2>
-          <a class="post-link" href="/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html">使用 FFmpeg 將序列圖片轉換成影片</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 27, 2016</span>
+<pre><code>$ brew install ruby
+</code></pre>
 
-        <h2>
-          <a class="post-link" href="/2016/03/27/beaglebone-black-connman.html">BeagleBone Black 使用 Connman 管理設定網路</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 26, 2016</span>
+<hr />
+<p>### 進階安裝 ###</p>
 
-        <h2>
-          <a class="post-link" href="/2016/03/26/usb-wifi-beaglebone-black-hdmi.html">迷你 USB WiFi 網卡與 BeagleBone Black HDMI 的干擾問題</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Jan 19, 2016</span>
+<p>開發與應用開放原始碼軟體時，經常會遇到安裝多個程式庫版本的問題，在 Ruby 的世界中，我們可以使用 **版本管理工具 rbenv ** 來達成在不同 Ruby 版本中的作業管理：</p>
 
-        <h2>
-          <a class="post-link" href="/2016/01/19/download-youtube-video.html">快速下載 Youtube 影片</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Dec 2, 2015</span>
+<h3 id="rbenv">rbenv</h3>
 
-        <h2>
-          <a class="post-link" href="/2015/12/02/screenly-install-nodejs-npm.html">Screenly Install Nodejs+npm</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Dec 1, 2015</span>
+<p>rbenv 透過在系統路徑最前方加入 <code>~/.rbenv/shims</code>路徑，透過 shims 程式攔截 ruby 相關指令，再依據所設定的參數，選擇對應的 ruby 版本據以執行。</p>
 
-        <h2>
-          <a class="post-link" href="/2015/12/01/cr2032-or-br2032.html">CR2032 or BR2032 ?</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 13, 2015</span>
+<p>rbenv 管理下的不同版本 ruby 系統程式會安裝在 <code>~/.rbenv/versions/x.x.x</code> 目錄下。</p>
 
-        <h2>
-          <a class="post-link" href="/2015/11/13/screenly-system-info-error.html">解決 Screenly System Info Error 問題</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 10, 2015</span>
+<p>使用 Homebrew 安裝 rbenv 版本環境管理工具：</p>
 
-        <h2>
-          <a class="post-link" href="/2015/11/10/fast-create-webserver.html">快速建立網頁伺服器</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Oct 5, 2015</span>
+<pre><code>$ brew install rbenv
+</code></pre>
 
-        <h2>
-          <a class="post-link" href="/2015/10/05/build-phant-log-service.html">安裝 Phant Data Log Service</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 22, 2015</span>
+<p>更新 rbenv</p>
 
-        <h2>
-          <a class="post-link" href="/2015/08/22/beaglebone-black-led.html">關閉 BeagleBone Black LED 閃燈</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 22, 2015</span>
+<pre><code>$ brew upgrade rbenv ruby-build
+</code></pre>
 
-        <h2>
-          <a class="post-link" href="/2015/08/22/setting-edimax-ew-7811un-wifi-with-beaglebone-black-debian-image.html">在 Raspberry Pi 與 BeagleBone Black 上設定使用 Edimax EW-7811Un 迷你無線網卡</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 17, 2015</span>
+<p>第一次使用須執行 <code>rbenv init</code>，依照說明進行初始化設定。</p>
 
-        <h2>
-          <a class="post-link" href="/2015/08/17/octopress-3-github-pages-blog.html">使用 Octopress 3 在 GitHub Pages 上快速建立日誌型Blog</a>
-        </h2>
-      </li>
-    
-  </ul>
+<pre><code>$ rbenv init
+</code></pre>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<p>安裝不同版本 Ruby :</p>
 
-</div>
+<pre><code>$ rbenv install -l  //列出可安裝版本
+$ rbenv install 2.2.3	//安裝 ruby 2.2.3 版
+$ rbenv rehash		//在安裝的版本目錄中加入 shims
+</code></pre>
+
+<p>要切換使用的 ruby 版本環境：</p>
+
+<pre><code>$ rbenv version	//查看目前使用版本
+$ rbenv local x.x.x	//選擇使用版本
+</code></pre>
+
+<p>然後便可正常執行諸如 gem 之類的指令。</p>
+
+<p>時間一久，系統中可能累積了許多舊版本，移除舊版本可直接清除 <code>~/.rbenv/versions</code> 底下的目錄或透過 <code>rbenv uninstall</code> 來移除。</p>
+
+<p>其他參考指令：</p>
+
+<pre><code>$ rbenv versions //查看系統中安裝了哪些版本
+$ rbenv version	//查看目前使用版本
+</code></pre>
+
+
+  </div>
+
+</article>
 
       </div>
     </div>
