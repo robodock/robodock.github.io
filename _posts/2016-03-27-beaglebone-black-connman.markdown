@@ -1,14 +1,15 @@
 ---
 layout: post
-title: "BeagleBone Black Connman"
+title: "BeagleBone Black 使用 Connman 管理設定網路"
 date: 2016-03-27T20:44:48+08:00
 ---
 
-新的 Debian(armhf) for BeagleBone Black (簡稱BBB)改用 ConnMan 來作為網路管理程式，用法如下：
+新的 Debian(armhf) for BeagleBone Black (簡稱BBB)改用 ConnMan 來作為網路管理程式，感覺比設定 wpa_supplicant.conf 組態檔更為簡易，用法如下：
 
 **connmanctl**
 
 connmanctl 為 ConnMan 的標準命令列用戶端程式，有兩種使用方式：
+
 	- connmanctl [arguments] 的方式啟動。
 	- 或直接執行 connmanctl，進入互動模式，在 connmanctl> 提示符號後輸入指令。
 
@@ -57,7 +58,7 @@ connmanctl 為 ConnMan 的標準命令列用戶端程式，有兩種使用方式
 		
 		connmanctl> quit
 	
-使用 ifconfig/iwconfig 檢查無線網路連線狀況。
+最後可使用 `ifconfig`/`iwconfig` 檢查無線網路連線狀況。
 		
 
 	 
