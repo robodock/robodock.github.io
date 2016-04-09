@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>RoboDock</title>
-  <meta name="description" content="動力船塢工作日誌">
+  <title>Use FFmpeg to Create Video From Series of Images</title>
+  <meta name="description" content="使用 FFmpeg 將一系列圖片轉換成影片">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.robodock.net/">
+  <link rel="canonical" href="http://www.robodock.net/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html">
   <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://www.robodock.net/feed.xml">
 </head>
 
@@ -54,113 +54,39 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Use FFmpeg to Create Video From Series of Images</h1>
+    <p class="post-meta"><time datetime="2016-04-09T15:32:16+08:00" itemprop="datePublished">Apr 9, 2016</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="ffmpeg-">使用 FFmpeg 將一系列圖片轉換成影片</h2>
 
-        <h2>
-          <a class="post-link" href="/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html">Use FFmpeg to Create Video From Series of Images</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 27, 2016</span>
+<pre><code>ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
+</code></pre>
 
-        <h2>
-          <a class="post-link" href="/2016/03/27/beaglebone-black-connman.html">BeagleBone Black Connman</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 26, 2016</span>
+<p><code>-framerate</code> 每秒多少張圖片，預設值為 25, <code>-r</code> 影片播放 fps, 省略時使用與輸入framerate 相同數值。</p>
 
-        <h2>
-          <a class="post-link" href="/2016/03/26/usb-wifi-beaglebone-black-hdmi.html">迷你 USB WiFi 網卡與 BeagleBone Black HDMI 的干擾問題</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Jan 19, 2016</span>
+<p>如果想從一系列的圖片中的特定號碼開始，可使用 <code>-start_number</code> 參數，</p>
 
-        <h2>
-          <a class="post-link" href="/2016/01/19/download-youtube-video.html">Download Youtube Video</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Dec 2, 2015</span>
+<pre><code>ffmpeg -framerate 5 -start_number 126 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
+</code></pre>
 
-        <h2>
-          <a class="post-link" href="/2015/12/02/screenly-install-nodejs-npm.html">Screenly Install Nodejs+npm</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Dec 1, 2015</span>
+<p>如果影片無法正確顯示時，嘗試使用下列 fps video filter 格式取代 <code>-r</code>:</p>
 
-        <h2>
-          <a class="post-link" href="/2015/12/01/cr2032-or-br2032.html">CR2032 or BR2032 ?</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 13, 2015</span>
+<pre><code>ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p output.mp4
+</code></pre>
 
-        <h2>
-          <a class="post-link" href="/2015/11/13/screenly-system-info-error.html">解決 Screenly System Info Error 問題</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 10, 2015</span>
+<p>或指定 format video filter:</p>
 
-        <h2>
-          <a class="post-link" href="/2015/11/10/fast-create-webserver.html">快速建立網頁伺服器</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Oct 5, 2015</span>
+<pre><code>ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf "fps=25,format=yuv420p" output.mp4
+</code></pre>
 
-        <h2>
-          <a class="post-link" href="/2015/10/05/build-phant-log-service.html">安裝 Phant Data Log Service</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 22, 2015</span>
+  </div>
 
-        <h2>
-          <a class="post-link" href="/2015/08/22/beaglebone-black-led.html">關閉 BeagleBone Black LED 閃燈</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 22, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/08/22/setting-edimax-ew-7811un-wifi-with-beaglebone-black-debian-image.html">在 Raspberry Pi 與 BeagleBone Black 上設定使用 Edimax EW-7811Un 迷你無線網卡</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 17, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/08/17/octopress-3-github-pages-blog.html">使用 Octopress 3 在 GitHub Pages 上快速建立日誌型Blog</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
-</div>
+</article>
 
       </div>
     </div>

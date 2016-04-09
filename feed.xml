@@ -5,9 +5,40 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 27 Mar 2016 23:24:12 +0800</pubDate>
-    <lastBuildDate>Sun, 27 Mar 2016 23:24:12 +0800</lastBuildDate>
+    <pubDate>Sat, 09 Apr 2016 15:33:19 +0800</pubDate>
+    <lastBuildDate>Sat, 09 Apr 2016 15:33:19 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
+    
+      <item>
+        <title>Use FFmpeg to Create Video From Series of Images</title>
+        <description>&lt;h2 id=&quot;ffmpeg-&quot;&gt;使用 FFmpeg 將一系列圖片轉換成影片&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;-framerate&lt;/code&gt; 每秒多少張圖片，預設值為 25, &lt;code&gt;-r&lt;/code&gt; 影片播放 fps, 省略時使用與輸入framerate 相同數值。&lt;/p&gt;
+
+&lt;p&gt;如果想從一系列的圖片中的特定號碼開始，可使用 &lt;code&gt;-start_number&lt;/code&gt; 參數，&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ffmpeg -framerate 5 -start_number 126 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果影片無法正確顯示時，嘗試使用下列 fps video filter 格式取代 &lt;code&gt;-r&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p output.mp4
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或指定 format video filter:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf &quot;fps=25,format=yuv420p&quot; output.mp4
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+        <pubDate>Sat, 09 Apr 2016 15:32:16 +0800</pubDate>
+        <link>http://www.robodock.net/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>BeagleBone Black Connman</title>
@@ -526,63 +557,6 @@ echo none &amp;gt; /sys/class/leds/beaglebone\:green\:usr3/trigger
         <pubDate>Sat, 22 Aug 2015 20:11:08 +0800</pubDate>
         <link>http://www.robodock.net/2015/08/22/beaglebone-black-led.html</link>
         <guid isPermaLink="true">http://www.robodock.net/2015/08/22/beaglebone-black-led.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>在 Raspberry Pi 與 BeagleBone Black 上設定使用 Edimax EW-7811Un 迷你無線網卡</title>
-        <description>&lt;p&gt;&lt;strong&gt;Edimax EW-7811Un&lt;/strong&gt; 迷你無線網卡使用 Realtek RTL8188CUS 晶片，在 Linux Kernel 中以相容的 8192cu 驅動程式模組來驅動，體積小，堪稱 Raspberry Pi 與 BeagleBone 的絕配。
-&amp;gt;註：這類迷你 USB 無線網卡在 BeagleBone 上使用時會受到 HDMI 插槽的干擾，請參考&lt;a href=&quot;http://&quot;&gt;這篇&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;但各家 Linux Distribution 中搭配的無線網路管理工具不一，有些使用 &lt;strong&gt;connman&lt;/strong&gt;，有些使用 &lt;strong&gt;wpasupplicant&lt;/strong&gt;，有些則使用 &lt;strong&gt;wicd&lt;/strong&gt;，設定方法也不一。&lt;/p&gt;
-
-&lt;p&gt;在 Raspberry Pi 上使用 Edimax 的 EW-7811Un 迷你無線網卡相當簡單，只要在 /etc/wpa_supplicant/wpa_supplicant.conf 中設定如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;update_config=1
-ctrl_interface=/var/run/wpa_supplicant
-
-network={
-    scan_ssid=1
-    ssid=&quot;your SSID&quot;
-    psk=&quot;your WPA-key&quot;
-  }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;其中 &lt;code&gt;scan_ssid=1&lt;/code&gt; 用於 “隱藏SSID” 的 WiFi 環境。&lt;/p&gt;
-
-&lt;p&gt;另外如果有安全性的考量的話，記得把 &lt;code&gt;wpa_supplicant.conf&lt;/code&gt; 檔案設定為其他人無法讀取。&lt;/p&gt;
-
-&lt;p&gt;然後編輯 /etc/network/interface，找到有關 WiFi 設定部分，加入 wpa-conf 設定如下:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;auto wlan0
-iface wlan0 inet dhcp
-wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;重新啟動應可順利連線至無線網路。&lt;/p&gt;
-
-&lt;p&gt;本以為同樣的方法應該適用於 &lt;strong&gt;BeagleBone Black&lt;/strong&gt;，沒想到折騰了好久才搞定：&lt;/p&gt;
-
-&lt;p&gt;目前 BeagleBone Black 採用由 Robert Nelson 維護的 &lt;a href=&quot;http://rcn-ee.com/rootfs/bb.org/&quot;&gt;Debian Image&lt;/a&gt;，主要分為二類型，一種為適用於安裝於 SD卡的 Image，另一種為用來寫入內建記憶體(eMMC)的 Flasher Image，但因為新版的 BBB Rev.C 加大為內建 4GB eMMC，所以 Flasher Imager 又分為 4GB 與 2GB 兩種版本。&lt;/p&gt;
-
-&lt;p&gt;另外 Image 檔又可區分為“圖形視窗介面”與“Console介面”，可視自己專案需求選擇適合的 Image。這裏我要做自動控制用的，所以用的是使用 on board eMMC 的精簡 Console 版本，系統裝好不到200MB ，還有很多空間可利用：&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;BBB-eMMC-flasher-debian-7.8-console-armhf-2015-03-01-2gb.img.xz&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;本來以為只要修改網路相關設定組態檔中的一些參數，就可輕鬆讓無線網卡運作，但我錯了。&lt;/p&gt;
-
-&lt;p&gt;這個精簡 Console Image 真的是很精簡，並未包含任何無線網路管理工具， 須先安裝wpasupplicant 工具&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# apt-get update
-# apt-get install wpasupplicant 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然後呢？只要套用上述與 Raspberry Pi 相同的設定就可以了。&lt;/p&gt;
-</description>
-        <pubDate>Sat, 22 Aug 2015 19:53:23 +0800</pubDate>
-        <link>http://www.robodock.net/2015/08/22/setting-edimax-ew-7811un-wifi-with-beaglebone-black-debian-image.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2015/08/22/setting-edimax-ew-7811un-wifi-with-beaglebone-black-debian-image.html</guid>
         
         
       </item>
