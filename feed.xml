@@ -5,8 +5,8 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 09 Apr 2016 15:52:04 +0800</pubDate>
-    <lastBuildDate>Sat, 09 Apr 2016 15:52:04 +0800</lastBuildDate>
+    <pubDate>Sat, 09 Apr 2016 15:54:11 +0800</pubDate>
+    <lastBuildDate>Sat, 09 Apr 2016 15:54:11 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
     
       <item>
@@ -183,7 +183,7 @@ cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN
       </item>
     
       <item>
-        <title>Download Youtube Video</title>
+        <title>快速下載 Youtube 影片</title>
         <description>&lt;h2 id=&quot;youtube-&quot;&gt;快速下載 Youtube 影片的方法&lt;/h2&gt;
 
 &lt;p&gt;找到喜愛的 youtube 影片後，暫停播放，直接到上方的網址列，將 &lt;code&gt;www.youtube.com&lt;/code&gt; 改成 &lt;code&gt;ssyoutube.com&lt;/code&gt;，其他部分都不變。&lt;/p&gt;
