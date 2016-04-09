@@ -5,8 +5,8 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 09 Apr 2016 15:33:19 +0800</pubDate>
-    <lastBuildDate>Sat, 09 Apr 2016 15:33:19 +0800</lastBuildDate>
+    <pubDate>Sat, 09 Apr 2016 15:41:40 +0800</pubDate>
+    <lastBuildDate>Sat, 09 Apr 2016 15:41:40 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
     
       <item>
@@ -41,14 +41,16 @@
       </item>
     
       <item>
-        <title>BeagleBone Black Connman</title>
-        <description>&lt;p&gt;新的 Debian(armhf) for BeagleBone Black (簡稱BBB)改用 ConnMan 來作為網路管理程式，用法如下：&lt;/p&gt;
+        <title>BeagleBone Black 使用 Connman 管理設定網路</title>
+        <description>&lt;p&gt;新的 Debian(armhf) for BeagleBone Black (簡稱BBB)改用 ConnMan 來作為網路管理程式，感覺比設定 wpa_supplicant.conf 組態檔更為簡易，用法如下：&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;connmanctl&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;connmanctl 為 ConnMan 的標準命令列用戶端程式，有兩種使用方式：
-	- connmanctl [arguments] 的方式啟動。
-	- 或直接執行 connmanctl，進入互動模式，在 connmanctl&amp;gt; 提示符號後輸入指令。&lt;/p&gt;
+&lt;p&gt;connmanctl 為 ConnMan 的標準命令列用戶端程式，有兩種使用方式：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- connmanctl [arguments] 的方式啟動。
+- 或直接執行 connmanctl，進入互動模式，在 connmanctl&amp;gt; 提示符號後輸入指令。
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;hr /&gt;
 &lt;p&gt;在 BBB 上通常搭配 USB 無線網卡，接上網卡後須先啟用：&lt;/p&gt;
@@ -104,7 +106,7 @@ Network3	wifi_dc85de828967_3257495245363836_managed_wep	 接下有兩種情況�
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;使用 ifconfig/iwconfig 檢查無線網路連線狀況。&lt;/p&gt;
+&lt;p&gt;最後可使用 &lt;code&gt;ifconfig&lt;/code&gt;/&lt;code&gt;iwconfig&lt;/code&gt; 檢查無線網路連線狀況。&lt;/p&gt;
 
 </description>
         <pubDate>Sun, 27 Mar 2016 20:44:48 +0800</pubDate>
