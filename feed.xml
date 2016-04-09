@@ -5,9 +5,38 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 09 Apr 2016 15:45:21 +0800</pubDate>
-    <lastBuildDate>Sat, 09 Apr 2016 15:45:21 +0800</lastBuildDate>
+    <pubDate>Sat, 09 Apr 2016 15:52:04 +0800</pubDate>
+    <lastBuildDate>Sat, 09 Apr 2016 15:52:04 +0800</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
+    
+      <item>
+        <title>在 BeagleBone Black 或 Raspberry Pi 上使用 RTL-SDR usb dongle</title>
+        <description>&lt;h2 id=&quot;beaglebone-black--raspberry-pi--rtl-sdr-usb-dongle&quot;&gt;在 BeagleBone Black 或 Raspberry Pi 上使用 RTL-SDR usb dongle&lt;/h2&gt;
+
+&lt;p&gt;編譯參數如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd rtl-sdr/build
+cmake ../ -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON
+make
+sudo make install
+ldconfig
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重新開機後應可成功驅動，可使用 &lt;code&gt;rtl_test&lt;/code&gt; 命令測試。&lt;/p&gt;
+
+&lt;p&gt;啟動 rtl_tcp server 供其他用戶端程式(如 &lt;code&gt;SDR#&lt;/code&gt; 或 &lt;code&gt;GQRX&lt;/code&gt; 連接使用：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rtl_tcp -a xxx.xxx.xxx.xxx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;xxx 為 ip 位址。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 09 Apr 2016 15:51:52 +0800</pubDate>
+        <link>http://www.robodock.net/2016/04/09/rtl-sdr-usb-dongle.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/04/09/rtl-sdr-usb-dongle.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>使用 FFmpeg 將序列圖片轉換成影片</title>
@@ -534,31 +563,6 @@ Connection closed by foreign host.
         <pubDate>Mon, 05 Oct 2015 14:13:31 +0800</pubDate>
         <link>http://www.robodock.net/2015/10/05/build-phant-log-service.html</link>
         <guid isPermaLink="true">http://www.robodock.net/2015/10/05/build-phant-log-service.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>關閉 BeagleBone Black LED 閃燈</title>
-        <description>&lt;p&gt;早期的 &lt;strong&gt;BeagleBone Black&lt;/strong&gt; 的 &lt;strong&gt;LED&lt;/strong&gt; 指示燈 真的是太閃亮了，特別是在晚上，閃的整個房間像舞廳一樣。
-四個 LED 指示燈的控制項位於&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;/sys/class/leds
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;目錄下，usr0~3 分別代表四個指示燈，想要在開機後自動關閉的話，只要在 &lt;code&gt;/etc/rc.local&lt;/code&gt; 中 &lt;code&gt;exit 0&lt;/code&gt; 敘述前加入底下幾行：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;echo none &amp;gt; /sys/class/leds/beaglebone\:green\:usr0/trigger
-echo none &amp;gt; /sys/class/leds/beaglebone\:green\:usr1/trigger
-echo none &amp;gt; /sys/class/leds/beaglebone\:green\:usr2/trigger
-echo none &amp;gt; /sys/class/leds/beaglebone\:green\:usr3/trigger
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;存檔後重新啟動即可。&lt;/p&gt;
-</description>
-        <pubDate>Sat, 22 Aug 2015 20:11:08 +0800</pubDate>
-        <link>http://www.robodock.net/2015/08/22/beaglebone-black-led.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2015/08/22/beaglebone-black-led.html</guid>
         
         
       </item>
