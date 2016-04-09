@@ -66,19 +66,21 @@
 
 <p>編譯參數如下：</p>
 
-<pre><code>cd rtl-sdr/build
+<div class="highlighter-rouge"><pre class="highlight"><code>cd rtl-sdr/build
 cmake ../ -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON
 make
 sudo make install
 ldconfig
 </code></pre>
+</div>
 
-<p>重新開機後應可成功驅動，可使用 <code>rtl_test</code> 命令測試。</p>
+<p>重新開機後應可成功驅動，可使用 <code class="highlighter-rouge">rtl_test</code> 命令測試。</p>
 
-<p>啟動 rtl_tcp server 供其他用戶端程式(如 <code>SDR#</code> 或 <code>GQRX</code> 連接使用：</p>
+<p>啟動 rtl_tcp server 供其他用戶端程式(如 <code class="highlighter-rouge">SDR#</code> 或 <code class="highlighter-rouge">GQRX</code> 連接使用：</p>
 
-<pre><code>rtl_tcp -a xxx.xxx.xxx.xxx
+<div class="highlighter-rouge"><pre class="highlight"><code>rtl_tcp -a xxx.xxx.xxx.xxx
 </code></pre>
+</div>
 
 <p>xxx 為 ip 位址。</p>
 

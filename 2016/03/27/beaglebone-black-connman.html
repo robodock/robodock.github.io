@@ -68,40 +68,45 @@
 
 <p>connmanctl 為 ConnMan 的標準命令列用戶端程式，有兩種使用方式：</p>
 
-<pre><code>- connmanctl [arguments] 的方式啟動。
+<div class="highlighter-rouge"><pre class="highlight"><code>- connmanctl [arguments] 的方式啟動。
 - 或直接執行 connmanctl，進入互動模式，在 connmanctl&gt; 提示符號後輸入指令。
 </code></pre>
+</div>
 
 <hr />
 <p>在 BBB 上通常搭配 USB 無線網卡，接上網卡後須先啟用：</p>
 
-<pre><code>$connmanctl enable wifi
+<div class="highlighter-rouge"><pre class="highlight"><code>$connmanctl enable wifi
 </code></pre>
+</div>
 
 <p>接下來掃描可用無線網路存取點：</p>
 
-<pre><code>$connmanctl scan wifi
+<div class="highlighter-rouge"><pre class="highlight"><code>$connmanctl scan wifi
 </code></pre>
+</div>
 
 <p>掃瞄完成後列出可用 AP:</p>
 
-<pre><code>$connmanctl services
+<div class="highlighter-rouge"><pre class="highlight"><code>$connmanctl services
 Network1	wifi_dc85de828967_68756773616d_managed_none
 Network2	wifi_dc85de828967_38303944616e69656c73_managed_psk 
 Network3	wifi_dc85de828967_3257495245363836_managed_wep	 接下有兩種情況：
 </code></pre>
+</div>
 
 <ul>
   <li>
     <p>如果連接的是開放式網路(無密碼保護):</p>
 
-    <pre><code>  $connmanctl connect wifi_dc85de828967_68756773616d_managed_none
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $connmanctl connect wifi_dc85de828967_68756773616d_managed_none
 </code></pre>
+    </div>
   </li>
   <li>
     <p>如果連接的是有密碼保護的 AP，必須使用互動模式:</p>
 
-    <pre><code>  $connmanctl
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $connmanctl
   connmanctl&gt; scan wifi
 	
   connmanctl&gt; services
@@ -123,10 +128,11 @@ Network3	wifi_dc85de828967_3257495245363836_managed_wep	 接下有兩種情況�
 	
   connmanctl&gt; quit
 </code></pre>
+    </div>
   </li>
 </ul>
 
-<p>最後可使用 <code>ifconfig</code>/<code>iwconfig</code> 檢查無線網路連線狀況。</p>
+<p>最後可使用 <code class="highlighter-rouge">ifconfig</code>/<code class="highlighter-rouge">iwconfig</code> 檢查無線網路連線狀況。</p>
 
 
   </div>

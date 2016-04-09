@@ -69,12 +69,13 @@
 <hr />
 
 <p>使用 <strong>Python</strong>
-在網頁伺服器的目錄下，執行 <code>python -m SimpleHTTPServer 8000 &amp;</code> ，可建立一個 script 檔如下來啟動 WebServer</p>
+在網頁伺服器的目錄下，執行 <code class="highlighter-rouge">python -m SimpleHTTPServer 8000 &amp;</code> ，可建立一個 script 檔如下來啟動 WebServer</p>
 
-<pre><code>#!/bin/bash
-cd /home/webserver
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="nb">cd</span> /home/webserver
 /usr/bin/python -m SimpleHTTPServer 8000 &amp;
 </code></pre>
+</div>
 
 <hr />
 <p>使用 <strong>Node.js</strong></p>
@@ -83,19 +84,22 @@ cd /home/webserver
 
 <p>若系統中已有 npm 管理程式:</p>
 
-<pre><code>npm install http-server -g
+<div class="highlighter-rouge"><pre class="highlight"><code>npm install http-server -g
 </code></pre>
+</div>
 
 <p>若系統中無 npm :</p>
 
-<pre><code>curl https://npmjs.org/install.sh | sh
+<div class="highlighter-rouge"><pre class="highlight"><code>curl https://npmjs.org/install.sh | sh
 </code></pre>
+</div>
 
 <p>建立一個 script 來啟動 <strong>http-server</strong></p>
 
-<pre><code>#!/bin/bash
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 http-server /home/webserver -p 8000 -i False -s &amp;
 </code></pre>
+</div>
 
 
   </div>

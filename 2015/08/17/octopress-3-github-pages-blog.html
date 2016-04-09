@@ -101,18 +101,18 @@
 
 <blockquote>
 
-  <p><code>
-brew update
+  <div class="highlighter-rouge"><pre class="highlight"><code>brew update
 brew install rbenv
 brew install ruby-build
-</code>
-接著使用 <strong>rbenv</strong> 來安裝 <strong>Ruby</strong></p>
+</code></pre>
+  </div>
+  <p>接著使用 <strong>rbenv</strong> 來安裝 <strong>Ruby</strong></p>
 
-  <p><code>
-rbenv install 1.9.3-p0
+  <div class="highlighter-rouge"><pre class="highlight"><code>rbenv install 1.9.3-p0
 rbenv local 1.9.3-p0
 rbenv rehash
-</code></p>
+</code></pre>
+  </div>
 </blockquote>
 
 <p>Ruby 環境建置好後，便可以方便使用 Ruby 的套件管理程式 <strong>gem</strong>，輕鬆安裝各項工具程式。</p>
@@ -120,14 +120,14 @@ rbenv rehash
 <h3 id="jekyll-1"><em>Jekyll</em></h3>
 <p>首先安裝 Jekyll
 &gt;
-<code>
+<code class="highlighter-rouge">
 gem install jekyll
 </code></p>
 
 <h3 id="octopress"><em>Octopress</em></h3>
 <p>安裝 Octopress 3
 &gt;
-<code>
+<code class="highlighter-rouge">
 gem install octopress
 </code></p>
 
@@ -138,7 +138,7 @@ gem install octopress
 
 <h3 id="octopress-">octopress 的命令參數如下:</h3>
 
-<pre><code>init &lt;PATH&gt;         # 初始化網頁框架檔案
+<div class="highlighter-rouge"><pre class="highlight"><code>init &lt;PATH&gt;         # 初始化網頁框架檔案
 new &lt;PATH&gt;          # 執行 `jekyll new` + `octopress init`
 new post &lt;TITLE&gt;    # 新增一篇日誌貼文
 new page &lt;PATH&gt;     # 新增一篇網站頁面
@@ -149,16 +149,17 @@ isolate [POST]      # 除了工作中文稿，隱蔽所有貼文，方便快速�
 integrate           # 恢復 isolate 指令隱蔽的所有貼文
 deploy              # 透過 S3, Rsync, 或 GitHub pages 發佈網站
 </code></pre>
+</div>
 
 <h2 id="github-pages-1">設定 GitHub pages</h2>
 
-<p>要使用 GitHub Pages 服務需要有 GitHub 帳號，事實上建置好後的部落格網址就是 <code>http://&lt;GitHub 帳號名稱&gt;.github.io</code> 如果還沒有 GitHub 帳號，先去註冊一個吧。</p>
+<p>要使用 GitHub Pages 服務需要有 GitHub 帳號，事實上建置好後的部落格網址就是 <code class="highlighter-rouge">http://&lt;GitHub 帳號名稱&gt;.github.io</code> 如果還沒有 GitHub 帳號，先去註冊一個吧。</p>
 
-<p>登入 GitHub 網站，新增一個名為 <code>username.github.io</code> 的 Repository，GitHub pages 會使用這個 Repository 的 <code>master</code> 分支內容自動作為 <code>http://username.github.io</code> 的網站內容。將這個 Repository 的網址連結複製下來，待會用得到。</p>
+<p>登入 GitHub 網站，新增一個名為 <code class="highlighter-rouge">username.github.io</code> 的 Repository，GitHub pages 會使用這個 Repository 的 <code class="highlighter-rouge">master</code> 分支內容自動作為 <code class="highlighter-rouge">http://username.github.io</code> 的網站內容。將這個 Repository 的網址連結複製下來，待會用得到。</p>
 
 <p>遠端連線 GitHub 得方式有 HTTPS 與 SSH 等方法，建議使用 <strong>SSH</strong> 方式，設定好金鑰對後，可方便自動連線登入，不會像使用 HTTPS 方法，每次連線都須詢問密碼。 SSH 連結網址URL看起來像這樣</p>
 
-<p><code>git@github.com:&lt;username&gt;/&lt;username&gt;.github.io.git</code></p>
+<p><code class="highlighter-rouge">git@github.com:&lt;username&gt;/&lt;username&gt;.github.io.git</code></p>
 
 <p>注意最後方有 git 字尾。</p>
 
@@ -166,69 +167,78 @@ deploy              # 透過 S3, Rsync, 或 GitHub pages 發佈網站
 
 <p><strong>New</strong></p>
 
-<pre><code>$octopress new &lt;path&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>$octopress new &lt;path&gt;
 </code></pre>
+</div>
 
-<p>基本上是執行 <code>jekyll new</code> + <code>octopress init</code> 兩個指令，會在指定的 &lt;path&gt; 目錄下建立 jekyll 與 octopress 網站的基礎目錄架構與檔案。</p>
+<p>基本上是執行 <code class="highlighter-rouge">jekyll new</code> + <code class="highlighter-rouge">octopress init</code> 兩個指令，會在指定的 &lt;path&gt; 目錄下建立 jekyll 與 octopress 網站的基礎目錄架構與檔案。</p>
 
 <h2 id="git-">起始工作目錄 .git 目錄</h2>
 <p>在新增的 Octopress 3 工作目錄下，起始 git 管理</p>
 
-<pre><code>$ git init
+<div class="highlighter-rouge"><pre class="highlight"><code>$ git init
 </code></pre>
+</div>
 
 <h2 id="section-2">張貼新文章</h2>
 
 <p><strong>New Post</strong></p>
 
-<pre><code>$octpress new post "我的標題"
+<div class="highlighter-rouge"><pre class="highlight"><code>$octpress new post "我的標題"
 </code></pre>
+</div>
 
-<p>新增一篇標題為 “我的標題” 的日誌貼文。這篇文章會存放於 <code>_post</code> 目錄中，系統預設會用日期來作子目錄分類。</p>
+<p>新增一篇標題為 “我的標題” 的日誌貼文。這篇文章會存放於 <code class="highlighter-rouge">_post</code> 目錄中，系統預設會用日期來作子目錄分類。</p>
 
 <p><strong>New Page</strong></p>
 
-<pre><code>$octopress new page some-page
+<div class="highlighter-rouge"><pre class="highlight"><code>$octopress new page some-page
 </code></pre>
+</div>
 
-<p>新增一篇網頁頁面，網頁頁面不同於日誌文章，通常用於常時固定於顯示頁面上，存放於 <code>_page</code> 目錄中。</p>
+<p>新增一篇網頁頁面，網頁頁面不同於日誌文章，通常用於常時固定於顯示頁面上，存放於 <code class="highlighter-rouge">_page</code> 目錄中。</p>
 
 <p><strong>New Draft</strong></p>
 
-<pre><code>$octopress new draft "我的標題"
+<div class="highlighter-rouge"><pre class="highlight"><code>$octopress new draft "我的標題"
 </code></pre>
+</div>
 
-<p>新增一篇名為 “我的標題” 的草稿文章，存放於 <code>_draft</code> 目錄下。網站發佈時，會自動略過 <code>_draft</code> 目錄。</p>
+<p>新增一篇名為 “我的標題” 的草稿文章，存放於 <code class="highlighter-rouge">_draft</code> 目錄下。網站發佈時，會自動略過 <code class="highlighter-rouge">_draft</code> 目錄。</p>
 
 <p><strong>Publich a draft</strong></p>
 
-<pre><code>$octopress publish _draft/some-cool-post
+<div class="highlighter-rouge"><pre class="highlight"><code>$octopress publish _draft/some-cool-post
 </code></pre>
+</div>
 
-<p>將 <code>_draft</code> 資料夾中的 <code>some-cool-post</code> 草稿文章發佈到 <code>_post</code> 資料夾中，下次利用 <code>deploy</code> 指令發佈網頁時，便會發佈到網站上。</p>
+<p>將 <code class="highlighter-rouge">_draft</code> 資料夾中的 <code class="highlighter-rouge">some-cool-post</code> 草稿文章發佈到 <code class="highlighter-rouge">_post</code> 資料夾中，下次利用 <code class="highlighter-rouge">deploy</code> 指令發佈網頁時，便會發佈到網站上。</p>
 
 <p><strong>Unpublish a post</strong></p>
 
-<pre><code>$octopress unpublish _post/2015-08-01-some-post
+<div class="highlighter-rouge"><pre class="highlight"><code>$octopress unpublish _post/2015-08-01-some-post
 </code></pre>
+</div>
 
-<p>將已發佈的 <code>2015-08-01-some-post</code> 文章改成草稿(移至 <code>_draft</code> 資料夾，記得網站頁面要在 <code>deploy</code> 後才會改變。</p>
+<p>將已發佈的 <code class="highlighter-rouge">2015-08-01-some-post</code> 文章改成草稿(移至 <code class="highlighter-rouge">_draft</code> 資料夾，記得網站頁面要在 <code class="highlighter-rouge">deploy</code> 後才會改變。</p>
 
 <h2 id="section-3">網頁自動建置</h2>
 
 <p>當文章寫好後，準備發佈</p>
 
-<pre><code>$jekyll build
+<div class="highlighter-rouge"><pre class="highlight"><code>$jekyll build
 </code></pre>
+</div>
 
-<p>會利用 <code>jekyll</code> 靜態網頁產生工具，來將寫好的 <code>markdown</code> 文章轉換成套用網站樣式模板的 HTML 網頁。產生的網站會存放於 <code>_site</code> 目錄中。</p>
+<p>會利用 <code class="highlighter-rouge">jekyll</code> 靜態網頁產生工具，來將寫好的 <code class="highlighter-rouge">markdown</code> 文章轉換成套用網站樣式模板的 HTML 網頁。產生的網站會存放於 <code class="highlighter-rouge">_site</code> 目錄中。</p>
 
 <p>jekyll 另外提供了簡單的本地端網站伺服器，方便在本機先行預覽結果。</p>
 
-<pre><code>$jekyll serve
+<div class="highlighter-rouge"><pre class="highlight"><code>$jekyll serve
 </code></pre>
+</div>
 
-<p>執行上述指令後，可在瀏覽器使用下列網址 <code>http://locolhost:4000</code> 預覽網頁。</p>
+<p>執行上述指令後，可在瀏覽器使用下列網址 <code class="highlighter-rouge">http://locolhost:4000</code> 預覽網頁。</p>
 
 <h2 id="github-pages-">將網站發佈到 GitHub Pages 上</h2>
 
@@ -236,74 +246,82 @@ deploy              # 透過 S3, Rsync, 或 GitHub pages 發佈網站
 
 <p>首次發佈，需要初始化相關設定</p>
 
-<pre><code>$octopress deploy init git@github.com:&lt;username&gt;/&lt;username&gt;.github.io.git
+<div class="highlighter-rouge"><pre class="highlight"><code>$octopress deploy init git@github.com:&lt;username&gt;/&lt;username&gt;.github.io.git
 </code></pre>
+</div>
 
 <p>記得將 &lt;username&gt; 替換成你自己的 GitHub 帳號名稱。
-上述動作會在工作目錄下產生 <code>_deploy.yml</code> 設定檔，如果有需要，可手動編輯設定檔內容。</p>
+上述動作會在工作目錄下產生 <code class="highlighter-rouge">_deploy.yml</code> 設定檔，如果有需要，可手動編輯設定檔內容。</p>
 
 <p>爾後發佈時，只要使用</p>
 
-<pre><code>$octopress deploy
+<div class="highlighter-rouge"><pre class="highlight"><code>$octopress deploy
 </code></pre>
+</div>
 
 <p>基本上使用 <strong>Octopress + GitHub Pages</strong> 來建置部落格的過程，到此完成。</p>
 
-<p>注意上述動作僅將網站 ( <code>_site</code> 資料夾的內容)發佈至 GitHub Pages上，整個 octopress 工作目錄僅存在於本機上。如果你想在可在多部電腦上寫文章，並讓工作進度維持同步，可利用 GitHub 的分支 (branch) 功能，將工作目錄同步到 GitHub 上的另一個分支下，便可在不同電腦使用 git 的 <code>push</code> 與 <code>pull</code> 功能達到同步目的。請參考底下步驟：</p>
+<p>注意上述動作僅將網站 ( <code class="highlighter-rouge">_site</code> 資料夾的內容)發佈至 GitHub Pages上，整個 octopress 工作目錄僅存在於本機上。如果你想在可在多部電腦上寫文章，並讓工作進度維持同步，可利用 GitHub 的分支 (branch) 功能，將工作目錄同步到 GitHub 上的另一個分支下，便可在不同電腦使用 git 的 <code class="highlighter-rouge">push</code> 與 <code class="highlighter-rouge">pull</code> 功能達到同步目的。請參考底下步驟：</p>
 
 <h2 id="octopress--github-pages">在多台電腦上使用 Octopress + GitHub Pages</h2>
 
-<p>Octopress 使用兩個分支 <code>source</code> 與 <code>master</code>, <code>source</code> 分支包含用來產生網頁的工作目錄，包含草稿資料夾，而 <code>master</code> 則僅包含網站本身。</p>
+<p>Octopress 使用兩個分支 <code class="highlighter-rouge">source</code> 與 <code class="highlighter-rouge">master</code>, <code class="highlighter-rouge">source</code> 分支包含用來產生網頁的工作目錄，包含草稿資料夾，而 <code class="highlighter-rouge">master</code> 則僅包含網站本身。</p>
 
-<p>在網站 <code>deploy</code> 過程中, <code>master</code> 分支會同步到 GitHub Pages 上 <code>&lt;username&gt;.github.io</code> <code>Repository</code> 中的 <code>Master</code> 分支。
-我們可以另外建立一個名為 <code>source</code> 的分支，來存放工作目錄，已方便在不同電腦中同步。</p>
+<p>在網站 <code class="highlighter-rouge">deploy</code> 過程中, <code class="highlighter-rouge">master</code> 分支會同步到 GitHub Pages 上 <code class="highlighter-rouge">&lt;username&gt;.github.io</code> <code class="highlighter-rouge">Repository</code> 中的 <code class="highlighter-rouge">Master</code> 分支。
+我們可以另外建立一個名為 <code class="highlighter-rouge">source</code> 的分支，來存放工作目錄，已方便在不同電腦中同步。</p>
 
 <p>在本機 Octopress 工作目錄下</p>
 
-<pre><code>$ git remote add origin &lt;GIT-REPO-URL&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>$ git remote add origin &lt;GIT-REPO-URL&gt;
 </code></pre>
+</div>
 
 <p>其中 &lt;GIT-REPO-URL&gt; 要換成自己的 GitHub Pages Repository 位址</p>
 
 <p>將本機 Octopress 工作目錄 commit 進 git 資料庫，並 push 到遠端(GitHub)上</p>
 
-<pre><code>$ git add .
+<div class="highlighter-rouge"><pre class="highlight"><code>$ git add .
 $ git commit -am 'commit comment'
 $ git checkout -b source
 
 $ git push -u origin source
 </code></pre>
+</div>
 
 <p>想在其他電腦工作時，首先將遠端 Source Repository clone 下來</p>
 
-<p>clone <code>source</code> 分支</p>
+<p>clone <code class="highlighter-rouge">source</code> 分支</p>
 
-<pre><code>$ git clone -b source &lt;GIT-REPO-URL&gt; &lt;本地工作目錄&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>$ git clone -b source &lt;GIT-REPO-URL&gt; &lt;本地工作目錄&gt;
 </code></pre>
+</div>
 
-<p>這樣一來，這部電腦上也有了一樣的工作環境，只要記得工作完要將 <code>Source</code>分支 <code>push</code> 回 GitHub 遠端即可。</p>
+<p>這樣一來，這部電腦上也有了一樣的工作環境，只要記得工作完要將 <code class="highlighter-rouge">Source</code>分支 <code class="highlighter-rouge">push</code> 回 GitHub 遠端即可。</p>
 
 <hr />
 <p>每次使用 Octopress 工作程序如下：</p>
 
-<p>先把遠端 GitHub 的 Source branch 內容 <code>pull</code> 下來更新本地端：</p>
+<p>先把遠端 GitHub 的 Source branch 內容 <code class="highlighter-rouge">pull</code> 下來更新本地端：</p>
 
-<pre><code>$ cd &lt;本地工作目錄&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>$ cd &lt;本地工作目錄&gt;
 $ git pull origin source	#更新本地 source branch
 </code></pre>
+</div>
 
 <p>寫完文章後的動作如下：</p>
 
-<pre><code>$ jekyll build				#產生網頁
+<div class="highlighter-rouge"><pre class="highlight"><code>$ jekyll build				#產生網頁
 $ octopress deploy			#更新遠端 master branch
 </code></pre>
+</div>
 
-<p>再把 Source 更新部分 <code>push</code> 回遠端 GitHub Source 上：</p>
+<p>再把 Source 更新部分 <code class="highlighter-rouge">push</code> 回遠端 GitHub Source 上：</p>
 
-<pre><code>$ git add .
+<div class="highlighter-rouge"><pre class="highlight"><code>$ git add .
 $ git commit -am "commit comment"
 $ git push origin source 	#更新遠端 source branch
 </code></pre>
+</div>
 
 
   </div>

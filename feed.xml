@@ -5,9 +5,9 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 09 Apr 2016 19:33:51 +0800</pubDate>
-    <lastBuildDate>Sat, 09 Apr 2016 19:33:51 +0800</lastBuildDate>
-    <generator>Jekyll v3.0.0</generator>
+    <pubDate>Sat, 09 Apr 2016 23:02:29 +0800</pubDate>
+    <lastBuildDate>Sat, 09 Apr 2016 23:02:29 +0800</lastBuildDate>
+    <generator>Jekyll v3.1.2</generator>
     
       <item>
         <title>OS X 下建置 Ruby 開發應用環境</title>
@@ -19,57 +19,65 @@
 &lt;p&gt;OS X 系統中已內建 Ruby 環境，但通常版本老舊，開放原始碼世界變化快速，建議使用最新穩定版。
 若環境單純，無多版本需求者，可使用 Homebrew 套件管理工具來安裝：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ brew install ruby
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew install ruby
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;hr /&gt;
-&lt;p&gt;### 進階安裝 ###&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;進階安裝&lt;/h3&gt;
 
 &lt;p&gt;開發與應用開放原始碼軟體時，經常會遇到安裝多個程式庫版本的問題，在 Ruby 的世界中，我們可以使用 **版本管理工具 rbenv ** 來達成在不同 Ruby 版本中的作業管理：&lt;/p&gt;
 
-&lt;h3 id=&quot;rbenv&quot;&gt;rbenv&lt;/h3&gt;
+&lt;p&gt;###rbenv###&lt;/p&gt;
 
-&lt;p&gt;rbenv 透過在系統路徑最前方加入 &lt;code&gt;~/.rbenv/shims&lt;/code&gt;路徑，透過 shims 程式攔截 ruby 相關指令，再依據所設定的參數，選擇對應的 ruby 版本據以執行。&lt;/p&gt;
+&lt;p&gt;rbenv 透過在系統路徑最前方加入 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.rbenv/shims&lt;/code&gt;路徑，透過 shims 程式攔截 ruby 相關指令，再依據所設定的參數，選擇對應的 ruby 版本據以執行。&lt;/p&gt;
 
-&lt;p&gt;rbenv 管理下的不同版本 ruby 系統程式會安裝在 &lt;code&gt;~/.rbenv/versions/x.x.x&lt;/code&gt; 目錄下。&lt;/p&gt;
+&lt;p&gt;rbenv 管理下的不同版本 ruby 系統程式會安裝在 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.rbenv/versions/x.x.x&lt;/code&gt; 目錄下。&lt;/p&gt;
 
 &lt;p&gt;使用 Homebrew 安裝 rbenv 版本環境管理工具：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ brew install rbenv
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew install rbenv
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;更新 rbenv&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ brew upgrade rbenv ruby-build
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew upgrade rbenv ruby-build
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;第一次使用須執行 &lt;code&gt;rbenv init&lt;/code&gt;，依照說明進行初始化設定。&lt;/p&gt;
+&lt;p&gt;第一次使用須執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;rbenv init&lt;/code&gt;，依照說明進行初始化設定。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ rbenv init
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv init
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;安裝不同版本 Ruby :&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ rbenv install -l  //列出可安裝版本
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv install -l  //列出可安裝版本
 $ rbenv install 2.2.3	//安裝 ruby 2.2.3 版
 $ rbenv rehash		//在安裝的版本目錄中加入 shims
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;要切換使用的 ruby 版本環境：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ rbenv version	//查看目前使用版本
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv version	//查看目前使用版本
 $ rbenv local x.x.x	//選擇使用版本
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;然後便可正常執行諸如 gem 之類的指令。&lt;/p&gt;
 
-&lt;p&gt;時間一久，系統中可能累積了許多舊版本，移除舊版本可直接清除 &lt;code&gt;~/.rbenv/versions&lt;/code&gt; 底下的目錄或透過 &lt;code&gt;rbenv uninstall&lt;/code&gt; 來移除。&lt;/p&gt;
+&lt;p&gt;時間一久，系統中可能累積了許多舊版本，移除舊版本可直接清除 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.rbenv/versions&lt;/code&gt; 底下的目錄或透過 &lt;code class=&quot;highlighter-rouge&quot;&gt;rbenv uninstall&lt;/code&gt; 來移除。&lt;/p&gt;
 
 &lt;p&gt;其他參考指令：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ rbenv versions //查看系統中安裝了哪些版本
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv versions //查看系統中安裝了哪些版本
 $ rbenv version	//查看目前使用版本
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 </description>
         <pubDate>Sat, 09 Apr 2016 19:33:41 +0800</pubDate>
@@ -85,19 +93,21 @@ $ rbenv version	//查看目前使用版本
 
 &lt;p&gt;編譯參數如下：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;cd rtl-sdr/build
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd rtl-sdr/build
 cmake ../ -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON
 make
 sudo make install
 ldconfig
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;重新開機後應可成功驅動，可使用 &lt;code&gt;rtl_test&lt;/code&gt; 命令測試。&lt;/p&gt;
+&lt;p&gt;重新開機後應可成功驅動，可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;rtl_test&lt;/code&gt; 命令測試。&lt;/p&gt;
 
-&lt;p&gt;啟動 rtl_tcp server 供其他用戶端程式(如 &lt;code&gt;SDR#&lt;/code&gt; 或 &lt;code&gt;GQRX&lt;/code&gt; 連接使用：&lt;/p&gt;
+&lt;p&gt;啟動 rtl_tcp server 供其他用戶端程式(如 &lt;code class=&quot;highlighter-rouge&quot;&gt;SDR#&lt;/code&gt; 或 &lt;code class=&quot;highlighter-rouge&quot;&gt;GQRX&lt;/code&gt; 連接使用：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;rtl_tcp -a xxx.xxx.xxx.xxx
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rtl_tcp -a xxx.xxx.xxx.xxx
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;xxx 為 ip 位址。&lt;/p&gt;
 </description>
@@ -112,25 +122,29 @@ ldconfig
         <title>使用 FFmpeg 將序列圖片轉換成影片</title>
         <description>&lt;h2 id=&quot;ffmpeg-&quot;&gt;使用 FFmpeg 將序列圖片轉換成影片&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;&lt;code&gt;-framerate&lt;/code&gt; 每秒多少張圖片，預設值為 25, &lt;code&gt;-r&lt;/code&gt; 影片播放 fps, 省略時使用與輸入framerate 相同數值。&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-framerate&lt;/code&gt; 每秒多少張圖片，預設值為 25, &lt;code class=&quot;highlighter-rouge&quot;&gt;-r&lt;/code&gt; 影片播放 fps, 省略時使用與輸入framerate 相同數值。&lt;/p&gt;
 
-&lt;p&gt;如果想從一系列的圖片中的特定號碼開始，可使用 &lt;code&gt;-start_number&lt;/code&gt; 參數，&lt;/p&gt;
+&lt;p&gt;如果想從一系列的圖片中的特定號碼開始，可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;-start_number&lt;/code&gt; 參數，&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;ffmpeg -framerate 5 -start_number 126 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -start_number 126 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;如果影片無法正確顯示時，嘗試使用下列 fps video filter 格式取代 &lt;code&gt;-r&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;如果影片無法正確顯示時，嘗試使用下列 fps video filter 格式取代 &lt;code class=&quot;highlighter-rouge&quot;&gt;-r&lt;/code&gt;:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p output.mp4
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p output.mp4
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;或指定 format video filter:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf &quot;fps=25,format=yuv420p&quot; output.mp4
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf &quot;fps=25,format=yuv420p&quot; output.mp4
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 </description>
         <pubDate>Sat, 09 Apr 2016 15:32:16 +0800</pubDate>
         <link>http://www.robodock.net/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html</link>
@@ -147,40 +161,45 @@ ldconfig
 
 &lt;p&gt;connmanctl 為 ConnMan 的標準命令列用戶端程式，有兩種使用方式：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;- connmanctl [arguments] 的方式啟動。
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- connmanctl [arguments] 的方式啟動。
 - 或直接執行 connmanctl，進入互動模式，在 connmanctl&amp;gt; 提示符號後輸入指令。
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;hr /&gt;
 &lt;p&gt;在 BBB 上通常搭配 USB 無線網卡，接上網卡後須先啟用：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$connmanctl enable wifi
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$connmanctl enable wifi
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;接下來掃描可用無線網路存取點：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$connmanctl scan wifi
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$connmanctl scan wifi
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;掃瞄完成後列出可用 AP:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$connmanctl services
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$connmanctl services
 Network1	wifi_dc85de828967_68756773616d_managed_none
 Network2	wifi_dc85de828967_38303944616e69656c73_managed_psk 
 Network3	wifi_dc85de828967_3257495245363836_managed_wep	 接下有兩種情況：
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;如果連接的是開放式網路(無密碼保護):&lt;/p&gt;
 
-    &lt;pre&gt;&lt;code&gt;  $connmanctl connect wifi_dc85de828967_68756773616d_managed_none
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $connmanctl connect wifi_dc85de828967_68756773616d_managed_none
 &lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;如果連接的是有密碼保護的 AP，必須使用互動模式:&lt;/p&gt;
 
-    &lt;pre&gt;&lt;code&gt;  $connmanctl
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $connmanctl
   connmanctl&amp;gt; scan wifi
 	
   connmanctl&amp;gt; services
@@ -202,10 +221,11 @@ Network3	wifi_dc85de828967_3257495245363836_managed_wep	 接下有兩種情況�
 	
   connmanctl&amp;gt; quit
 &lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;最後可使用 &lt;code&gt;ifconfig&lt;/code&gt;/&lt;code&gt;iwconfig&lt;/code&gt; 檢查無線網路連線狀況。&lt;/p&gt;
+&lt;p&gt;最後可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;ifconfig&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;iwconfig&lt;/code&gt; 檢查無線網路連線狀況。&lt;/p&gt;
 
 </description>
         <pubDate>Sun, 27 Mar 2016 20:44:48 +0800</pubDate>
@@ -229,16 +249,17 @@ Network3	wifi_dc85de828967_3257495245363836_managed_wep	 接下有兩種情況�
 
 &lt;p&gt;第二：如果 BeagleBone 是當成 Headless 操作，不會連接螢幕使用，那就把 HDMI 輸出關閉，作法如下：&lt;/p&gt;
 
-&lt;p&gt;修改 &lt;code&gt;/boot/uEnv.txt&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;/boot/uEnv.txt&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;找到 &lt;code&gt;##Disable HDMI&lt;/code&gt; 項目，將 &lt;code&gt;##cape_disable=....&lt;/code&gt; 前方的 ## 註解拿掉如下：&lt;/p&gt;
+&lt;p&gt;找到 &lt;code class=&quot;highlighter-rouge&quot;&gt;##Disable HDMI&lt;/code&gt; 項目，將 &lt;code class=&quot;highlighter-rouge&quot;&gt;##cape_disable=....&lt;/code&gt; 前方的 ## 註解拿掉如下：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;##Disable HDMI (v3.8.x)
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;##Disable HDMI (v3.8.x)
 cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN 
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;注意 uEnv.txt 設定檔中有很多類似的項目，例如 &lt;code&gt;##Disable HDMI/eMMC&lt;/code&gt; 等等，不要改錯了，這個設定檔的內容會影響硬體功能的運作。&lt;/p&gt;
+  &lt;p&gt;注意 uEnv.txt 設定檔中有很多類似的項目，例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;##Disable HDMI/eMMC&lt;/code&gt; 等等，不要改錯了，這個設定檔的內容會影響硬體功能的運作。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;存檔後重新開機。&lt;/p&gt;
@@ -254,9 +275,9 @@ cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN
     
       <item>
         <title>快速下載 Youtube 影片</title>
-        <description>&lt;h2 id=&quot;youtube-&quot;&gt;快速下載 Youtube 影片的方法&lt;/h2&gt;
+        <description>&lt;p&gt;##快速下載 Youtube 影片的方法##&lt;/p&gt;
 
-&lt;p&gt;找到喜愛的 youtube 影片後，暫停播放，直接到上方的網址列，將 &lt;code&gt;www.youtube.com&lt;/code&gt; 改成 &lt;code&gt;ssyoutube.com&lt;/code&gt;，其他部分都不變。&lt;/p&gt;
+&lt;p&gt;找到喜愛的 youtube 影片後，暫停播放，直接到上方的網址列，將 &lt;code class=&quot;highlighter-rouge&quot;&gt;www.youtube.com&lt;/code&gt; 改成 &lt;code class=&quot;highlighter-rouge&quot;&gt;ssyoutube.com&lt;/code&gt;，其他部分都不變。&lt;/p&gt;
 
 &lt;p&gt;網頁會轉址到 savefrom.net，並產生下載連結，選取對應的影片大小格式下載即可。&lt;/p&gt;
 </description>
@@ -271,23 +292,25 @@ cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN
         <title>Screenly Install Nodejs+npm</title>
         <description>&lt;p&gt;目前的 Screenly 使用 Raspbian (基於Debian 7 Wheezy)版本，系統預設並未安裝 node.js，若直接 apt-get 從預設 repository 安裝 node.js，則版本過於老舊。&lt;/p&gt;
 
-&lt;h3 id=&quot;nodejs-&quot;&gt;手動安裝新的 node.js 版本&lt;/h3&gt;
-&lt;p&gt;直接下載最新的官方的 arm 架構 binary 檔案，
+&lt;p&gt;###手動安裝新的 node.js 版本###
+直接下載最新的官方的 arm 架構 binary 檔案，
 注意 Raspberry Pi Model A, B, B+ 為 &lt;strong&gt;armv6&lt;/strong&gt; 架構，而 Raspberry Pi 2 則為 &lt;strong&gt;armv7&lt;/strong&gt; 架構，須選用相對應的 binary 檔案。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;wget https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-armv6l.tar.gz
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-armv6l.tar.gz
 tar -xvf node-v4.2.2-linux-armv6l.tar.gz
 cd node-v4.2.2-linux-armv6l
 
 sudo cp -R * /usr/local/
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;新版的 nodejs 已包含 npm 套件管理程式。&lt;/p&gt;
 
-&lt;h3 id=&quot;http-server-&quot;&gt;安裝 http-server 套件&lt;/h3&gt;
+&lt;p&gt;###安裝 http-server 套件###&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo npm install http-server -g
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo npm install http-server -g
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 </description>
         <pubDate>Wed, 02 Dec 2015 15:22:28 +0800</pubDate>
@@ -301,8 +324,8 @@ sudo cp -R * /usr/local/
         <title>CR2032 or BR2032 ?</title>
         <description>&lt;h1 id=&quot;cr2032-or-br2032&quot;&gt;選擇 CR2032 or BR2032?&lt;/h1&gt;
 
-&lt;h2 id=&quot;cr-2032-&quot;&gt;CR 2032 電池&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;CR&lt;/strong&gt; 型電池的化學成分為&lt;strong&gt;鋰-錳&lt;/strong&gt;(Lithium Manganese Dioxide, LiMnO2)，單位能量密度高，低溫環境可工作，可快速放電，常使用於相機與電腦中。&lt;/p&gt;
+&lt;p&gt;##CR 2032 電池##
+&lt;strong&gt;CR&lt;/strong&gt; 型電池的化學成分為&lt;strong&gt;鋰-錳&lt;/strong&gt;(Lithium Manganese Dioxide, LiMnO2)，單位能量密度高，低溫環境可工作，可快速放電，常使用於相機與電腦中。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://7cf8b85992be18b4f27ce863770978770b1da00a.googledrive.com/host/0B3VMyKy-nGUYTG5rdXM0cm02WFk&quot; alt=&quot;CR2032電池&quot; /&gt;&lt;/p&gt;
 
@@ -310,7 +333,7 @@ sudo cp -R * /usr/local/
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;br-2032-&quot;&gt;BR 2032 電池&lt;/h2&gt;
+&lt;p&gt;##BR 2032 電池##&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;BR&lt;/strong&gt; 型電池的化學成分為&lt;strong&gt;鋰-氟碳化物&lt;/strong&gt;(Lithium Carbon Monofluoride, Li(CF)x)，優異的低自放電性質(低於0.5%/year)，可保存較久，工作壽命期間電壓一致，常用於時鐘，心律調節器，導向飛彈上。&lt;/p&gt;
 
@@ -325,9 +348,9 @@ CR型電池則在放電過程中逐步壓降，若設計工作電路可容許較
 BR型電池工作溫度範圍較廣，高溫可達80C，但低溫環境時壽命幾乎減半。
 BR 型的價格高於 CR型電池。&lt;/p&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;結論:&lt;/h2&gt;
+&lt;p&gt;##結論:##&lt;/p&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;依設計工作環境、目的選用相對應的電池。&lt;/h3&gt;
+&lt;p&gt;###依設計工作環境、目的選用相對應的電池。###&lt;/p&gt;
 
 &lt;p&gt;精密儀器設備希望工作時有&lt;strong&gt;穩定電壓&lt;/strong&gt;，BR型應是較好的選擇，只要定期更換電池即可。CR 型價格較低也容易取得，放電量大，適用於一般消費電子產品。&lt;/p&gt;
 
@@ -350,17 +373,18 @@ BR 型的價格高於 CR型電池。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://www.screenlyapp.com/img/screenly-ose-8bcf3db7.png&quot; alt=&quot;screenly&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Screenly 的 Asset Name 是可以輸入中文的，可以清楚標示播放內容。但有個問題是，如果使用中文的 Asset Name, 當選擇管理頁面右上方的 &lt;code&gt;System Info&lt;/code&gt;功能，想查看系統資訊與播放記錄時，則會發生錯誤，觸發 Internal Server Error 500 錯誤訊息。這樣的情形在使用英文 Asset Name 時並不會發生。&lt;/p&gt;
+&lt;p&gt;Screenly 的 Asset Name 是可以輸入中文的，可以清楚標示播放內容。但有個問題是，如果使用中文的 Asset Name, 當選擇管理頁面右上方的 &lt;code class=&quot;highlighter-rouge&quot;&gt;System Info&lt;/code&gt;功能，想查看系統資訊與播放記錄時，則會發生錯誤，觸發 Internal Server Error 500 錯誤訊息。這樣的情形在使用英文 Asset Name 時並不會發生。&lt;/p&gt;
 
 &lt;p&gt;存取 Screenly web server 的 log 記錄存放於 &lt;strong&gt;&lt;em&gt;/var/log/supervisor/screenly-access.log&lt;/em&gt;&lt;/strong&gt; 中，檢視 Log 分析後發現，其中觸發上述錯誤訊息的關鍵 Log 記錄中有一行：&lt;/p&gt;
 
    	File “system_info”, line 70, in render_body
-&lt;pre&gt;&lt;code&gt;UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe9 in position 40: ordinal not in range(128)
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe9 in position 40: ordinal not in range(128)
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;看來應該是顯示 Log 的網頁程式碼部分無法處理中文，找出 &lt;code&gt;screenly\server.py&lt;/code&gt; 程式檢視，其中處理 Log 顯示部分的程式碼位於 &lt;strong&gt;#View&lt;/strong&gt; 段落內：&lt;/p&gt;
+&lt;p&gt;看來應該是顯示 Log 的網頁程式碼部分無法處理中文，找出 &lt;code class=&quot;highlighter-rouge&quot;&gt;screenly\server.py&lt;/code&gt; 程式檢視，其中處理 Log 顯示部分的程式碼位於 &lt;strong&gt;#View&lt;/strong&gt; 段落內：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;@route(&#39;/system_info&#39;)
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@route(&#39;/system_info&#39;)
 @auth_basic(check_creds)
 def system_info():
 viewer_log_file = &#39;/tmp/screenly_viewer.log&#39;
@@ -370,22 +394,25 @@ if path.exists(viewer_log_file):
 else:
     viewlog = [&quot;(no viewer log present -- is only the screenly server running?)\n&quot;]
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;在還沒想出更好的方法之前，先在 viewlog 這行後新增一行，強制轉成 UTF-8 編碼，並順便將 Log 顯示順序改成符合一般習慣的最新記錄在最上方的顯示方式。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;viewlog = [unicode(i, encoding=&#39;UTF-8&#39;) for i in reversed(viewlog)]
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;viewlog = [unicode(i, encoding=&#39;UTF-8&#39;) for i in reversed(viewlog)]
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;修改後這段程式碼看起來像這樣：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;if path.exists(viewer_log_file):
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if path.exists(viewer_log_file):
     viewlog = check_output([&#39;tail&#39;, &#39;-n&#39;, &#39;20&#39;, viewer_log_file]).split(&#39;\n&#39;)
     viewlog = [unicode(i, encoding=&#39;UTF-8&#39;) for i in reversed(viewlog)]
 else:
     viewlog = [&quot;(no viewer log present -- is only the screenly server running?)\n&quot;]
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;爾後選擇管理頁面右上方的 &lt;code&gt;System Info&lt;/code&gt;功能，就可正常查看具有中文 Asset Name 的播放記錄了。&lt;/p&gt;
+&lt;p&gt;爾後選擇管理頁面右上方的 &lt;code class=&quot;highlighter-rouge&quot;&gt;System Info&lt;/code&gt;功能，就可正常查看具有中文 Asset Name 的播放記錄了。&lt;/p&gt;
 </description>
         <pubDate>Fri, 13 Nov 2015 10:14:54 +0800</pubDate>
         <link>http://www.robodock.net/2015/11/13/screenly-system-info-error.html</link>
@@ -403,12 +430,13 @@ else:
 &lt;hr /&gt;
 
 &lt;p&gt;使用 &lt;strong&gt;Python&lt;/strong&gt;
-在網頁伺服器的目錄下，執行 &lt;code&gt;python -m SimpleHTTPServer 8000 &amp;amp;&lt;/code&gt; ，可建立一個 script 檔如下來啟動 WebServer&lt;/p&gt;
+在網頁伺服器的目錄下，執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;python -m SimpleHTTPServer 8000 &amp;amp;&lt;/code&gt; ，可建立一個 script 檔如下來啟動 WebServer&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;#!/bin/bash
-cd /home/webserver
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /home/webserver
 /usr/bin/python -m SimpleHTTPServer 8000 &amp;amp;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;hr /&gt;
 &lt;p&gt;使用 &lt;strong&gt;Node.js&lt;/strong&gt;&lt;/p&gt;
@@ -417,19 +445,22 @@ cd /home/webserver
 
 &lt;p&gt;若系統中已有 npm 管理程式:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;npm install http-server -g
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install http-server -g
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;若系統中無 npm :&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;curl https://npmjs.org/install.sh | sh
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl https://npmjs.org/install.sh | sh
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;建立一個 script 來啟動 &lt;strong&gt;http-server&lt;/strong&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;#!/bin/bash
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
 http-server /home/webserver -p 8000 -i False -s &amp;amp;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 </description>
         <pubDate>Tue, 10 Nov 2015 15:01:37 +0800</pubDate>
