@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>RoboDock</title>
-  <meta name="description" content="動力船塢工作日誌">
+  <title>vi(vim) Tab 縮排設定</title>
+  <meta name="description" content="Python 使用者都知道，程式需要一致的縮排設定方可正常運作，比如說編輯器的tab鍵設定，如果使用的是 tab 字元，程式從頭到尾的縮排就必須使用 tab 字元，如果是使用空白字元，就必須都使用空白字元，不可混用。">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.robodock.net/">
+  <link rel="canonical" href="http://www.robodock.net/2016/04/14/vi-tab-stop.html">
   <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://www.robodock.net/feed.xml">
 </head>
 
@@ -54,137 +54,42 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">vi(vim) Tab 縮排設定</h1>
+    <p class="post-meta"><time datetime="2016-04-14T21:21:47+08:00" itemprop="datePublished">Apr 14, 2016</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Apr 14, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>Python 使用者都知道，程式需要一致的縮排設定方可正常運作，比如說編輯器的<em>tab鍵</em>設定，如果使用的是 tab 字元，程式從頭到尾的縮排就必須使用 tab 字元，如果是使用空白字元，就必須都使用空白字元，不可混用。</p>
 
-        <h2>
-          <a class="post-link" href="/2016/04/14/vi-tab-stop.html">vi(vim) Tab 縮排設定</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>為了方便統一，我習慣使用 4 個空白字元當作 Python 程式的縮排，底下是使用 vi 編輯器時的設定。</p>
 
-        <h2>
-          <a class="post-link" href="/2016/04/09/osx-ruby-environment.html">OS X 下建置 Ruby 開發應用環境</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
+<p>可設定在 ~/.vimrc 中，做為永久設定：</p>
 
-        <h2>
-          <a class="post-link" href="/2016/04/09/rtl-sdr-usb-dongle.html">在 BeagleBone Black 或 Raspberry Pi 上使用 RTL-SDR usb dongle</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 9, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html">使用 FFmpeg 將序列圖片轉換成影片</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 27, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/2016/03/27/beaglebone-black-connman.html">BeagleBone Black 使用 Connman 管理設定網路</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 26, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/2016/03/26/usb-wifi-beaglebone-black-hdmi.html">迷你 USB WiFi 網卡與 BeagleBone Black HDMI 的干擾問題</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Jan 19, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/2016/01/19/download-youtube-video.html">快速下載 Youtube 影片</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Dec 2, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/12/02/screenly-install-nodejs-npm.html">Screenly Install Nodejs+npm</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Dec 1, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/12/01/cr2032-or-br2032.html">CR2032 or BR2032 ?</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 13, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/11/13/screenly-system-info-error.html">解決 Screenly System Info Error 問題</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 10, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/11/10/fast-create-webserver.html">快速建立網頁伺服器</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Oct 5, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/10/05/build-phant-log-service.html">安裝 Phant Data Log Service</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 22, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/08/22/beaglebone-black-led.html">關閉 BeagleBone Black LED 閃燈</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 22, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/08/22/setting-edimax-ew-7811un-wifi-with-beaglebone-black-debian-image.html">在 Raspberry Pi 與 BeagleBone Black 上設定使用 Edimax EW-7811Un 迷你無線網卡</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 17, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/2015/08/17/octopress-3-github-pages-blog.html">使用 Octopress 3 在 GitHub Pages 上快速建立日誌型Blog</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
+<div class="highlighter-rouge"><pre class="highlight"><code>:set expandtab
+</code></pre>
 </div>
+
+<p>使用空白字元 (space) 取代 Tab。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>:set tabstop=4
+</code></pre>
+</div>
+
+<p>設定插入 tab 時用 4 個空白 (space) 字元取代。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>:set shiftwidth=4
+</code></pre>
+</div>
+
+<p>設定程式縮排為 4 個空白字元 (space)。</p>
+
+
+  </div>
+
+</article>
 
       </div>
     </div>
