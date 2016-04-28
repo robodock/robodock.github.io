@@ -64,71 +64,64 @@
   <div class="post-content" itemprop="articleBody">
     <p>安裝 Adafruit.BBIO python 模組</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ sudo apt-get update
+<pre><code>$ sudo apt-get update
 $ sudo apt-get install build-essential python-dev python-setuptools python-pip python -smbus
 
 $ sudo pip install Adafruit_BBIO
 </code></pre>
-</div>
 
 <p>執行下列指令測試模組是否成功安裝：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo python -c "import Adafruit_BBIO.GPIO as GPIO; print GPIO"
+<pre><code>sudo python -c "import Adafruit_BBIO.GPIO as GPIO; print GPIO"
 
 #you should see this or similar:
 &lt;module 'Adafruit_BBIO.GPIO' from '/usr/local/lib/python2.7/dist-packages/Adafruit_BBIO/GPIO.so'&gt;
 </code></pre>
-</div>
 
-<p>##用法：##</p>
+<h2 id="section">用法：</h2>
 
 <p>匯入模組:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>import Adafruit_BBIO.GPIO as GPIO
+<pre><code>import Adafruit_BBIO.GPIO as GPIO
 </code></pre>
-</div>
 
 <p>設定 GPIO 為輸入或輸出</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>GPIO.setup("P8_12", GPIO.IN)
+<pre><code>GPIO.setup("P8_12", GPIO.IN)
 </code></pre>
-</div>
 
 <p>偵測 GPIO 輸入</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>if GPIO.input("P8_12"):
+<pre><code>if GPIO.input("P8_12"):
    		print("HIGH")
 else:
    		print("LOW")
 </code></pre>
-</div>
 
 <p>等候 GPIO 事件發生，此方式會一直等候，直到事件發生</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>GPIO.wait_for_edge("P8_12", GPIO.RISING)
+<pre><code>GPIO.wait_for_edge("P8_12", GPIO.RISING)
 \\GPIO.RISING 從低位變高位
 \\GPIO.FALLING 從高位變低位
 </code></pre>
-</div>
 
 <p>另一種偵測事件方式，僅在執行時檢查，通常會搭配迴圈進行持續檢測</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>#加入偵測事件
+<pre><code>#加入偵測事件
 GPIO.add_event_detect("P8_12", GPIO.FALLING)
 #接著可執行其他程式碼
 #在想要偵測的地方加入:
 if GPIO.event_detected("P8_12"):
    		print "event detected!"
 </code></pre>
-</div>
 
-<p>###BeagleBone Black GPIO 腳位參考圖###</p>
+<h3 id="beaglebone-black-gpio-">BeagleBone Black GPIO 腳位參考圖</h3>
 
 <p><img src="http://www.mathworks.com/help/supportpkg/beagleboneio/ug/beaglebone_black_pinmap.png" alt="BeagleBone Black GPIO pin" /></p>
 
 <p>連接按鈕元件(push button)，避免按壓按鈕時多次觸發</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>import Adafruit_BBIO.GPIO as GPIO
+<pre><code>import Adafruit_BBIO.GPIO as GPIO
 import time
 
 GPIO.setup("P8_12", GPIO.IN)
@@ -138,7 +131,6 @@ while True:
   		print('button pressed!')
    	time.sleep(0.1)	//簡單加入延遲迴圈可避免多次觸發
 </code></pre>
-</div>
 
   </div>
 

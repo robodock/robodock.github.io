@@ -69,7 +69,7 @@
 
 <p>在 Raspberry Pi 上使用 Edimax 的 EW-7811Un 迷你無線網卡相當簡單，只要在 /etc/wpa_supplicant/wpa_supplicant.conf 中設定如下：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>update_config=1
+<pre><code>update_config=1
 ctrl_interface=/var/run/wpa_supplicant
 
 network={
@@ -78,19 +78,17 @@ network={
     psk="your WPA-key"
   }
 </code></pre>
-</div>
 
-<p>其中 <code class="highlighter-rouge">scan_ssid=1</code> 用於 “隱藏SSID” 的 WiFi 環境。</p>
+<p>其中 <code>scan_ssid=1</code> 用於 “隱藏SSID” 的 WiFi 環境。</p>
 
-<p>另外如果有安全性的考量的話，記得把 <code class="highlighter-rouge">wpa_supplicant.conf</code> 檔案設定為其他人無法讀取。</p>
+<p>另外如果有安全性的考量的話，記得把 <code>wpa_supplicant.conf</code> 檔案設定為其他人無法讀取。</p>
 
 <p>然後編輯 /etc/network/interface，找到有關 WiFi 設定部分，加入 wpa-conf 設定如下:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>auto wlan0
+<pre><code>auto wlan0
 iface wlan0 inet dhcp
 wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 </code></pre>
-</div>
 
 <p>重新啟動應可順利連線至無線網路。</p>
 
@@ -100,16 +98,15 @@ wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 
 <p>另外 Image 檔又可區分為“圖形視窗介面”與“Console介面”，可視自己專案需求選擇適合的 Image。這裏我要做自動控制用的，所以用的是使用 on board eMMC 的精簡 Console 版本，系統裝好不到200MB ，還有很多空間可利用：</p>
 
-<p><code class="highlighter-rouge">BBB-eMMC-flasher-debian-7.8-console-armhf-2015-03-01-2gb.img.xz</code></p>
+<p><code>BBB-eMMC-flasher-debian-7.8-console-armhf-2015-03-01-2gb.img.xz</code></p>
 
 <p>本來以為只要修改網路相關設定組態檔中的一些參數，就可輕鬆讓無線網卡運作，但我錯了。</p>
 
 <p>這個精簡 Console Image 真的是很精簡，並未包含任何無線網路管理工具， 須先安裝wpasupplicant 工具</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># apt-get update
+<pre><code># apt-get update
 # apt-get install wpasupplicant 
 </code></pre>
-</div>
 
 <p>然後呢？只要套用上述與 Raspberry Pi 相同的設定就可以了。</p>
 

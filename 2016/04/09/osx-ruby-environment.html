@@ -70,9 +70,8 @@
 <p>OS X 系統中已內建 Ruby 環境，但通常版本老舊，開放原始碼世界變化快速，建議使用最新穩定版。
 若環境單純，無多版本需求者，可使用 Homebrew 套件管理工具來安裝：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ brew install ruby
+<pre><code>$ brew install ruby
 </code></pre>
-</div>
 
 <hr />
 
@@ -80,55 +79,49 @@
 
 <p>開發與應用開放原始碼軟體時，經常會遇到安裝多個程式庫版本的問題，在 Ruby 的世界中，我們可以使用 **版本管理工具 rbenv ** 來達成在不同 Ruby 版本中的作業管理：</p>
 
-<p>###rbenv###</p>
+<h3 id="rbenv">rbenv</h3>
 
-<p>rbenv 透過在系統路徑最前方加入 <code class="highlighter-rouge">~/.rbenv/shims</code>路徑，透過 shims 程式攔截 ruby 相關指令，再依據所設定的參數，選擇對應的 ruby 版本據以執行。</p>
+<p>rbenv 透過在系統路徑最前方加入 <code>~/.rbenv/shims</code>路徑，透過 shims 程式攔截 ruby 相關指令，再依據所設定的參數，選擇對應的 ruby 版本據以執行。</p>
 
-<p>rbenv 管理下的不同版本 ruby 系統程式會安裝在 <code class="highlighter-rouge">~/.rbenv/versions/x.x.x</code> 目錄下。</p>
+<p>rbenv 管理下的不同版本 ruby 系統程式會安裝在 <code>~/.rbenv/versions/x.x.x</code> 目錄下。</p>
 
 <p>使用 Homebrew 安裝 rbenv 版本環境管理工具：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ brew install rbenv
+<pre><code>$ brew install rbenv
 </code></pre>
-</div>
 
 <p>更新 rbenv</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ brew upgrade rbenv ruby-build
+<pre><code>$ brew upgrade rbenv ruby-build
 </code></pre>
-</div>
 
-<p>第一次使用須執行 <code class="highlighter-rouge">rbenv init</code>，依照說明進行初始化設定。</p>
+<p>第一次使用須執行 <code>rbenv init</code>，依照說明進行初始化設定。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ rbenv init
+<pre><code>$ rbenv init
 </code></pre>
-</div>
 
 <p>安裝不同版本 Ruby :</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ rbenv install -l  //列出可安裝版本
+<pre><code>$ rbenv install -l  //列出可安裝版本
 $ rbenv install 2.2.3	//安裝 ruby 2.2.3 版
 $ rbenv rehash		//在安裝的版本目錄中加入 shims
 </code></pre>
-</div>
 
 <p>要切換使用的 ruby 版本環境：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ rbenv version	//查看目前使用版本
+<pre><code>$ rbenv version	//查看目前使用版本
 $ rbenv local x.x.x	//選擇使用版本
 </code></pre>
-</div>
 
 <p>然後便可正常執行諸如 gem 之類的指令。</p>
 
-<p>時間一久，系統中可能累積了許多舊版本，移除舊版本可直接清除 <code class="highlighter-rouge">~/.rbenv/versions</code> 底下的目錄或透過 <code class="highlighter-rouge">rbenv uninstall</code> 來移除。</p>
+<p>時間一久，系統中可能累積了許多舊版本，移除舊版本可直接清除 <code>~/.rbenv/versions</code> 底下的目錄或透過 <code>rbenv uninstall</code> 來移除。</p>
 
 <p>其他參考指令：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ rbenv versions //查看系統中安裝了哪些版本
+<pre><code>$ rbenv versions //查看系統中安裝了哪些版本
 $ rbenv version	//查看目前使用版本
 </code></pre>
-</div>
 
 
   </div>

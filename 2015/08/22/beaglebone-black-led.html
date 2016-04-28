@@ -65,18 +65,16 @@
     <p>早期的 <strong>BeagleBone Black</strong> 的 <strong>LED</strong> 指示燈 真的是太閃亮了，特別是在晚上，閃的整個房間像舞廳一樣。
 四個 LED 指示燈的控制項位於</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/sys/class/leds
+<pre><code>/sys/class/leds
 </code></pre>
-</div>
 
-<p>目錄下，usr0~3 分別代表四個指示燈，想要在開機後自動關閉的話，只要在 <code class="highlighter-rouge">/etc/rc.local</code> 中 <code class="highlighter-rouge">exit 0</code> 敘述前加入底下幾行：</p>
+<p>目錄下，usr0~3 分別代表四個指示燈，想要在開機後自動關閉的話，只要在 <code>/etc/rc.local</code> 中 <code>exit 0</code> 敘述前加入底下幾行：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>echo none &gt; /sys/class/leds/beaglebone\:green\:usr0/trigger
+<pre><code>echo none &gt; /sys/class/leds/beaglebone\:green\:usr0/trigger
 echo none &gt; /sys/class/leds/beaglebone\:green\:usr1/trigger
 echo none &gt; /sys/class/leds/beaglebone\:green\:usr2/trigger
 echo none &gt; /sys/class/leds/beaglebone\:green\:usr3/trigger
 </code></pre>
-</div>
 
 <p>存檔後重新啟動即可。</p>
 

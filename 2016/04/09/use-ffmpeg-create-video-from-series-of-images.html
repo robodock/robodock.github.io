@@ -64,29 +64,25 @@
   <div class="post-content" itemprop="articleBody">
     <h2 id="ffmpeg-">使用 FFmpeg 將序列圖片轉換成影片</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
+<pre><code>ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
 </code></pre>
-</div>
 
-<p><code class="highlighter-rouge">-framerate</code> 每秒多少張圖片，預設值為 25, <code class="highlighter-rouge">-r</code> 影片播放 fps, 省略時使用與輸入framerate 相同數值。</p>
+<p><code>-framerate</code> 每秒多少張圖片，預設值為 25, <code>-r</code> 影片播放 fps, 省略時使用與輸入framerate 相同數值。</p>
 
-<p>如果想從一系列的圖片中的特定號碼開始，可使用 <code class="highlighter-rouge">-start_number</code> 參數，</p>
+<p>如果想從一系列的圖片中的特定號碼開始，可使用 <code>-start_number</code> 參數，</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ffmpeg -framerate 5 -start_number 126 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
+<pre><code>ffmpeg -framerate 5 -start_number 126 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
 </code></pre>
-</div>
 
-<p>如果影片無法正確顯示時，嘗試使用下列 fps video filter 格式取代 <code class="highlighter-rouge">-r</code>:</p>
+<p>如果影片無法正確顯示時，嘗試使用下列 fps video filter 格式取代 <code>-r</code>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p output.mp4
+<pre><code>ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p output.mp4
 </code></pre>
-</div>
 
 <p>或指定 format video filter:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf "fps=25,format=yuv420p" output.mp4
+<pre><code>ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf "fps=25,format=yuv420p" output.mp4
 </code></pre>
-</div>
 
   </div>
 

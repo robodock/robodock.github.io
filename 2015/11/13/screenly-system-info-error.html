@@ -70,18 +70,17 @@
 
 <p><img src="https://www.screenlyapp.com/img/screenly-ose-8bcf3db7.png" alt="screenly" /></p>
 
-<p>Screenly 的 Asset Name 是可以輸入中文的，可以清楚標示播放內容。但有個問題是，如果使用中文的 Asset Name, 當選擇管理頁面右上方的 <code class="highlighter-rouge">System Info</code>功能，想查看系統資訊與播放記錄時，則會發生錯誤，觸發 Internal Server Error 500 錯誤訊息。這樣的情形在使用英文 Asset Name 時並不會發生。</p>
+<p>Screenly 的 Asset Name 是可以輸入中文的，可以清楚標示播放內容。但有個問題是，如果使用中文的 Asset Name, 當選擇管理頁面右上方的 <code>System Info</code>功能，想查看系統資訊與播放記錄時，則會發生錯誤，觸發 Internal Server Error 500 錯誤訊息。這樣的情形在使用英文 Asset Name 時並不會發生。</p>
 
 <p>存取 Screenly web server 的 log 記錄存放於 <strong><em>/var/log/supervisor/screenly-access.log</em></strong> 中，檢視 Log 分析後發現，其中觸發上述錯誤訊息的關鍵 Log 記錄中有一行：</p>
 
    	File “system_info”, line 70, in render_body
-<div class="highlighter-rouge"><pre class="highlight"><code>UnicodeDecodeError: 'ascii' codec can't decode byte 0xe9 in position 40: ordinal not in range(128)
+<pre><code>UnicodeDecodeError: 'ascii' codec can't decode byte 0xe9 in position 40: ordinal not in range(128)
 </code></pre>
-</div>
 
-<p>看來應該是顯示 Log 的網頁程式碼部分無法處理中文，找出 <code class="highlighter-rouge">screenly\server.py</code> 程式檢視，其中處理 Log 顯示部分的程式碼位於 <strong>#View</strong> 段落內：</p>
+<p>看來應該是顯示 Log 的網頁程式碼部分無法處理中文，找出 <code>screenly\server.py</code> 程式檢視，其中處理 Log 顯示部分的程式碼位於 <strong>#View</strong> 段落內：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>@route('/system_info')
+<pre><code>@route('/system_info')
 @auth_basic(check_creds)
 def system_info():
 viewer_log_file = '/tmp/screenly_viewer.log'
@@ -91,25 +90,22 @@ if path.exists(viewer_log_file):
 else:
     viewlog = ["(no viewer log present -- is only the screenly server running?)\n"]
 </code></pre>
-</div>
 
 <p>在還沒想出更好的方法之前，先在 viewlog 這行後新增一行，強制轉成 UTF-8 編碼，並順便將 Log 顯示順序改成符合一般習慣的最新記錄在最上方的顯示方式。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>viewlog = [unicode(i, encoding='UTF-8') for i in reversed(viewlog)]
+<pre><code>viewlog = [unicode(i, encoding='UTF-8') for i in reversed(viewlog)]
 </code></pre>
-</div>
 
 <p>修改後這段程式碼看起來像這樣：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>if path.exists(viewer_log_file):
+<pre><code>if path.exists(viewer_log_file):
     viewlog = check_output(['tail', '-n', '20', viewer_log_file]).split('\n')
     viewlog = [unicode(i, encoding='UTF-8') for i in reversed(viewlog)]
 else:
     viewlog = ["(no viewer log present -- is only the screenly server running?)\n"]
 </code></pre>
-</div>
 
-<p>爾後選擇管理頁面右上方的 <code class="highlighter-rouge">System Info</code>功能，就可正常查看具有中文 Asset Name 的播放記錄了。</p>
+<p>爾後選擇管理頁面右上方的 <code>System Info</code>功能，就可正常查看具有中文 Asset Name 的播放記錄了。</p>
 
   </div>
 
