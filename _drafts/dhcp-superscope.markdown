@@ -3,7 +3,7 @@ layout: post
 title: "DHCP Superscope"
 ---
 
-##Superscope##
+##DCHP Superscope 使用筆記##
 
 Windows server 2008 DHCP Server 的管理工具
 
@@ -13,6 +13,7 @@ Windows server 2008 DHCP Server 的管理工具
 在 multinet 組態環境下，可使用 DHCP superscopes 來將個別 IP 位址範圍來分組與啟用。
 
 幾種使用狀況:
+
 - 目前使用中的位址範圍已用盡，需要加入更多電腦。
 - 準備將用戶端電腦轉移到新的 IP 位址範圍。
 - 想要在單一實體網路中使用兩部 DHCP 伺服器來管理不同的邏輯 IP 網路。
