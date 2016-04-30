@@ -5,8 +5,8 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 30 Apr 2016 18:37:48 +0800</pubDate>
-    <lastBuildDate>Sat, 30 Apr 2016 18:37:48 +0800</lastBuildDate>
+    <pubDate>Sat, 30 Apr 2016 18:43:24 +0800</pubDate>
+    <lastBuildDate>Sat, 30 Apr 2016 18:43:24 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
@@ -128,7 +128,7 @@ $lirc_rpi gpio_in_pin=23 gpio_out_pin=22
 
 &lt;p&gt;修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/lirc/hardware.conf&lt;/code&gt; 設定檔:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$########################################################
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;########################################################
 # /etc/lirc/hardware.conf
 #
 # Arguments which will be used when launching lircd
@@ -213,7 +213,7 @@ pulse 788
 &lt;/div&gt;
 
 &lt;hr /&gt;
-&lt;p&gt;##錄製遙控器訊號##&lt;/p&gt;
+&lt;p&gt;## 錄製遙控器訊號&lt;/p&gt;
 
 &lt;p&gt;接下來便可用 &lt;code class=&quot;highlighter-rouge&quot;&gt;irrecord&lt;/code&gt; 指令來錄製遙控器按鍵編碼：&lt;/p&gt;
 
@@ -274,7 +274,7 @@ $sudo /etc/init.d/lirc start //啟動 lirc 服務
 
 &lt;hr /&gt;
 
-&lt;p&gt;##連接紅外線發射 LED##&lt;/p&gt;
+&lt;h2 id=&quot;led&quot;&gt;連接紅外線發射 LED&lt;/h2&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://googledrive.com/host/0B3VMyKy-nGUYUk4xZkFKUDlFU1E&quot; alt=&quot;紅外線LED&quot; /&gt;&lt;/p&gt;
 
@@ -298,7 +298,7 @@ $irsend SEND_ONCE sony KEY_POWER
 
 &lt;hr /&gt;
 
-&lt;p&gt;###完成!###&lt;/p&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;完成!&lt;/h3&gt;
 
 &lt;p&gt;記得不要惡搞鄰居家的電視機…&lt;/p&gt;
 </description>
@@ -450,7 +450,7 @@ while True:
 
 &lt;p&gt;開發與應用開放原始碼軟體時，經常會遇到安裝多個程式庫版本的問題，在 Ruby 的世界中，我們可以使用 **版本管理工具 rbenv ** 來達成在不同 Ruby 版本中的作業管理：&lt;/p&gt;
 
-&lt;p&gt;###rbenv###&lt;/p&gt;
+&lt;h3 id=&quot;rbenv&quot;&gt;rbenv&lt;/h3&gt;
 
 &lt;p&gt;rbenv 透過在系統路徑最前方加入 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.rbenv/shims&lt;/code&gt;路徑，透過 shims 程式攔截 ruby 相關指令，再依據所設定的參數，選擇對應的 ruby 版本據以執行。&lt;/p&gt;
 
