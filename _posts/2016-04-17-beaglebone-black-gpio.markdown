@@ -19,7 +19,7 @@ date: 2016-04-17T12:08:05+08:00
     <module 'Adafruit_BBIO.GPIO' from '/usr/local/lib/python2.7/dist-packages/Adafruit_BBIO/GPIO.so'>
 
 
-##用法:
+## 用法:
 
 匯入模組:
 
@@ -52,7 +52,8 @@ date: 2016-04-17T12:08:05+08:00
    		print "event detected!"
 
 
-###BeagleBone Black GPIO 腳位參考圖
+### BeagleBone Black GPIO 腳位參考圖
+
    		
 ![BeagleBone Black GPIO pin](http://www.mathworks.com/help/supportpkg/beagleboneio/ug/beaglebone_black_pinmap.png)
 

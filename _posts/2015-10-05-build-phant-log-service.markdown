@@ -24,7 +24,7 @@ date: 2015-10-05T14:13:31+08:00
 	root@beaglebone:~# npm install -g phant
 
 
-##啟動 Phant
+## 啟動 Phant
 啟動 Phant 相當簡單，直接執行 `phant` 就可以了:
 
 	root@beaglebone:~# phant
