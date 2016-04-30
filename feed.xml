@@ -5,8 +5,8 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 30 Apr 2016 18:20:05 +0800</pubDate>
-    <lastBuildDate>Sat, 30 Apr 2016 18:20:05 +0800</lastBuildDate>
+    <pubDate>Sat, 30 Apr 2016 18:25:03 +0800</pubDate>
+    <lastBuildDate>Sat, 30 Apr 2016 18:25:03 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
@@ -329,7 +329,7 @@ $ sudo pip install Adafruit_BBIO
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;##用法:&lt;/p&gt;
+&lt;p&gt;##用法:##&lt;/p&gt;
 
 &lt;p&gt;匯入模組:&lt;/p&gt;
 
@@ -371,7 +371,7 @@ if GPIO.event_detected(&quot;P8_12&quot;):
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;###BeagleBone Black GPIO 腳位參考圖&lt;/p&gt;
+&lt;p&gt;###BeagleBone Black GPIO 腳位參考圖###&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://www.mathworks.com/help/supportpkg/beagleboneio/ug/beaglebone_black_pinmap.png&quot; alt=&quot;BeagleBone Black GPIO pin&quot; /&gt;&lt;/p&gt;
 
