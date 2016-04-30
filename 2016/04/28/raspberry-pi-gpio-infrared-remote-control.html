@@ -68,20 +68,22 @@
 
 <p>先來在 Raspberry Pi 上安裝 <strong>LIRC</strong> 套件:</p>
 
-<pre><code>$sudo apt-get install lirc
+<div class="highlighter-rouge"><pre class="highlight"><code>$sudo apt-get install lirc
 </code></pre>
+</div>
 
-<p>在模組引入設定檔 <code>/etc/modules</code> 中加入相關設定：</p>
+<p>在模組引入設定檔 <code class="highlighter-rouge">/etc/modules</code> 中加入相關設定：</p>
 
-<pre><code>$lirc_dev
+<div class="highlighter-rouge"><pre class="highlight"><code>$lirc_dev
 $lirc_rpi gpio_in_pin=23 gpio_out_pin=22
 </code></pre>
+</div>
 
 <p>GPIO 腳位可自訂，這裡使用 Pin <strong>22</strong> 與 Pin <strong>23</strong>，避開經常定義為 UART 或 I2C 用途的腳位，其中 Pin <strong>22</strong> 指定用途為輸入訊號(接收紅外線訊號)， Pin <strong>23</strong> 指定用途為輸出訊號(發射紅外線訊號)。</p>
 
-<p>修改 <code>/etc/lirc/hardware.conf</code> 設定檔:</p>
+<p>修改 <code class="highlighter-rouge">/etc/lirc/hardware.conf</code> 設定檔:</p>
 
-<pre><code>$########################################################
+<div class="highlighter-rouge"><pre class="highlight"><code>$########################################################
 # /etc/lirc/hardware.conf
 #
 # Arguments which will be used when launching lircd
@@ -107,11 +109,13 @@ LIRCD_CONF=""
 LIRCMD_CONF=""
 ########################################################
 </code></pre>
+</div>
 
-<p>較新版的 Raspbian OS(Debian Jessie) 已經開始改用 Device Tree 來管理硬體設備，使用 Jessie 版本的需要修改 <code>/boot/config.txt</code> 開機啟動組態檔。</p>
+<p>較新版的 Raspbian OS(Debian Jessie) 已經開始改用 Device Tree 來管理硬體設備，使用 Jessie 版本的需要修改 <code class="highlighter-rouge">/boot/config.txt</code> 開機啟動組態檔。</p>
 
-<pre><code>dtoverlay=lirc-rpi,gpin_in_pin=23,gpio_out_pin=22
+<div class="highlighter-rouge"><pre class="highlight"><code>dtoverlay=lirc-rpi,gpin_in_pin=23,gpio_out_pin=22
 </code></pre>
+</div>
 
 <p>重開機讓設定生效。</p>
 
@@ -123,7 +127,7 @@ LIRCMD_CONF=""
 
 <p>每個遙控器按鍵會有一個對應編碼。必須先知道各個按鍵的編碼後，方可正確遙控設備。</p>
 
-<p>LIRC 套件中包含了 <code>irrecord</code> 工具程式，可用來記錄遙控器每個按鍵編碼，所以首先必須先製作一個紅外線接收器，方可記錄遙控器編碼。</p>
+<p>LIRC 套件中包含了 <code class="highlighter-rouge">irrecord</code> 工具程式，可用來記錄遙控器每個按鍵編碼，所以首先必須先製作一個紅外線接收器，方可記錄遙控器編碼。</p>
 
 <h2 id="section">連接紅外線接收器</h2>
 
@@ -135,15 +139,16 @@ LIRCMD_CONF=""
 
 <p><img src="http://www.elektronik-kompendium.de/sites/raspberry-pi/fotos/raspberry-pi-15.jpg" alt="Raspberry GPIO pinout" /></p>
 
-<p>接著便可測試接收器是否運作正常。先停止 lirc 系統服務，避免設備資源被占用，接著使用 LIRC 提供的工具程式 <code>mode2</code> 來讀取輸入資料:</p>
+<p>接著便可測試接收器是否運作正常。先停止 lirc 系統服務，避免設備資源被占用，接著使用 LIRC 提供的工具程式 <code class="highlighter-rouge">mode2</code> 來讀取輸入資料:</p>
 
-<pre><code>sudo /etc/init.d/lirc stop
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo /etc/init.d/lirc stop
 mode2 -d /dev/lirc0
 </code></pre>
+</div>
 
 <p>一切正常的話，應該可以看到類似底下的輸出：</p>
 
-<pre><code>space 2508
+<div class="highlighter-rouge"><pre class="highlight"><code>space 2508
 pulse 738
 space 1263
 pulse 737
@@ -160,18 +165,20 @@ pulse 748
 space 611
 pulse 788
 </code></pre>
+</div>
 
 <hr />
 <p>##錄製遙控器訊號##</p>
 
-<p>接下來便可用 <code>irrecord</code> 指令來錄製遙控器按鍵編碼：</p>
+<p>接下來便可用 <code class="highlighter-rouge">irrecord</code> 指令來錄製遙控器按鍵編碼：</p>
 
-<pre><code>$sudo /etc/init.d/lirc stop
+<div class="highlighter-rouge"><pre class="highlight"><code>$sudo /etc/init.d/lirc stop
 //停止lirc服務，確定設備資源未被占用
 
 $irrecord -d /dev/lirc0 lircd.conf
 //使用 irrecord 指令，將 /dev/lirc0 設備接收到的編碼，錄製到 lircd.conf 檔案中
 </code></pre>
+</div>
 
 <p>irrecord 是一個互動的程式，只要依照說明指示，一步步進行即可。過程大致如下：</p>
 
@@ -183,7 +190,7 @@ $irrecord -d /dev/lirc0 lircd.conf
 
 <p>完成後，lircd.conf 的內容看起來像這樣:</p>
 
-<pre><code>begin remote
+<div class="highlighter-rouge"><pre class="highlight"><code>begin remote
 
   name  sony
   bits            4
@@ -209,18 +216,20 @@ $irrecord -d /dev/lirc0 lircd.conf
 
 end remote
 </code></pre>
+</div>
 
-<p>可看到 <code>KEY_POWER</code> 的 code 為 0xA，而 <code>KEY_MUTE</code> 為 0x2。</p>
+<p>可看到 <code class="highlighter-rouge">KEY_POWER</code> 的 code 為 0xA，而 <code class="highlighter-rouge">KEY_MUTE</code> 為 0x2。</p>
 
 <p>完成後可將錄製好的 lircd.conf 複製為 /etc/lirc/lircd.conf，可供全域性使用。</p>
 
-<pre><code>$sudo cp lircd.conf /etc/lirc/lircd.conf
+<div class="highlighter-rouge"><pre class="highlight"><code>$sudo cp lircd.conf /etc/lirc/lircd.conf
 $sudo /etc/init.d/lirc start //啟動 lirc 服務
 </code></pre>
+</div>
 
 <hr />
 
-<h2 id="led">連接紅外線發射 LED</h2>
+<p>##連接紅外線發射 LED##</p>
 
 <p><img src="https://googledrive.com/host/0B3VMyKy-nGUYUk4xZkFKUDlFU1E" alt="紅外線LED" /></p>
 
@@ -234,16 +243,17 @@ $sudo /etc/init.d/lirc start //啟動 lirc 服務
 
 <p>發送遙控訊號時：</p>
 
-<pre><code>$irsend LIST sony ""
+<div class="highlighter-rouge"><pre class="highlight"><code>$irsend LIST sony ""
 //可列出 lircd.conf 中名為 sony 的組態中所有的對應按鍵名稱
 
 $irsend SEND_ONCE sony KEY_POWER
 //發送一次 KEY_POWER 遙控碼
 </code></pre>
+</div>
 
 <hr />
 
-<h3 id="section-1">完成!</h3>
+<p>###完成!###</p>
 
 <p>記得不要惡搞鄰居家的電視機…</p>
 

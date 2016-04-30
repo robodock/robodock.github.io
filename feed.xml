@@ -5,9 +5,105 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 28 Apr 2016 17:17:32 +0800</pubDate>
-    <lastBuildDate>Thu, 28 Apr 2016 17:17:32 +0800</lastBuildDate>
-    <generator>Jekyll v3.0.0</generator>
+    <pubDate>Sat, 30 Apr 2016 18:16:12 +0800</pubDate>
+    <lastBuildDate>Sat, 30 Apr 2016 18:16:12 +0800</lastBuildDate>
+    <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>sudo or root?</title>
+        <description>&lt;p&gt;取得 Root 特權的方法：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;直接登入 root 帳號&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;遠端使用 ssh 登入 root 帳號&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ssh root@IP_address
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;遠端主機需執行 sshd ，同時允許 root 可透過 ssh 登入， 確定遠端主機中的 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/ssh/sshd.config&lt;/code&gt; 設定檔中有下列一行設定：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  PermitRootLogin Yes
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 su 取得 root 特權(成為 root)，系統會要求輸入 &lt;strong&gt;root&lt;/strong&gt; 密碼&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $su
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 sudo 以 root 特權執行程式，不一樣的是系統要求輸入的是 &lt;strong&gt;使用者&lt;/strong&gt; 的密碼&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $sudo command
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;為何一般使用者透過 sudo 指令與自己的密碼，就可取得 root 特權執行程式，其實是透過 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/sudoers&lt;/code&gt; 檔案來進行控管。&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/sudoers&lt;/code&gt;檔案內的設定可決定誰具有取得 root 特權的能力，因此檔案屬性預設為無法編輯，且只有 root 才能檢視，&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/sudoers&lt;/code&gt;檔案屬性如下：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  -r--r----- 1 root root 800 Aug 19  2014 sudoers	   要修改 `/etc/sudoers` 檔內容時，必須使用 **`visudo`** 指令來編輯 `/etc/sudoers` 檔，`visudo` 會啟動系統預設的文字編輯器如 `vi` 或 `nano` ，存檔時會自動檢查輸入內容是否符合 `/etc/sudoers` 語法，確保內容無誤。
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;在 ubuntu 中可看到如下的 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/sudoers&lt;/code&gt; 檔內容：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  Defaults        env_reset
+  Defaults        mail_badpass
+  Defaults        secure_path=&quot;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;
+	
+  # User privilege specification
+  root    ALL=(ALL:ALL) ALL
+
+  # Members of the admin group may gain root privileges
+  %admin ALL=(ALL) ALL
+
+  # Allow members of group sudo to execute any command
+  %sudo   ALL=(ALL:ALL) ALL
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;再來看看設定檔內容怎麼寫：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  Defaults env_reset
+  // 這行用來清除使用者環境變數，避免有害的變數帶入 sudo 環境。
+  Defaults secure_path=
+  // 這行則定義 sudo 環境下的執行檔搜尋路徑。
+	
+  root ALL=(ALL:ALL) ALL
+  //root 為要套用規則的使用者名稱
+  //第一個欄位 ALL 表示要套用到所有“主機”
+  //第二個欄位 ALL 表示此使用者可像所有的 users 般執行 commands
+  //第三個欄位 ALL 表示此使用者可像所有的 groups 般執行 commands
+  //第四個欄位 ALL 表示此使用者可執行所有的 commands
+	
+  %admin ALL=(ALL) ALL
+  使用者名稱前加上 % 則表示群組，在此群組內的使用者將可套用規則。
+  依此方法，可對個別使用者進行對不同程式執行權限的詳細控管。
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;查詢自己的 sudo 權限內容：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $sudo -l
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Sat, 30 Apr 2016 18:16:07 +0800</pubDate>
+        <link>http://www.robodock.net/2016/04/30/sudo-or-root.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/04/30/sudo-or-root.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>使用 Raspberry Pi 製作紅外線遙控器</title>
@@ -17,20 +113,22 @@
 
 &lt;p&gt;先來在 Raspberry Pi 上安裝 &lt;strong&gt;LIRC&lt;/strong&gt; 套件:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$sudo apt-get install lirc
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo apt-get install lirc
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;在模組引入設定檔 &lt;code&gt;/etc/modules&lt;/code&gt; 中加入相關設定：&lt;/p&gt;
+&lt;p&gt;在模組引入設定檔 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/modules&lt;/code&gt; 中加入相關設定：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$lirc_dev
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$lirc_dev
 $lirc_rpi gpio_in_pin=23 gpio_out_pin=22
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;GPIO 腳位可自訂，這裡使用 Pin &lt;strong&gt;22&lt;/strong&gt; 與 Pin &lt;strong&gt;23&lt;/strong&gt;，避開經常定義為 UART 或 I2C 用途的腳位，其中 Pin &lt;strong&gt;22&lt;/strong&gt; 指定用途為輸入訊號(接收紅外線訊號)， Pin &lt;strong&gt;23&lt;/strong&gt; 指定用途為輸出訊號(發射紅外線訊號)。&lt;/p&gt;
 
-&lt;p&gt;修改 &lt;code&gt;/etc/lirc/hardware.conf&lt;/code&gt; 設定檔:&lt;/p&gt;
+&lt;p&gt;修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/lirc/hardware.conf&lt;/code&gt; 設定檔:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$########################################################
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$########################################################
 # /etc/lirc/hardware.conf
 #
 # Arguments which will be used when launching lircd
@@ -56,11 +154,13 @@ LIRCD_CONF=&quot;&quot;
 LIRCMD_CONF=&quot;&quot;
 ########################################################
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;較新版的 Raspbian OS(Debian Jessie) 已經開始改用 Device Tree 來管理硬體設備，使用 Jessie 版本的需要修改 &lt;code&gt;/boot/config.txt&lt;/code&gt; 開機啟動組態檔。&lt;/p&gt;
+&lt;p&gt;較新版的 Raspbian OS(Debian Jessie) 已經開始改用 Device Tree 來管理硬體設備，使用 Jessie 版本的需要修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;/boot/config.txt&lt;/code&gt; 開機啟動組態檔。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;dtoverlay=lirc-rpi,gpin_in_pin=23,gpio_out_pin=22
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dtoverlay=lirc-rpi,gpin_in_pin=23,gpio_out_pin=22
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;重開機讓設定生效。&lt;/p&gt;
 
@@ -72,7 +172,7 @@ LIRCMD_CONF=&quot;&quot;
 
 &lt;p&gt;每個遙控器按鍵會有一個對應編碼。必須先知道各個按鍵的編碼後，方可正確遙控設備。&lt;/p&gt;
 
-&lt;p&gt;LIRC 套件中包含了 &lt;code&gt;irrecord&lt;/code&gt; 工具程式，可用來記錄遙控器每個按鍵編碼，所以首先必須先製作一個紅外線接收器，方可記錄遙控器編碼。&lt;/p&gt;
+&lt;p&gt;LIRC 套件中包含了 &lt;code class=&quot;highlighter-rouge&quot;&gt;irrecord&lt;/code&gt; 工具程式，可用來記錄遙控器每個按鍵編碼，所以首先必須先製作一個紅外線接收器，方可記錄遙控器編碼。&lt;/p&gt;
 
 &lt;h2 id=&quot;section&quot;&gt;連接紅外線接收器&lt;/h2&gt;
 
@@ -84,15 +184,16 @@ LIRCMD_CONF=&quot;&quot;
 
 &lt;p&gt;&lt;img src=&quot;http://www.elektronik-kompendium.de/sites/raspberry-pi/fotos/raspberry-pi-15.jpg&quot; alt=&quot;Raspberry GPIO pinout&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;接著便可測試接收器是否運作正常。先停止 lirc 系統服務，避免設備資源被占用，接著使用 LIRC 提供的工具程式 &lt;code&gt;mode2&lt;/code&gt; 來讀取輸入資料:&lt;/p&gt;
+&lt;p&gt;接著便可測試接收器是否運作正常。先停止 lirc 系統服務，避免設備資源被占用，接著使用 LIRC 提供的工具程式 &lt;code class=&quot;highlighter-rouge&quot;&gt;mode2&lt;/code&gt; 來讀取輸入資料:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo /etc/init.d/lirc stop
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo /etc/init.d/lirc stop
 mode2 -d /dev/lirc0
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;一切正常的話，應該可以看到類似底下的輸出：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;space 2508
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;space 2508
 pulse 738
 space 1263
 pulse 737
@@ -109,18 +210,20 @@ pulse 748
 space 611
 pulse 788
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;hr /&gt;
 &lt;p&gt;##錄製遙控器訊號##&lt;/p&gt;
 
-&lt;p&gt;接下來便可用 &lt;code&gt;irrecord&lt;/code&gt; 指令來錄製遙控器按鍵編碼：&lt;/p&gt;
+&lt;p&gt;接下來便可用 &lt;code class=&quot;highlighter-rouge&quot;&gt;irrecord&lt;/code&gt; 指令來錄製遙控器按鍵編碼：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$sudo /etc/init.d/lirc stop
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo /etc/init.d/lirc stop
 //停止lirc服務，確定設備資源未被占用
 
 $irrecord -d /dev/lirc0 lircd.conf
 //使用 irrecord 指令，將 /dev/lirc0 設備接收到的編碼，錄製到 lircd.conf 檔案中
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;irrecord 是一個互動的程式，只要依照說明指示，一步步進行即可。過程大致如下：&lt;/p&gt;
 
@@ -132,7 +235,7 @@ $irrecord -d /dev/lirc0 lircd.conf
 
 &lt;p&gt;完成後，lircd.conf 的內容看起來像這樣:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;begin remote
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;begin remote
 
   name  sony
   bits            4
@@ -158,18 +261,20 @@ $irrecord -d /dev/lirc0 lircd.conf
 
 end remote
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;可看到 &lt;code&gt;KEY_POWER&lt;/code&gt; 的 code 為 0xA，而 &lt;code&gt;KEY_MUTE&lt;/code&gt; 為 0x2。&lt;/p&gt;
+&lt;p&gt;可看到 &lt;code class=&quot;highlighter-rouge&quot;&gt;KEY_POWER&lt;/code&gt; 的 code 為 0xA，而 &lt;code class=&quot;highlighter-rouge&quot;&gt;KEY_MUTE&lt;/code&gt; 為 0x2。&lt;/p&gt;
 
 &lt;p&gt;完成後可將錄製好的 lircd.conf 複製為 /etc/lirc/lircd.conf，可供全域性使用。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$sudo cp lircd.conf /etc/lirc/lircd.conf
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo cp lircd.conf /etc/lirc/lircd.conf
 $sudo /etc/init.d/lirc start //啟動 lirc 服務
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;led&quot;&gt;連接紅外線發射 LED&lt;/h2&gt;
+&lt;p&gt;##連接紅外線發射 LED##&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://googledrive.com/host/0B3VMyKy-nGUYUk4xZkFKUDlFU1E&quot; alt=&quot;紅外線LED&quot; /&gt;&lt;/p&gt;
 
@@ -183,16 +288,17 @@ $sudo /etc/init.d/lirc start //啟動 lirc 服務
 
 &lt;p&gt;發送遙控訊號時：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$irsend LIST sony &quot;&quot;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$irsend LIST sony &quot;&quot;
 //可列出 lircd.conf 中名為 sony 的組態中所有的對應按鍵名稱
 
 $irsend SEND_ONCE sony KEY_POWER
 //發送一次 KEY_POWER 遙控碼
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;hr /&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;完成!&lt;/h3&gt;
+&lt;p&gt;###完成!###&lt;/p&gt;
 
 &lt;p&gt;記得不要惡搞鄰居家的電視機…&lt;/p&gt;
 </description>
@@ -207,64 +313,71 @@ $irsend SEND_ONCE sony KEY_POWER
         <title>BeableBone Black 使用 GPIO</title>
         <description>&lt;p&gt;安裝 Adafruit.BBIO python 模組&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ sudo apt-get update
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo apt-get update
 $ sudo apt-get install build-essential python-dev python-setuptools python-pip python -smbus
 
 $ sudo pip install Adafruit_BBIO
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;執行下列指令測試模組是否成功安裝：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo python -c &quot;import Adafruit_BBIO.GPIO as GPIO; print GPIO&quot;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo python -c &quot;import Adafruit_BBIO.GPIO as GPIO; print GPIO&quot;
 
 #you should see this or similar:
 &amp;lt;module &#39;Adafruit_BBIO.GPIO&#39; from &#39;/usr/local/lib/python2.7/dist-packages/Adafruit_BBIO/GPIO.so&#39;&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;用法：&lt;/h2&gt;
+&lt;p&gt;##用法：##&lt;/p&gt;
 
 &lt;p&gt;匯入模組:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;import Adafruit_BBIO.GPIO as GPIO
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import Adafruit_BBIO.GPIO as GPIO
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;設定 GPIO 為輸入或輸出&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;GPIO.setup(&quot;P8_12&quot;, GPIO.IN)
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GPIO.setup(&quot;P8_12&quot;, GPIO.IN)
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;偵測 GPIO 輸入&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;if GPIO.input(&quot;P8_12&quot;):
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if GPIO.input(&quot;P8_12&quot;):
    		print(&quot;HIGH&quot;)
 else:
    		print(&quot;LOW&quot;)
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;等候 GPIO 事件發生，此方式會一直等候，直到事件發生&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;GPIO.wait_for_edge(&quot;P8_12&quot;, GPIO.RISING)
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GPIO.wait_for_edge(&quot;P8_12&quot;, GPIO.RISING)
 \\GPIO.RISING 從低位變高位
 \\GPIO.FALLING 從高位變低位
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;另一種偵測事件方式，僅在執行時檢查，通常會搭配迴圈進行持續檢測&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;#加入偵測事件
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#加入偵測事件
 GPIO.add_event_detect(&quot;P8_12&quot;, GPIO.FALLING)
 #接著可執行其他程式碼
 #在想要偵測的地方加入:
 if GPIO.event_detected(&quot;P8_12&quot;):
    		print &quot;event detected!&quot;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h3 id=&quot;beaglebone-black-gpio-&quot;&gt;BeagleBone Black GPIO 腳位參考圖&lt;/h3&gt;
+&lt;p&gt;###BeagleBone Black GPIO 腳位參考圖###&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://www.mathworks.com/help/supportpkg/beagleboneio/ug/beaglebone_black_pinmap.png&quot; alt=&quot;BeagleBone Black GPIO pin&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;連接按鈕元件(push button)，避免按壓按鈕時多次觸發&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;import Adafruit_BBIO.GPIO as GPIO
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import Adafruit_BBIO.GPIO as GPIO
 import time
 
 GPIO.setup(&quot;P8_12&quot;, GPIO.IN)
@@ -274,6 +387,7 @@ while True:
   		print(&#39;button pressed!&#39;)
    	time.sleep(0.1)	//簡單加入延遲迴圈可避免多次觸發
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 </description>
         <pubDate>Sun, 17 Apr 2016 12:08:05 +0800</pubDate>
         <link>http://www.robodock.net/2016/04/17/beaglebone-black-gpio.html</link>
@@ -290,18 +404,21 @@ while True:
 
 &lt;p&gt;可設定在 ~/.vimrc 中，做為永久設定：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;:set expandtab
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:set expandtab
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;使用空白字元 (space) 取代 Tab。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;:set tabstop=4
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:set tabstop=4
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;設定插入 tab 時用 4 個空白 (space) 字元取代。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;:set shiftwidth=4
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:set shiftwidth=4
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;設定程式縮排為 4 個空白字元 (space)。&lt;/p&gt;
 
@@ -323,8 +440,9 @@ while True:
 &lt;p&gt;OS X 系統中已內建 Ruby 環境，但通常版本老舊，開放原始碼世界變化快速，建議使用最新穩定版。
 若環境單純，無多版本需求者，可使用 Homebrew 套件管理工具來安裝：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ brew install ruby
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew install ruby
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;hr /&gt;
 
@@ -332,49 +450,55 @@ while True:
 
 &lt;p&gt;開發與應用開放原始碼軟體時，經常會遇到安裝多個程式庫版本的問題，在 Ruby 的世界中，我們可以使用 **版本管理工具 rbenv ** 來達成在不同 Ruby 版本中的作業管理：&lt;/p&gt;
 
-&lt;h3 id=&quot;rbenv&quot;&gt;rbenv&lt;/h3&gt;
+&lt;p&gt;###rbenv###&lt;/p&gt;
 
-&lt;p&gt;rbenv 透過在系統路徑最前方加入 &lt;code&gt;~/.rbenv/shims&lt;/code&gt;路徑，透過 shims 程式攔截 ruby 相關指令，再依據所設定的參數，選擇對應的 ruby 版本據以執行。&lt;/p&gt;
+&lt;p&gt;rbenv 透過在系統路徑最前方加入 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.rbenv/shims&lt;/code&gt;路徑，透過 shims 程式攔截 ruby 相關指令，再依據所設定的參數，選擇對應的 ruby 版本據以執行。&lt;/p&gt;
 
-&lt;p&gt;rbenv 管理下的不同版本 ruby 系統程式會安裝在 &lt;code&gt;~/.rbenv/versions/x.x.x&lt;/code&gt; 目錄下。&lt;/p&gt;
+&lt;p&gt;rbenv 管理下的不同版本 ruby 系統程式會安裝在 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.rbenv/versions/x.x.x&lt;/code&gt; 目錄下。&lt;/p&gt;
 
 &lt;p&gt;使用 Homebrew 安裝 rbenv 版本環境管理工具：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ brew install rbenv
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew install rbenv
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;更新 rbenv&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ brew upgrade rbenv ruby-build
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew upgrade rbenv ruby-build
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;第一次使用須執行 &lt;code&gt;rbenv init&lt;/code&gt;，依照說明進行初始化設定。&lt;/p&gt;
+&lt;p&gt;第一次使用須執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;rbenv init&lt;/code&gt;，依照說明進行初始化設定。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ rbenv init
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv init
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;安裝不同版本 Ruby :&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ rbenv install -l  //列出可安裝版本
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv install -l  //列出可安裝版本
 $ rbenv install 2.2.3	//安裝 ruby 2.2.3 版
 $ rbenv rehash		//在安裝的版本目錄中加入 shims
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;要切換使用的 ruby 版本環境：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ rbenv version	//查看目前使用版本
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv version	//查看目前使用版本
 $ rbenv local x.x.x	//選擇使用版本
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;然後便可正常執行諸如 gem 之類的指令。&lt;/p&gt;
 
-&lt;p&gt;時間一久，系統中可能累積了許多舊版本，移除舊版本可直接清除 &lt;code&gt;~/.rbenv/versions&lt;/code&gt; 底下的目錄或透過 &lt;code&gt;rbenv uninstall&lt;/code&gt; 來移除。&lt;/p&gt;
+&lt;p&gt;時間一久，系統中可能累積了許多舊版本，移除舊版本可直接清除 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.rbenv/versions&lt;/code&gt; 底下的目錄或透過 &lt;code class=&quot;highlighter-rouge&quot;&gt;rbenv uninstall&lt;/code&gt; 來移除。&lt;/p&gt;
 
 &lt;p&gt;其他參考指令：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ rbenv versions //查看系統中安裝了哪些版本
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv versions //查看系統中安裝了哪些版本
 $ rbenv version	//查看目前使用版本
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 </description>
         <pubDate>Sat, 09 Apr 2016 19:33:41 +0800</pubDate>
@@ -390,19 +514,21 @@ $ rbenv version	//查看目前使用版本
 
 &lt;p&gt;編譯參數如下：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;cd rtl-sdr/build
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd rtl-sdr/build
 cmake ../ -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON
 make
 sudo make install
 ldconfig
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;重新開機後應可成功驅動，可使用 &lt;code&gt;rtl_test&lt;/code&gt; 命令測試。&lt;/p&gt;
+&lt;p&gt;重新開機後應可成功驅動，可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;rtl_test&lt;/code&gt; 命令測試。&lt;/p&gt;
 
-&lt;p&gt;啟動 rtl_tcp server 供其他用戶端程式(如 &lt;code&gt;SDR#&lt;/code&gt; 或 &lt;code&gt;GQRX&lt;/code&gt; 連接使用：&lt;/p&gt;
+&lt;p&gt;啟動 rtl_tcp server 供其他用戶端程式(如 &lt;code class=&quot;highlighter-rouge&quot;&gt;SDR#&lt;/code&gt; 或 &lt;code class=&quot;highlighter-rouge&quot;&gt;GQRX&lt;/code&gt; 連接使用：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;rtl_tcp -a xxx.xxx.xxx.xxx
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rtl_tcp -a xxx.xxx.xxx.xxx
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;xxx 為 ip 位址。&lt;/p&gt;
 </description>
@@ -417,25 +543,29 @@ ldconfig
         <title>使用 FFmpeg 將序列圖片轉換成影片</title>
         <description>&lt;h2 id=&quot;ffmpeg-&quot;&gt;使用 FFmpeg 將序列圖片轉換成影片&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;&lt;code&gt;-framerate&lt;/code&gt; 每秒多少張圖片，預設值為 25, &lt;code&gt;-r&lt;/code&gt; 影片播放 fps, 省略時使用與輸入framerate 相同數值。&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-framerate&lt;/code&gt; 每秒多少張圖片，預設值為 25, &lt;code class=&quot;highlighter-rouge&quot;&gt;-r&lt;/code&gt; 影片播放 fps, 省略時使用與輸入framerate 相同數值。&lt;/p&gt;
 
-&lt;p&gt;如果想從一系列的圖片中的特定號碼開始，可使用 &lt;code&gt;-start_number&lt;/code&gt; 參數，&lt;/p&gt;
+&lt;p&gt;如果想從一系列的圖片中的特定號碼開始，可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;-start_number&lt;/code&gt; 參數，&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;ffmpeg -framerate 5 -start_number 126 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -start_number 126 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;如果影片無法正確顯示時，嘗試使用下列 fps video filter 格式取代 &lt;code&gt;-r&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;如果影片無法正確顯示時，嘗試使用下列 fps video filter 格式取代 &lt;code class=&quot;highlighter-rouge&quot;&gt;-r&lt;/code&gt;:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p output.mp4
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p output.mp4
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;或指定 format video filter:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf &quot;fps=25,format=yuv420p&quot; output.mp4
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf &quot;fps=25,format=yuv420p&quot; output.mp4
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 </description>
         <pubDate>Sat, 09 Apr 2016 15:32:16 +0800</pubDate>
         <link>http://www.robodock.net/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html</link>
@@ -452,40 +582,45 @@ ldconfig
 
 &lt;p&gt;connmanctl 為 ConnMan 的標準命令列用戶端程式，有兩種使用方式：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;- connmanctl [arguments] 的方式啟動。
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- connmanctl [arguments] 的方式啟動。
 - 或直接執行 connmanctl，進入互動模式，在 connmanctl&amp;gt; 提示符號後輸入指令。
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;hr /&gt;
 &lt;p&gt;在 BBB 上通常搭配 USB 無線網卡，接上網卡後須先啟用：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$connmanctl enable wifi
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$connmanctl enable wifi
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;接下來掃描可用無線網路存取點：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$connmanctl scan wifi
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$connmanctl scan wifi
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;掃瞄完成後列出可用 AP:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$connmanctl services
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$connmanctl services
 Network1	wifi_dc85de828967_68756773616d_managed_none
 Network2	wifi_dc85de828967_38303944616e69656c73_managed_psk 
 Network3	wifi_dc85de828967_3257495245363836_managed_wep	 接下有兩種情況：
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;如果連接的是開放式網路(無密碼保護):&lt;/p&gt;
 
-    &lt;pre&gt;&lt;code&gt;  $connmanctl connect wifi_dc85de828967_68756773616d_managed_none
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $connmanctl connect wifi_dc85de828967_68756773616d_managed_none
 &lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;如果連接的是有密碼保護的 AP，必須使用互動模式:&lt;/p&gt;
 
-    &lt;pre&gt;&lt;code&gt;  $connmanctl
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $connmanctl
   connmanctl&amp;gt; scan wifi
 	
   connmanctl&amp;gt; services
@@ -507,10 +642,11 @@ Network3	wifi_dc85de828967_3257495245363836_managed_wep	 接下有兩種情況�
 	
   connmanctl&amp;gt; quit
 &lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;最後可使用 &lt;code&gt;ifconfig&lt;/code&gt;/&lt;code&gt;iwconfig&lt;/code&gt; 檢查無線網路連線狀況。&lt;/p&gt;
+&lt;p&gt;最後可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;ifconfig&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;iwconfig&lt;/code&gt; 檢查無線網路連線狀況。&lt;/p&gt;
 
 </description>
         <pubDate>Sun, 27 Mar 2016 20:44:48 +0800</pubDate>
@@ -534,16 +670,17 @@ Network3	wifi_dc85de828967_3257495245363836_managed_wep	 接下有兩種情況�
 
 &lt;p&gt;第二：如果 BeagleBone 是當成 Headless 操作，不會連接螢幕使用，那就把 HDMI 輸出關閉，作法如下：&lt;/p&gt;
 
-&lt;p&gt;修改 &lt;code&gt;/boot/uEnv.txt&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;/boot/uEnv.txt&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;找到 &lt;code&gt;##Disable HDMI&lt;/code&gt; 項目，將 &lt;code&gt;##cape_disable=....&lt;/code&gt; 前方的 ## 註解拿掉如下：&lt;/p&gt;
+&lt;p&gt;找到 &lt;code class=&quot;highlighter-rouge&quot;&gt;##Disable HDMI&lt;/code&gt; 項目，將 &lt;code class=&quot;highlighter-rouge&quot;&gt;##cape_disable=....&lt;/code&gt; 前方的 ## 註解拿掉如下：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;##Disable HDMI (v3.8.x)
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;##Disable HDMI (v3.8.x)
 cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN 
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;注意 uEnv.txt 設定檔中有很多類似的項目，例如 &lt;code&gt;##Disable HDMI/eMMC&lt;/code&gt; 等等，不要改錯了，這個設定檔的內容會影響硬體功能的運作。&lt;/p&gt;
+  &lt;p&gt;注意 uEnv.txt 設定檔中有很多類似的項目，例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;##Disable HDMI/eMMC&lt;/code&gt; 等等，不要改錯了，這個設定檔的內容會影響硬體功能的運作。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;存檔後重新開機。&lt;/p&gt;
@@ -559,45 +696,15 @@ cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN
     
       <item>
         <title>快速下載 Youtube 影片</title>
-        <description>&lt;h2 id=&quot;youtube-&quot;&gt;快速下載 Youtube 影片的方法&lt;/h2&gt;
+        <description>&lt;p&gt;##快速下載 Youtube 影片的方法##&lt;/p&gt;
 
-&lt;p&gt;找到喜愛的 youtube 影片後，暫停播放，直接到上方的網址列，將 &lt;code&gt;www.youtube.com&lt;/code&gt; 改成 &lt;code&gt;ssyoutube.com&lt;/code&gt;，其他部分都不變。&lt;/p&gt;
+&lt;p&gt;找到喜愛的 youtube 影片後，暫停播放，直接到上方的網址列，將 &lt;code class=&quot;highlighter-rouge&quot;&gt;www.youtube.com&lt;/code&gt; 改成 &lt;code class=&quot;highlighter-rouge&quot;&gt;ssyoutube.com&lt;/code&gt;，其他部分都不變。&lt;/p&gt;
 
 &lt;p&gt;網頁會轉址到 savefrom.net，並產生下載連結，選取對應的影片大小格式下載即可。&lt;/p&gt;
 </description>
         <pubDate>Tue, 19 Jan 2016 22:29:53 +0800</pubDate>
         <link>http://www.robodock.net/2016/01/19/download-youtube-video.html</link>
         <guid isPermaLink="true">http://www.robodock.net/2016/01/19/download-youtube-video.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Screenly Install Nodejs+npm</title>
-        <description>&lt;p&gt;目前的 Screenly 使用 Raspbian (基於Debian 7 Wheezy)版本，系統預設並未安裝 node.js，若直接 apt-get 從預設 repository 安裝 node.js，則版本過於老舊。&lt;/p&gt;
-
-&lt;h3 id=&quot;nodejs-&quot;&gt;手動安裝新的 node.js 版本&lt;/h3&gt;
-&lt;p&gt;直接下載最新的官方的 arm 架構 binary 檔案，
-注意 Raspberry Pi Model A, B, B+ 為 &lt;strong&gt;armv6&lt;/strong&gt; 架構，而 Raspberry Pi 2 則為 &lt;strong&gt;armv7&lt;/strong&gt; 架構，須選用相對應的 binary 檔案。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;wget https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-armv6l.tar.gz
-tar -xvf node-v4.2.2-linux-armv6l.tar.gz
-cd node-v4.2.2-linux-armv6l
-
-sudo cp -R * /usr/local/
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;新版的 nodejs 已包含 npm 套件管理程式。&lt;/p&gt;
-
-&lt;h3 id=&quot;http-server-&quot;&gt;安裝 http-server 套件&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;sudo npm install http-server -g
-&lt;/code&gt;&lt;/pre&gt;
-
-</description>
-        <pubDate>Wed, 02 Dec 2015 15:22:28 +0800</pubDate>
-        <link>http://www.robodock.net/2015/12/02/screenly-install-nodejs-npm.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2015/12/02/screenly-install-nodejs-npm.html</guid>
         
         
       </item>

@@ -74,16 +74,17 @@
 
 <p>第二：如果 BeagleBone 是當成 Headless 操作，不會連接螢幕使用，那就把 HDMI 輸出關閉，作法如下：</p>
 
-<p>修改 <code>/boot/uEnv.txt</code></p>
+<p>修改 <code class="highlighter-rouge">/boot/uEnv.txt</code></p>
 
-<p>找到 <code>##Disable HDMI</code> 項目，將 <code>##cape_disable=....</code> 前方的 ## 註解拿掉如下：</p>
+<p>找到 <code class="highlighter-rouge">##Disable HDMI</code> 項目，將 <code class="highlighter-rouge">##cape_disable=....</code> 前方的 ## 註解拿掉如下：</p>
 
-<pre><code>##Disable HDMI (v3.8.x)
+<div class="highlighter-rouge"><pre class="highlight"><code>##Disable HDMI (v3.8.x)
 cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN 
 </code></pre>
+</div>
 
 <blockquote>
-  <p>注意 uEnv.txt 設定檔中有很多類似的項目，例如 <code>##Disable HDMI/eMMC</code> 等等，不要改錯了，這個設定檔的內容會影響硬體功能的運作。</p>
+  <p>注意 uEnv.txt 設定檔中有很多類似的項目，例如 <code class="highlighter-rouge">##Disable HDMI/eMMC</code> 等等，不要改錯了，這個設定檔的內容會影響硬體功能的運作。</p>
 </blockquote>
 
 <p>存檔後重新開機。</p>
