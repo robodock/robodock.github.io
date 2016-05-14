@@ -41,7 +41,7 @@ exclusive-use 描述需要的資源，防止其他 overlays 使用這些資源�
 
 接下來是 device tree 片段，描述要 overlay 哪個 target，例如底下指定的 am33x_pinmux，相容於 pinctrl-single driver(?)
 
-\_\_overlay\_\_ 節點中的第一項屬性為 bb_uart1_pins，包含針腳的定義，以便供 pinctrl-single driver 使用。
+\_\_overlay\_\_ 節點中的第一項屬性為 bb\_uart1\_pins，包含針腳的定義，以便供 pinctrl-single driver 使用。
 
 	fragment@0 {
                 target = <&am33xx_pinmux>;
@@ -55,9 +55,9 @@ exclusive-use 描述需要的資源，防止其他 overlays 使用這些資源�
                 };
         };
 
-最後一段用來啟動 uart 設備，指定 uart2 與相對應的 pin (bb_uart1_pins)。
+最後一段用來啟動 uart 設備，指定 uart2 與相對應的 pin (bb\_uart1\_pins)。
 
-在 `/lib/firmware` 目錄中可以查看許多的 DT overlays 檔案，dts 為原始檔，dtbo則為已編譯檔。而目前系統中已透過 bone cape manager 啟用中的 overlays 則位於 `/sys/devices/bone_capemgr.*`
+在 `/lib/firmware` 目錄中可以查看許多的 DT overlays 檔案，dts 為原始檔，dtbo則為已編譯檔。而目前系統中已透過 bone cape manager 啟用中的 overlays 則位於 `/sys/devices/bone_capemgr.*` 註：(Jessie 版本改至 `/sys/devices/platform/bone_capemgr/`下)
 
 	root@beaglebone:/lib/firmware# cd /sys/devices/bone_capemgr.*
 	
