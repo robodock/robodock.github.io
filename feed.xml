@@ -5,8 +5,8 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 14 May 2016 18:07:40 +0800</pubDate>
-    <lastBuildDate>Sat, 14 May 2016 18:07:40 +0800</lastBuildDate>
+    <pubDate>Sat, 14 May 2016 23:01:58 +0800</pubDate>
+    <lastBuildDate>Sat, 14 May 2016 23:01:58 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
     
       <item>
@@ -281,7 +281,7 @@ version = &quot;00A0&quot;;
 
 &lt;p&gt;最後一段用來啟動 uart 設備，指定 uart2 與相對應的 pin (bb_uart1_pins)。&lt;/p&gt;
 
-&lt;p&gt;在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/lib/firmware&lt;/code&gt; 目錄中可以查看許多的 DT overlays 檔案，dts 為原始檔，dtbo則為已編譯檔。而目前系統中已透過 bone cape manager 啟用中的 overlays 則位於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/sys/devices/bone_capemgr.*&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/lib/firmware&lt;/code&gt; 目錄中可以查看許多的 DT overlays 檔案，dts 為原始檔，dtbo則為已編譯檔。而目前系統中已透過 bone cape manager 啟用中的 overlays 則位於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/sys/devices/bone_capemgr.*&lt;/code&gt; 註：(Jessie 版本改至 &lt;code class=&quot;highlighter-rouge&quot;&gt;/sys/devices/platform/bone_capemgr/&lt;/code&gt;下)&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@beaglebone:/lib/firmware# cd /sys/devices/bone_capemgr.*
 &lt;/code&gt;&lt;/pre&gt;

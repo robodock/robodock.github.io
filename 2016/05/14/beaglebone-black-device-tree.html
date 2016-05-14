@@ -127,7 +127,7 @@ version = "00A0";
 
 <p>最後一段用來啟動 uart 設備，指定 uart2 與相對應的 pin (bb_uart1_pins)。</p>
 
-<p>在 <code class="highlighter-rouge">/lib/firmware</code> 目錄中可以查看許多的 DT overlays 檔案，dts 為原始檔，dtbo則為已編譯檔。而目前系統中已透過 bone cape manager 啟用中的 overlays 則位於 <code class="highlighter-rouge">/sys/devices/bone_capemgr.*</code></p>
+<p>在 <code class="highlighter-rouge">/lib/firmware</code> 目錄中可以查看許多的 DT overlays 檔案，dts 為原始檔，dtbo則為已編譯檔。而目前系統中已透過 bone cape manager 啟用中的 overlays 則位於 <code class="highlighter-rouge">/sys/devices/bone_capemgr.*</code> 註：(Jessie 版本改至 <code class="highlighter-rouge">/sys/devices/platform/bone_capemgr/</code>下)</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>root@beaglebone:/lib/firmware# cd /sys/devices/bone_capemgr.*
 </code></pre>
