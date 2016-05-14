@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "建立 Chroot 環境"
+date: 2016-05-14T18:01:18+08:00
 ---
 
 ## Chroot
