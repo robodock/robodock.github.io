@@ -5,9 +5,214 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 14 May 2016 17:55:47 +0800</pubDate>
-    <lastBuildDate>Sat, 14 May 2016 17:55:47 +0800</lastBuildDate>
+    <pubDate>Sat, 14 May 2016 18:07:40 +0800</pubDate>
+    <lastBuildDate>Sat, 14 May 2016 18:07:40 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>使用 BeagleBone Black 打造 Tor Bridge Relay</title>
+        <description>&lt;p&gt;##使用 BeagleBone Black 打造 Tor Bridge Relay&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;安裝標準 Debian 系統 Image，因為要作為網路服務器使用，只要安裝 Console 版本即可。
+ 我這裡裝的是可安裝至 onboard 2GB eMMC 中的 debian wheezy。&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; BBB-eMMC-flasher-debian-7.8-console-armhf-2015-07-28-2gb.img
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安裝 Tor package&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; apt-get update; apt-get install tor
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安裝 python 環境&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; apt-get install python2.7 python-pip python-dev build-essential
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安裝 obfsproxy&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; pip install obfsproxy
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;編輯 /etc/tor/torrc&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; SocksPort 0
+ ORPort auto
+ BridgeRelay 1
+ Exitpolicy reject *:*
+
+ ## CHANGEME_1 -&amp;gt; provide a nickname for your bridge, can be anything you like
+ #Nickname CHANGEME_1
+ ## CHANGEME_2 -&amp;gt; provide some email address so we can contact you if there&#39;s a problem
+ #ContactInfo CHANGEME_2
+
+ ServerTransportPlugin obfs3 exec /usr/local/bin/obfsproxy managed
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;修正系統時間&lt;/p&gt;
+
+    &lt;p&gt;若系統中沒有 ntpdate ，請先安裝&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; apt-get install ntpdate 
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;校時&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ntpdate -b -s -u pool.ntp.org
+ hwclock -w
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;我這邊是將校時的動作，寫至 &lt;code class=&quot;highlighter-rouge&quot;&gt;rc.local&lt;/code&gt; 中&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;啟動 tor&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; service tor restart
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;檢查 /var/log/tor/log 中是否有相關紀錄&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;開啟防火牆連接埠轉送&lt;/p&gt;
+
+    &lt;p&gt;ORPort 與 obfsproxy 兩個連接埠都須開啟允許外部連接轉送至 BeagleBone 上。&lt;/p&gt;
+
+    &lt;p&gt;obfsproxy 使用埠號可至 /var/log/tor/log 中查詢。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;可安裝 arm 套件觀看 Tor 系統使用狀況&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; apt-get install tor-arm
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;若需 HTTP 代理伺服器服務可安裝 polipo&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install polipo	
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sat, 14 May 2016 18:07:33 +0800</pubDate>
+        <link>http://www.robodock.net/2016/05/14/beaglebonetor-relay.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/05/14/beaglebonetor-relay.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>建立 Chroot 環境</title>
+        <description>&lt;h2 id=&quot;chroot&quot;&gt;Chroot&lt;/h2&gt;
+&lt;p&gt;暫時將系統根目錄指到特定的目錄下，建立ㄧ個獨立的環境供測試、開發用。在此環境下執行的程式無法看到系統中的其他部分。&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;建立工具&lt;/h3&gt;
+&lt;p&gt;在 chroot 建立的環境中，需要基本的系統程式才能運作。手動建立環境程序太繁雜，還好有 &lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 與 &lt;code class=&quot;highlighter-rouge&quot;&gt;debootstrap&lt;/code&gt; 工具程式幫我們處理。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 用來管理不同的 chroot 環境，&lt;code class=&quot;highlighter-rouge&quot;&gt;debootstrap&lt;/code&gt; 則用來在指定目錄中建立一個基本作業系統。附帶一提的是 &lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 已被 &lt;code class=&quot;highlighter-rouge&quot;&gt;schroot&lt;/code&gt; 取代，雖然仍可用 &lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 指令存取，事實上會連結至 &lt;code class=&quot;highlighter-rouge&quot;&gt;schroot&lt;/code&gt;。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo apt-get update
+$sudo apt-get install dchroot debootstrap
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;編輯 &lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 設定組態檔&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo vi /etc/schroot/schroot.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;底下是個範例&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[saucy]
+description=Ubuntu Saucy
+location=/test
+priority=3
+users=demouser
+groups=sbuild
+root-groups=root
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;在指令目錄中安裝系統&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo debootstrap --variant=buildd --arch amd64 saucy /test/ http://mirror.cc.columbia.edu/pub/linux/ubuntu/archive/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--variant＝&lt;/code&gt; 項目表示使用何種類型的環境，&lt;code class=&quot;highlighter-rouge&quot;&gt;buildd&lt;/code&gt; 表示直接安裝成程式開發工具，也就是會安裝 &lt;code class=&quot;highlighter-rouge&quot;&gt;build-essential&lt;/code&gt; 套件。&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--arch&lt;/code&gt; 指定系統架構&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;saucy&lt;/code&gt; 則對應於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/schroot/schroot.conf&lt;/code&gt; 中的設定&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/test/&lt;/code&gt; 安裝目錄，後方之網址則為來源路徑&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;安裝完成後，如果查看 &lt;code class=&quot;highlighter-rouge&quot;&gt;/test/&lt;/code&gt; 目錄內容，可看到如同系統根目錄般的目錄結構：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bin   dev  home  lib64  mnt  proc  run   srv  tmp  var boot  etc  lib   media  opt  root  sbin  sys  usr
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;最後，進行主系統的 fstab 檔設定，好讓主系統能認得子系統的系統程序檔：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo vi /etc/fstab	
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;proc /test/proc proc defaults 0 0
+sysfs /test/sys sysfs defaults 0 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;掛載進子系統&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo mount proc /test/proc -t proc
+$sudo mount sysfs /test/sys -t sysfs
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;子系統若需要存取與主系統相同的網路環境，可將主系統的 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; 檔案複製進子系統&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$cp /etc/hosts /test/etc/hosts
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;完成&lt;/h3&gt;
+
+&lt;p&gt;chroot 到子系統：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo chroot /test/ /bin/bash
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 14 May 2016 18:01:18 +0800</pubDate>
+        <link>http://www.robodock.net/2016/05/14/chroot.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/05/14/chroot.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>BeagleBone Black 的 Device Tree overlays</title>
@@ -718,126 +923,6 @@ ldconfig
         <pubDate>Sat, 09 Apr 2016 15:32:16 +0800</pubDate>
         <link>http://www.robodock.net/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html</link>
         <guid isPermaLink="true">http://www.robodock.net/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>BeagleBone Black 使用 Connman 管理設定網路</title>
-        <description>&lt;p&gt;新的 Debian(armhf) for BeagleBone Black (簡稱BBB)改用 ConnMan 來作為網路管理程式，感覺比設定 wpa_supplicant.conf 組態檔更為簡易，用法如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;connmanctl&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;connmanctl 為 ConnMan 的標準命令列用戶端程式，有兩種使用方式：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- connmanctl [arguments] 的方式啟動。
-- 或直接執行 connmanctl，進入互動模式，在 connmanctl&amp;gt; 提示符號後輸入指令。
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;在 BBB 上通常搭配 USB 無線網卡，接上網卡後須先啟用：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$connmanctl enable wifi
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;接下來掃描可用無線網路存取點：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$connmanctl scan wifi
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;掃瞄完成後列出可用 AP:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$connmanctl services
-Network1	wifi_dc85de828967_68756773616d_managed_none
-Network2	wifi_dc85de828967_38303944616e69656c73_managed_psk 
-Network3	wifi_dc85de828967_3257495245363836_managed_wep	 接下有兩種情況：
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果連接的是開放式網路(無密碼保護):&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $connmanctl connect wifi_dc85de828967_68756773616d_managed_none
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果連接的是有密碼保護的 AP，必須使用互動模式:&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $connmanctl
-  connmanctl&amp;gt; scan wifi
-	
-  connmanctl&amp;gt; services
-  Network1	wifi_dc85de828967_68756773616d_managed_none
-  Network2	wifi_dc85de828967_38303944616e69656c73_managed_psk 
-              wifi_74da38557d81_hidden_managed_psk
-	
-  connmanctl&amp;gt; connect wifi_dc85de828967_38303944616e69656c73_managed_psk
-  connmanctl&amp;gt; agent on
-  Agent registered
-	
-  connmanctl&amp;gt; connect wifi_dc85de828967_38303944616e69656c73_managed_psk
-  Agent RequestInput wifi_74da38557d81_hidden_managed_psk
-  Name = [ Type=string, Requirement=mandatory, Alternates=[ SSID ] ]
-  SSID = [ Type=ssid, Requirement=alternate ]
-  Passphrase = [ Type=psk, Requirement=mandatory ]
-  Hidden SSID name?
-  Passphrase?
-	
-  connmanctl&amp;gt; quit
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;最後可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;ifconfig&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;iwconfig&lt;/code&gt; 檢查無線網路連線狀況。&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 27 Mar 2016 20:44:48 +0800</pubDate>
-        <link>http://www.robodock.net/2016/03/27/beaglebone-black-connman.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/03/27/beaglebone-black-connman.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>迷你 USB WiFi 網卡與 BeagleBone Black HDMI 的干擾問題</title>
-        <description>&lt;p&gt;如果你跟我一樣被 BeagleBone Black 與 mini USB 無線網卡搞的灰頭土臉，那你可能要看看這篇。&lt;/p&gt;
-
-&lt;p&gt;在 BeagleBone 上 USB 插槽就在 HDMI 插槽旁邊，當使用如 Edimax EW-7811Un 這類的迷你 USB 無線網卡時，因為 USB 迷你網卡的天線過於接近 HDMI 插槽，HDMI 的訊號射頻會嚴重干擾 WiFi 天線。&lt;/p&gt;
-
-&lt;p&gt;我這邊的實際狀況是，當距離 AP 在 2 公尺內時還可正常通訊，到 5 公尺左右就已無法建立穩定的通訊。這種問題有時令人摸不著頭緒，徒勞耗費了許多時間在嘗試不同的組態檔設定。&lt;/p&gt;
-
-&lt;p&gt;解決方法有兩種：&lt;/p&gt;
-
-&lt;p&gt;第一：使用 USB 延長線或延伸出來的 USB 集線器，將 USB 迷你無線網卡遠離 HDMI 插槽，或是改用體積較大，附有外部天線的 USB 無線網卡。&lt;/p&gt;
-
-&lt;p&gt;第二：如果 BeagleBone 是當成 Headless 操作，不會連接螢幕使用，那就把 HDMI 輸出關閉，作法如下：&lt;/p&gt;
-
-&lt;p&gt;修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;/boot/uEnv.txt&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;找到 &lt;code class=&quot;highlighter-rouge&quot;&gt;##Disable HDMI&lt;/code&gt; 項目，將 &lt;code class=&quot;highlighter-rouge&quot;&gt;##cape_disable=....&lt;/code&gt; 前方的 ## 註解拿掉如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;##Disable HDMI (v3.8.x)
-cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;注意 uEnv.txt 設定檔中有很多類似的項目，例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;##Disable HDMI/eMMC&lt;/code&gt; 等等，不要改錯了，這個設定檔的內容會影響硬體功能的運作。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;存檔後重新開機。&lt;/p&gt;
-
-&lt;p&gt;OK，現在會影響 BeagleBone 與 AP 通訊的就只有距離了。&lt;/p&gt;
-</description>
-        <pubDate>Sat, 26 Mar 2016 17:54:59 +0800</pubDate>
-        <link>http://www.robodock.net/2016/03/26/usb-wifi-beaglebone-black-hdmi.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/03/26/usb-wifi-beaglebone-black-hdmi.html</guid>
         
         
       </item>
