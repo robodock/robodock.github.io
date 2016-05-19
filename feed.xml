@@ -5,9 +5,178 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 14 May 2016 23:01:58 +0800</pubDate>
-    <lastBuildDate>Sat, 14 May 2016 23:01:58 +0800</lastBuildDate>
+    <pubDate>Thu, 19 May 2016 22:20:15 +0800</pubDate>
+    <lastBuildDate>Thu, 19 May 2016 22:20:15 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>使用 BeagleBone Black 或 Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (2/2)</title>
+        <description>&lt;p&gt;##使用 Python 來控制 Seren&lt;/p&gt;
+
+&lt;p&gt;###安裝 PyBBIO 模組&lt;/p&gt;
+
+&lt;p&gt;我這邊打算使用 Python 來處理 IO 控制，這樣就可透過按鍵或開關，來控制連線通訊，也可接個燈號顯示來電。&lt;/p&gt;
+
+&lt;p&gt;PyBBIO 模組應可達到我想要的功能。&lt;/p&gt;
+
+&lt;p&gt;先滿足相依性需求：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# apt-get install python-serial python-setuptools python-dev python-smbus python-pip
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;註：目前 PyBBIO 穩定版只支援到 3.8 版 Linux 核心。&lt;/p&gt;
+
+&lt;p&gt;同時需要 Device Tree 編譯器 dtc，若系統中沒有，可至下列位址安裝:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# wget -c https://raw.github.com/RobertCNelson/tools/master/pkgs/dtc.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;上述環境準備好之後，安裝 PyBBIO Python 程式庫模組&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# pip install --upgrade PyBBIO
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;想要自己編譯的，可至下列位址下載:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# git clone git:/github.com/alexanderhiam/PyBBIO.git
+# cd PyBBIO
+# python setup.py install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;我的 ugly 控制程式如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;bbio&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;bbio.libraries.EventIO&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;	&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bbio&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;的&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EventIO&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;可建立額外的事件偵測迴圈&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pexpect&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;使用&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pexpect&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;來建立子程序呼叫其他程式並與其溝通&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;bbio&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bbio_init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#指定對應GPIO針腳&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pinAccept&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GPIO1_13&lt;/span&gt; 	&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P8_11&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pinHangup&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GPIO1_12&lt;/span&gt; 	&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P8_12&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pinCall&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GPIO1_15&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P8_15&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pinLED&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GPIO1_14&lt;/span&gt;    	&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P8_16&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#設定 GPIO 針腳功能&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pinMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinAccept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INPUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pinMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinHangup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INPUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pinMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinCall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INPUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pinMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinLED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OUTPUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#建立子行程，呼叫 seren 程式，並給予相關參數&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;child&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pexpect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spawn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;seren -n Engine -NS -d hw:1,0&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#方便除錯，先將子行程輸出顯示在 stdout&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logfile_read&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stdout&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#定義觸發事件與進行的動作，記得要回傳 EVENT_CONTINUE，事件才可重複觸發&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;accept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;/y&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EVENT_CONTINUE&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;hangup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;/H&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;digitalWrite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinLED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LOW&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EVENT_CONTINUE&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;/c 192.168.168.114&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EVENT_CONTINUE&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#建立事件偵測迴圈，並加進偵測事件，後方之數值 400 為消除 bounce 的延遲時間&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EventLoop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DigitalTrigger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinAccept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HIGH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;accept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;400&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DigitalTrigger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinHangup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HIGH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hangup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;400&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DigitalTrigger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinCall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HIGH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;400&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#透過偵測子行程 seren 的輸出回應，顯示來電燈號，因 expect事件會 blocking 其他行程，這裡指定 timeout 秒數為 1，以持續不斷偵測。&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;is calling:&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pexpect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TIMEOUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+	    &lt;span class=&quot;c&quot;&gt;#print &#39;\nIncoming Call!&#39;&lt;/span&gt;
+	    &lt;span class=&quot;n&quot;&gt;digitalWrite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinLED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HIGH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    	&lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Thu, 19 May 2016 22:20:08 +0800</pubDate>
+        <link>http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-2.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-2.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>使用 BeagleBone Black 或 Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (1/2)</title>
+        <description>&lt;p&gt;##使用 BeagleBone Black/Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (1/2)&lt;/p&gt;
+
+&lt;p&gt;###Seren on BeagleBone Black&lt;/p&gt;
+
+&lt;p&gt;在 Linux 上有隻名為 &lt;strong&gt;Seren&lt;/strong&gt; 的簡易 VoIP 程式，可在終端機模式下進行語音通訊與文字交談，不必使用外部廠商提供的通訊軟體或註冊任何服務帳號，很適合小型輕量化系統使用，搭配 BeagleBone 或 Raspberry Pi 的 GPIO 做通訊開關控制，可衍生出不少應用。&lt;/p&gt;
+
+&lt;p&gt;Seren 的前身稱為 Parole，使用 &lt;strong&gt;&lt;em&gt;C&lt;/em&gt;&lt;/strong&gt; 語言開發，利用 &lt;strong&gt;&lt;em&gt;alsa&lt;/em&gt;&lt;/strong&gt; 程式庫與音效卡溝通，並用 &lt;strong&gt;&lt;em&gt;opus&lt;/em&gt;&lt;/strong&gt; codec 處理音訊壓縮，進化至 Seren 後，增加了使用 &lt;strong&gt;&lt;em&gt;gmp&lt;/em&gt;&lt;/strong&gt; 演算法程式庫優化程式，可允許多達 10 人加入同一音訊會議，並加入利用 &lt;strong&gt;&lt;em&gt;ncurse&lt;/em&gt;&lt;/strong&gt; 做成的文字使用者介面，方便操作。&lt;/p&gt;
+
+&lt;p&gt;Seren 目前可在 Fedora/RHEL/CentOS Linux 版本中，直接從官方程式庫(Repositories)下載：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# yum install seren
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Debian/Ubuntu 系列則還未收入官方程式庫，因此要在 BeagleBone Black/Raspberry Pi 上使用 Seren，須自行&lt;a href=&quot;http://holdenc.altervista.org/seren/downloads/seren-0.0.21.tar.gz&quot;&gt;下載&lt;/a&gt;原始碼編譯，編譯時需要的相依性套件如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo apt-get install build-essential libasound2-dev libopus-dev libogg-dev libgmp-dev libncursesw5-dev
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;將原始碼下載解壓至一工作目錄後，在工作目錄下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./configure	
+//確認滿足編譯所需相依性，並產生 make 組態檔
+$ make	
+//編譯程式...，在 BeagleBone Black 上需要幾分鐘時間
+
+//如果想將執行檔安裝至系統目錄下，可再執行這行
+$ sudo make install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;###使用 Seren&lt;/p&gt;
+
+&lt;p&gt;操作方法相當簡單，使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;seren -h&lt;/code&gt; 查看可用命令列參數，或直接執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;seren&lt;/code&gt; 進入互動操作模式，&lt;code class=&quot;highlighter-rouge&quot;&gt;seren&lt;/code&gt; 執行後便會進入接聽待命模式，要撥打電話的一方只要鍵入 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/c 對方IP位址&lt;/code&gt;&lt;/strong&gt; 即可進行連線。&lt;/p&gt;
+
+&lt;p&gt;若系統未連接音效卡或預設的音效卡設備無法提供 seren 連接使用時，可能會出現如下訊息：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[alsa] Cannot open audio device &#39;hw:0,0&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;可利用下列方式排除問題:&lt;/p&gt;
+
+&lt;p&gt;列出可用的音效卡設備編號 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;hw:x,x&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat /proc/asound/pcm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;亦可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;$ cat /proc/asound/cards&lt;/code&gt; 或是 &lt;code class=&quot;highlighter-rouge&quot;&gt;$ cat /proc/asound/devices&lt;/code&gt; 查看&lt;/p&gt;
+
+&lt;p&gt;若系統中也裝有 &lt;code class=&quot;highlighter-rouge&quot;&gt;alsa-utils&lt;/code&gt; 音效卡工具程式庫，可用 &lt;code class=&quot;highlighter-rouge&quot;&gt;aplay -l&lt;/code&gt; 指令列出音效卡設備。&lt;/p&gt;
+
+&lt;p&gt;確認音效卡編號後，可在啟動 seren 時使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;-d hw:x,x&lt;/code&gt; 參數，指定實際之音效卡編號載入使用。&lt;/p&gt;
+</description>
+        <pubDate>Thu, 19 May 2016 22:20:03 +0800</pubDate>
+        <link>http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-1.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-1.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>使用 BeagleBone Black 打造 Tor Bridge Relay</title>
@@ -857,72 +1026,6 @@ $ rbenv version	//查看目前使用版本
         <pubDate>Sat, 09 Apr 2016 19:33:41 +0800</pubDate>
         <link>http://www.robodock.net/2016/04/09/osx-ruby-environment.html</link>
         <guid isPermaLink="true">http://www.robodock.net/2016/04/09/osx-ruby-environment.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>在 BeagleBone Black 或 Raspberry Pi 上使用 RTL-SDR usb dongle</title>
-        <description>&lt;h2 id=&quot;beaglebone-black--raspberry-pi--rtl-sdr-usb-dongle&quot;&gt;在 BeagleBone Black 或 Raspberry Pi 上使用 RTL-SDR usb dongle&lt;/h2&gt;
-
-&lt;p&gt;編譯參數如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd rtl-sdr/build
-cmake ../ -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON
-make
-sudo make install
-ldconfig
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;重新開機後應可成功驅動，可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;rtl_test&lt;/code&gt; 命令測試。&lt;/p&gt;
-
-&lt;p&gt;啟動 rtl_tcp server 供其他用戶端程式(如 &lt;code class=&quot;highlighter-rouge&quot;&gt;SDR#&lt;/code&gt; 或 &lt;code class=&quot;highlighter-rouge&quot;&gt;GQRX&lt;/code&gt; 連接使用：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rtl_tcp -a xxx.xxx.xxx.xxx
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;xxx 為 ip 位址。&lt;/p&gt;
-</description>
-        <pubDate>Sat, 09 Apr 2016 15:51:52 +0800</pubDate>
-        <link>http://www.robodock.net/2016/04/09/rtl-sdr-usb-dongle.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/04/09/rtl-sdr-usb-dongle.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>使用 FFmpeg 將序列圖片轉換成影片</title>
-        <description>&lt;h2 id=&quot;ffmpeg-&quot;&gt;使用 FFmpeg 將序列圖片轉換成影片&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-framerate&lt;/code&gt; 每秒多少張圖片，預設值為 25, &lt;code class=&quot;highlighter-rouge&quot;&gt;-r&lt;/code&gt; 影片播放 fps, 省略時使用與輸入framerate 相同數值。&lt;/p&gt;
-
-&lt;p&gt;如果想從一系列的圖片中的特定號碼開始，可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;-start_number&lt;/code&gt; 參數，&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -start_number 126 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;如果影片無法正確顯示時，嘗試使用下列 fps video filter 格式取代 &lt;code class=&quot;highlighter-rouge&quot;&gt;-r&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p output.mp4
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;或指定 format video filter:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf &quot;fps=25,format=yuv420p&quot; output.mp4
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sat, 09 Apr 2016 15:32:16 +0800</pubDate>
-        <link>http://www.robodock.net/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html</guid>
         
         
       </item>
