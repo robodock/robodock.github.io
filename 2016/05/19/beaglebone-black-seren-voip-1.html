@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>使用 BeagleBone Black 或 Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (1/2)</title>
-  <meta name="description" content="##使用 BeagleBone Black/Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (1/2)">
+  <meta name="description" content="Seren on BeagleBone Black">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-1.html">
@@ -62,9 +62,7 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>##使用 BeagleBone Black/Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (1/2)</p>
-
-<p>###Seren on BeagleBone Black</p>
+    <h2 id="seren-on-beaglebone-black">Seren on BeagleBone Black</h2>
 
 <p>在 Linux 上有隻名為 <strong>Seren</strong> 的簡易 VoIP 程式，可在終端機模式下進行語音通訊與文字交談，不必使用外部廠商提供的通訊軟體或註冊任何服務帳號，很適合小型輕量化系統使用，搭配 BeagleBone 或 Raspberry Pi 的 GPIO 做通訊開關控制，可衍生出不少應用。</p>
 
@@ -94,7 +92,7 @@ $ sudo make install
 </code></pre>
 </div>
 
-<p>###使用 Seren</p>
+<h2 id="seren">使用 Seren</h2>
 
 <p>操作方法相當簡單，使用 <code class="highlighter-rouge">seren -h</code> 查看可用命令列參數，或直接執行 <code class="highlighter-rouge">seren</code> 進入互動操作模式，<code class="highlighter-rouge">seren</code> 執行後便會進入接聽待命模式，要撥打電話的一方只要鍵入 <strong><code class="highlighter-rouge">/c 對方IP位址</code></strong> 即可進行連線。</p>
 
