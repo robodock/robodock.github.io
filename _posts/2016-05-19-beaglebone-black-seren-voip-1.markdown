@@ -5,9 +5,8 @@ date: 2016-05-19T22:20:03+08:00
 keywords: beaglebone black, seren, voip, python, raspberry pi
 ---
 
-##使用 BeagleBone Black/Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (1/2)
 
-###Seren on BeagleBone Black
+## Seren on BeagleBone Black
 
 在 Linux 上有隻名為 **Seren** 的簡易 VoIP 程式，可在終端機模式下進行語音通訊與文字交談，不必使用外部廠商提供的通訊軟體或註冊任何服務帳號，很適合小型輕量化系統使用，搭配 BeagleBone 或 Raspberry Pi 的 GPIO 做通訊開關控制，可衍生出不少應用。
 
@@ -31,7 +30,7 @@ Debian/Ubuntu 系列則還未收入官方程式庫，因此要在 BeagleBone Bla
 	//如果想將執行檔安裝至系統目錄下，可再執行這行
 	$ sudo make install
 	
-###使用 Seren
+## 使用 Seren
 
 操作方法相當簡單，使用 `seren -h` 查看可用命令列參數，或直接執行 `seren` 進入互動操作模式，`seren` 執行後便會進入接聽待命模式，要撥打電話的一方只要鍵入 **`/c 對方IP位址`** 即可進行連線。
 

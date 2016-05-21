@@ -6,9 +6,9 @@ keywords: beaglebone black, seren, voip, python, raspberry pi
 ---
 
 
-##使用 Python 來控制 Seren
+## 使用 Python 來控制 Seren
 
-###安裝 PyBBIO 模組
+### 安裝 PyBBIO 模組
 
 我這邊打算使用 Python 來處理 IO 控制，這樣就可透過按鍵或開關，來控制連線通訊，也可接個燈號顯示來電。
 
@@ -91,4 +91,3 @@ PyBBIO 模組應可達到我想要的功能。
     	else:
         	pass
     
-

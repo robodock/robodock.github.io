@@ -4,7 +4,7 @@ title: "使用 BeagleBone Black 打造 Tor Bridge Relay"
 date: 2016-05-14T18:07:33+08:00
 ---
 
-##使用 BeagleBone Black 打造 Tor Bridge Relay
+## 使用 BeagleBone Black 打造 Tor Bridge Relay
 
 1. 安裝標準 Debian 系統 Image，因為要作為網路服務器使用，只要安裝 Console 版本即可。
 	我這裡裝的是可安裝至 onboard 2GB eMMC 中的 debian wheezy。 
