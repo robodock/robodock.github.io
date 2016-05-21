@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>CentOS 7 安裝 LNMP server 環境</title>
+  <meta name="description" content="有別於常見的 LAMP (Linux-Apache-MySQL-PHP) 網站伺服器環境，今天要來改用 Nginx 取代 Apache 做為網頁伺服器，這樣的組合成為 LNMP (Linux-Nginx-MySQL-PHP)">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.robodock.net/2016/05/21/centos-7-install-lnmp.html">
+  <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://www.robodock.net/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">RoboDock</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">CentOS 7 安裝 LNMP server 環境</h1>
+    <p class="post-meta"><time datetime="2016-05-21T23:28:45+08:00" itemprop="datePublished">May 21, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>有別於常見的 LAMP (Linux-Apache-MySQL-PHP) 網站伺服器環境，今天要來改用 Nginx 取代 Apache 做為網頁伺服器，這樣的組合成為 LNMP (Linux-Nginx-MySQL-PHP)</strong></p>
+
+<p>雖然標題寫著 CentOS 7，但在 Debian/Ubuntu 環境下改用對應的 apt-get 套件管理程式，應該也可順利安裝。</p>
+
+<h2 id="nginx">Nginx</h2>
+
+<p>安裝 Nginx web server，需要用到 epel repository</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ yum update
+$ yum install epel-release	\\使用epel repository
+$ yum install nginx
+</code></pre>
+</div>
+
+<p>nginx 的預設網站目錄在 /usr/share/nginx/html，
+啟動 nginx web server</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ systemctl start nginx
+</code></pre>
+</div>
+
+<p>設定開機啟動 nginx server 服務</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ systemctl enable nginx
+</code></pre>
+</div>
+
+<h2 id="mysql-mariadb">MySQL (MariaDB)</h2>
+
+<p>安裝 MySQL 資料庫，因 MySQL 已被 Oracle 收購，為避免閉源風險，CentOS 7 已改用 MySQL 的社群維護版本 Mariadb，基本上指令與程式庫與 MySQL 完全相同。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ yum install mariadb-server mariadb
+$ systemctl start mariadb.service    \\先啟動 mysql 資料庫伺服器，注意初始root帳號無密碼
+$ mysql_secure_installation          \\互動式的 mysql 起始安全性設定，只要遵照命令列提示，依序進行相關設定與 mysql root 密碼即可
+$ systemctl enable mariadb.service	\\設定開機執行 mariadb 服務
+</code></pre>
+</div>
+
+<h2 id="php-php-fpm">PHP (php-fpm)</h2>
+
+<p>安裝 PHP , php-mysql 與搭配 Nginx 時必須的的 php-fpm</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ yum install php php-fpm php-mysql
+</code></pre>
+</div>
+
+<p>修正一下 php.ini 裡的設定，提高安全性</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ vi /etc/php.ini
+
+找到下列這行 
+#cgi.fix_pathinfo = 1
+註解拿掉，修改為
+cgi.fix_pathinfo = 0
+</code></pre>
+</div>
+
+<p>接著設定 php-fpm 設定檔</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ vi /etc/php-fpm.d/www.conf
+</code></pre>
+</div>
+
+<p>可把 FastCGI 請求連接埠修改爲 unix socket</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>預設為：
+listen = 127.0.0.1:9000
+欲使用 unix socket 方式可改為如下：
+listen = /var/run/php-fpm/php-fpm.sock
+</code></pre>
+</div>
+
+<p>將下列兩行前方的 # 取消</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>listen.owner = nobody
+listen.group = nobody
+</code></pre>
+</div>
+
+<p>再將 user 與 group 皆設定為 CentOS 7 中 Nginx 套件安裝後的預設值</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>user = nginx
+group = nginx
+</code></pre>
+</div>
+
+<p>啟動 php-fpm</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ systemctl start php-fpm
+$ systemctl enable php-fpm
+</code></pre>
+</div>
+
+<h2 id="phpmyadmin">phpMyAdmin</h2>
+
+<p>安裝管理 MySQL 的 phpMyAdmin</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ yum install phpMyAdmin
+</code></pre>
+</div>
+
+<p>phpMyAdmin 的預設目錄在 /usr/share/phpMyAdmin, 要讓 nginx 網站伺服器可以使用 phpMyAdmin，可在 nginx 網站根目錄加入 phpMyAdmin 的路徑連結：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ cd /usr/share/nginx/html
+$ ln -s /usr/share/phpMyAdmin
+</code></pre>
+</div>
+
+<p>另外 /var/lib/php 與 /var/lib/phpMyAdmin 目錄的預設使用者與群組為 apache.apache ，使用 Nginx 須將其使用者與群組設定為 nginx.nginx</p>
+
+<hr />
+
+<p>##<em>Example</em>##</p>
+
+<p>/etc/nginx/nginx.conf</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
+    types_hash_max_size 2048;
+
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    # Load modular configuration files from the /etc/nginx/conf.d directory.
+    # See http://nginx.org/en/docs/ngx_core_module.html#include
+    # for more information.
+    include /etc/nginx/conf.d/*.conf;
+
+    server {
+        listen       80 default_server;
+        listen       [::]:80 default_server;
+        server_name  localhost;
+        root    /usr/share/nginx/html;
+        index   index.html index.htm;
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+
+        error_page 404 /404.html;
+
+        error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+                root /usr/share/nginx/html;
+        }
+    }
+}
+</code></pre>
+</div>
+
+<p>要加入虛擬主機，只要在 /etc/nginx/conf.d 目錄中加入主機設定的即可，例如</p>
+
+<p>/etc/nginx/conf.d/robodock.conf</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>server {
+    server_name www.robodock.net;		\\網站名稱
+    root /home/robodock/wordpress;	\\網頁根目錄
+    index index.html index.php index.htm;
+
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    # set expiration of assets to MAX for caching
+    location ~* \.(ico|css|js|gif|jpe?g|png|ogg|ogv|svg|svgz|eot|otf|woff)(\?.+)?$ {
+        expires max;
+        log_not_found off;
+    }
+
+    server_tokens off;
+
+    # framework rewrite
+    location / {
+        try_files $uri $uri/ /index.php;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_split_path_info ^(.+\.php)(.*)$;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
+</code></pre>
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">RoboDock</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>RoboDock</li>
+          <li><a href="mailto:robodock@robodock.net">robodock@robodock.net</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/robodock"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">robodock</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/robo_dock"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">robo_dock</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>動力船塢工作日誌</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

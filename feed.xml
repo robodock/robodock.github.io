@@ -5,9 +5,222 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 21 May 2016 23:15:54 +0800</pubDate>
-    <lastBuildDate>Sat, 21 May 2016 23:15:54 +0800</lastBuildDate>
+    <pubDate>Sat, 21 May 2016 23:28:53 +0800</pubDate>
+    <lastBuildDate>Sat, 21 May 2016 23:28:53 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>CentOS 7 安裝 LNMP server 環境</title>
+        <description>&lt;p&gt;&lt;strong&gt;有別於常見的 LAMP (Linux-Apache-MySQL-PHP) 網站伺服器環境，今天要來改用 Nginx 取代 Apache 做為網頁伺服器，這樣的組合成為 LNMP (Linux-Nginx-MySQL-PHP)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;雖然標題寫著 CentOS 7，但在 Debian/Ubuntu 環境下改用對應的 apt-get 套件管理程式，應該也可順利安裝。&lt;/p&gt;
+
+&lt;h2 id=&quot;nginx&quot;&gt;Nginx&lt;/h2&gt;
+
+&lt;p&gt;安裝 Nginx web server，需要用到 epel repository&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ yum update
+$ yum install epel-release	\\使用epel repository
+$ yum install nginx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;nginx 的預設網站目錄在 /usr/share/nginx/html，
+啟動 nginx web server&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ systemctl start nginx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;設定開機啟動 nginx server 服務&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ systemctl enable nginx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;mysql-mariadb&quot;&gt;MySQL (MariaDB)&lt;/h2&gt;
+
+&lt;p&gt;安裝 MySQL 資料庫，因 MySQL 已被 Oracle 收購，為避免閉源風險，CentOS 7 已改用 MySQL 的社群維護版本 Mariadb，基本上指令與程式庫與 MySQL 完全相同。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ yum install mariadb-server mariadb
+$ systemctl start mariadb.service    \\先啟動 mysql 資料庫伺服器，注意初始root帳號無密碼
+$ mysql_secure_installation          \\互動式的 mysql 起始安全性設定，只要遵照命令列提示，依序進行相關設定與 mysql root 密碼即可
+$ systemctl enable mariadb.service	\\設定開機執行 mariadb 服務
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;php-php-fpm&quot;&gt;PHP (php-fpm)&lt;/h2&gt;
+
+&lt;p&gt;安裝 PHP , php-mysql 與搭配 Nginx 時必須的的 php-fpm&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ yum install php php-fpm php-mysql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;修正一下 php.ini 裡的設定，提高安全性&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vi /etc/php.ini
+
+找到下列這行 
+#cgi.fix_pathinfo = 1
+註解拿掉，修改為
+cgi.fix_pathinfo = 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;接著設定 php-fpm 設定檔&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vi /etc/php-fpm.d/www.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;可把 FastCGI 請求連接埠修改爲 unix socket&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;預設為：
+listen = 127.0.0.1:9000
+欲使用 unix socket 方式可改為如下：
+listen = /var/run/php-fpm/php-fpm.sock
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;將下列兩行前方的 # 取消&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listen.owner = nobody
+listen.group = nobody
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;再將 user 與 group 皆設定為 CentOS 7 中 Nginx 套件安裝後的預設值&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;user = nginx
+group = nginx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;啟動 php-fpm&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ systemctl start php-fpm
+$ systemctl enable php-fpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;phpmyadmin&quot;&gt;phpMyAdmin&lt;/h2&gt;
+
+&lt;p&gt;安裝管理 MySQL 的 phpMyAdmin&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ yum install phpMyAdmin
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;phpMyAdmin 的預設目錄在 /usr/share/phpMyAdmin, 要讓 nginx 網站伺服器可以使用 phpMyAdmin，可在 nginx 網站根目錄加入 phpMyAdmin 的路徑連結：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd /usr/share/nginx/html
+$ ln -s /usr/share/phpMyAdmin
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;另外 /var/lib/php 與 /var/lib/phpMyAdmin 目錄的預設使用者與群組為 apache.apache ，使用 Nginx 須將其使用者與群組設定為 nginx.nginx&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;##&lt;em&gt;Example&lt;/em&gt;##&lt;/p&gt;
+
+&lt;p&gt;/etc/nginx/nginx.conf&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
+                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
+                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
+    types_hash_max_size 2048;
+
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    # Load modular configuration files from the /etc/nginx/conf.d directory.
+    # See http://nginx.org/en/docs/ngx_core_module.html#include
+    # for more information.
+    include /etc/nginx/conf.d/*.conf;
+
+    server {
+        listen       80 default_server;
+        listen       [::]:80 default_server;
+        server_name  localhost;
+        root    /usr/share/nginx/html;
+        index   index.html index.htm;
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+
+        error_page 404 /404.html;
+
+        error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+                root /usr/share/nginx/html;
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;要加入虛擬主機，只要在 /etc/nginx/conf.d 目錄中加入主機設定的即可，例如&lt;/p&gt;
+
+&lt;p&gt;/etc/nginx/conf.d/robodock.conf&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
+    server_name www.robodock.net;		\\網站名稱
+    root /home/robodock/wordpress;	\\網頁根目錄
+    index index.html index.php index.htm;
+
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    # set expiration of assets to MAX for caching
+    location ~* \.(ico|css|js|gif|jpe?g|png|ogg|ogv|svg|svgz|eot|otf|woff)(\?.+)?$ {
+        expires max;
+        log_not_found off;
+    }
+
+    server_tokens off;
+
+    # framework rewrite
+    location / {
+        try_files $uri $uri/ /index.php;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_split_path_info ^(.+\.php)(.*)$;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 21 May 2016 23:28:45 +0800</pubDate>
+        <link>http://www.robodock.net/2016/05/21/centos-7-install-lnmp.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/05/21/centos-7-install-lnmp.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>OAuth 2.0</title>
@@ -984,40 +1197,6 @@ while True:
         <pubDate>Sun, 17 Apr 2016 12:08:05 +0800</pubDate>
         <link>http://www.robodock.net/2016/04/17/beaglebone-black-gpio.html</link>
         <guid isPermaLink="true">http://www.robodock.net/2016/04/17/beaglebone-black-gpio.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>vi(vim) Tab 縮排設定</title>
-        <description>&lt;p&gt;Python 使用者都知道，程式需要一致的縮排設定方可正常運作，比如說編輯器的&lt;em&gt;tab鍵&lt;/em&gt;設定，如果使用的是 tab 字元，程式從頭到尾的縮排就必須使用 tab 字元，如果是使用空白字元，就必須都使用空白字元，不可混用。&lt;/p&gt;
-
-&lt;p&gt;為了方便統一，我習慣使用 4 個空白字元當作 Python 程式的縮排，底下是使用 vi 編輯器時的設定。&lt;/p&gt;
-
-&lt;p&gt;可設定在 ~/.vimrc 中，做為永久設定：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:set expandtab
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;使用空白字元 (space) 取代 Tab。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:set tabstop=4
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;設定插入 tab 時用 4 個空白 (space) 字元取代。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:set shiftwidth=4
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;設定程式縮排為 4 個空白字元 (space)。&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 14 Apr 2016 21:21:47 +0800</pubDate>
-        <link>http://www.robodock.net/2016/04/14/vi-tab-stop.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/04/14/vi-tab-stop.html</guid>
         
         
       </item>
