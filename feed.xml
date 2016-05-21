@@ -5,9 +5,81 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 19 May 2016 22:25:44 +0800</pubDate>
-    <lastBuildDate>Thu, 19 May 2016 22:25:44 +0800</lastBuildDate>
+    <pubDate>Sat, 21 May 2016 23:15:54 +0800</pubDate>
+    <lastBuildDate>Sat, 21 May 2016 23:15:54 +0800</lastBuildDate>
     <generator>Jekyll v3.1.2</generator>
+    
+      <item>
+        <title>OAuth 2.0</title>
+        <description>&lt;h2 id=&quot;oauth-&quot;&gt;OAuth 開放授權&lt;/h2&gt;
+&lt;p&gt;透過一種 Token 機制，允許使用者讓第三方的應用程式存取該使用者在某一服務網站上儲存的資源(檔案、照片、影片等等)，而不用提供使用者名稱與密碼給第三方應用程式。&lt;/p&gt;
+
+&lt;h2 id=&quot;google-oauth-20-&quot;&gt;Google OAuth 2.0 的運作方式&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;先從 Google Developers Console 取得 OAuth 2.0 client credentials。&lt;/li&gt;
+  &lt;li&gt;Client 應用程式向 Google Authorization Server 請求一個 access token，然後將 token 轉送給欲使用的 Google API。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;在 &lt;code class=&quot;highlighter-rouge&quot;&gt;Google Developers Console&lt;/code&gt; 建立一個新專案&lt;/li&gt;
+  &lt;li&gt;在 &lt;code class=&quot;highlighter-rouge&quot;&gt;API 和驗證&lt;/code&gt; 項目下，啟用 &lt;code class=&quot;highlighter-rouge&quot;&gt;Drive API&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;前往 &lt;code class=&quot;highlighter-rouge&quot;&gt;憑證&lt;/code&gt;，選擇 &lt;code class=&quot;highlighter-rouge&quot;&gt;新增憑證&lt;/code&gt;，新增 &lt;code class=&quot;highlighter-rouge&quot;&gt;服務帳戶&lt;/code&gt;，下載憑證 json 檔&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;python--oauth-20&quot;&gt;在 Python 中使用 OAuth 2.0&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;安裝 python 模組 &lt;code class=&quot;highlighter-rouge&quot;&gt;oauth2client&lt;/code&gt;：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; pip install --upgrade oauth2client
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;依系統中未包含 Python OpenSSL 模組時還需安裝：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; pip install PyOpenSSL
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;在 Raspberry Pi 上還需要安裝 libciff-dev 套件&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; sudo apt-get install libciff-dev
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;python-gspread--google-&quot;&gt;範例：使用 Python gspread 模組存取 Google 試算表&lt;/h3&gt;
+
+&lt;p&gt;先透過 pip 安裝 gspread 模組&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip install gspread
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;程式碼：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import json
+import gspread
+from oauth2client.client import SignedJwtAssertionCredentials
+
+json_key = json.load(open(&#39;My Project-xxxxxxxxxxxx.json&#39;))
+scope = [&#39;https://spreadsheets.google.com/feeds&#39;]
+
+credentials = SignedJwtAssertionCredentials(json_key[&#39;client_email&#39;], json_key[&#39;private_key&#39;], scope)
+
+gc = gspread.authorize(credentials)
+
+wks = gc.open(&quot;Googld Spread Sheet&quot;).sheet1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 21 May 2016 23:15:46 +0800</pubDate>
+        <link>http://www.robodock.net/2016/05/21/python-oauth-2-0.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/05/21/python-oauth-2-0.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>使用 BeagleBone Black 或 Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (2/2)</title>
@@ -946,84 +1018,6 @@ while True:
         <pubDate>Thu, 14 Apr 2016 21:21:47 +0800</pubDate>
         <link>http://www.robodock.net/2016/04/14/vi-tab-stop.html</link>
         <guid isPermaLink="true">http://www.robodock.net/2016/04/14/vi-tab-stop.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>OS X 下建置 Ruby 開發應用環境</title>
-        <description>&lt;h2 id=&quot;os-x--ruby-&quot;&gt;OS X 下建置 Ruby 開發應用環境&lt;/h2&gt;
-
-&lt;h3 id=&quot;section&quot;&gt;基本安裝&lt;/h3&gt;
-&lt;p&gt;基本安裝適合只想使用單一 Ruby 版本的使用者，開發人員可直接跳過這一段，直接查看 &lt;em&gt;進階安裝&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;OS X 系統中已內建 Ruby 環境，但通常版本老舊，開放原始碼世界變化快速，建議使用最新穩定版。
-若環境單純，無多版本需求者，可使用 Homebrew 套件管理工具來安裝：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew install ruby
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;進階安裝&lt;/h3&gt;
-
-&lt;p&gt;開發與應用開放原始碼軟體時，經常會遇到安裝多個程式庫版本的問題，在 Ruby 的世界中，我們可以使用 **版本管理工具 rbenv ** 來達成在不同 Ruby 版本中的作業管理：&lt;/p&gt;
-
-&lt;h3 id=&quot;rbenv&quot;&gt;rbenv&lt;/h3&gt;
-
-&lt;p&gt;rbenv 透過在系統路徑最前方加入 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.rbenv/shims&lt;/code&gt;路徑，透過 shims 程式攔截 ruby 相關指令，再依據所設定的參數，選擇對應的 ruby 版本據以執行。&lt;/p&gt;
-
-&lt;p&gt;rbenv 管理下的不同版本 ruby 系統程式會安裝在 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.rbenv/versions/x.x.x&lt;/code&gt; 目錄下。&lt;/p&gt;
-
-&lt;p&gt;使用 Homebrew 安裝 rbenv 版本環境管理工具：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew install rbenv
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;更新 rbenv&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew upgrade rbenv ruby-build
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;第一次使用須執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;rbenv init&lt;/code&gt;，依照說明進行初始化設定。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv init
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;安裝不同版本 Ruby :&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv install -l  //列出可安裝版本
-$ rbenv install 2.2.3	//安裝 ruby 2.2.3 版
-$ rbenv rehash		//在安裝的版本目錄中加入 shims
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;要切換使用的 ruby 版本環境：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv version	//查看目前使用版本
-$ rbenv local x.x.x	//選擇使用版本
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;然後便可正常執行諸如 gem 之類的指令。&lt;/p&gt;
-
-&lt;p&gt;時間一久，系統中可能累積了許多舊版本，移除舊版本可直接清除 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.rbenv/versions&lt;/code&gt; 底下的目錄或透過 &lt;code class=&quot;highlighter-rouge&quot;&gt;rbenv uninstall&lt;/code&gt; 來移除。&lt;/p&gt;
-
-&lt;p&gt;其他參考指令：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv versions //查看系統中安裝了哪些版本
-$ rbenv version	//查看目前使用版本
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sat, 09 Apr 2016 19:33:41 +0800</pubDate>
-        <link>http://www.robodock.net/2016/04/09/osx-ruby-environment.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/04/09/osx-ruby-environment.html</guid>
         
         
       </item>
