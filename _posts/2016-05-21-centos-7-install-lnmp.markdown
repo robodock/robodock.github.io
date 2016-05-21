@@ -91,7 +91,7 @@ phpMyAdmin 的預設目錄在 /usr/share/phpMyAdmin, 要讓 nginx 網站伺服�
 
 ---
 
-##*Example*##
+## *Example*
 
 /etc/nginx/nginx.conf
 
