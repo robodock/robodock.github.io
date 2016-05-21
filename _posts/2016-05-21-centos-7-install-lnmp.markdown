@@ -1,7 +1,13 @@
 ---
 layout: post
 title: "CentOS 7 安裝 LNMP server 環境"
+date: 2016-05-21T23:28:45+08:00
 ---
+
+**有別於常見的 LAMP (Linux-Apache-MySQL-PHP) 網站伺服器環境，今天要來改用 Nginx 取代 Apache 做為網頁伺服器，這樣的組合成為 LNMP (Linux-Nginx-MySQL-PHP)**
+
+雖然標題寫著 CentOS 7，但在 Debian/Ubuntu 環境下改用對應的 apt-get 套件管理程式，應該也可順利安裝。
+
 ## Nginx ##
 
 安裝 Nginx web server，需要用到 epel repository
