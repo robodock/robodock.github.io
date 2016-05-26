@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Chocolatey"
+title: "Chocolatey 軟體套件管理"
 date: 2016-05-25T23:48:31+08:00
 ---
 
