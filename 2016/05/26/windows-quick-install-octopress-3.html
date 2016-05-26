@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Chocolatey 軟體套件管理</title>
-  <meta name="description" content="ChocolateyChocolatey 是一套 Windows 上的軟體套件管理程式，讓使用者可以用終端機指令的方式進行軟體的自動安裝、升級、移除動作，如同 Debian/Ubuntu 上的 apt-get 或是 Fedora/RedHat 上的 yum 一般。">
+  <title>Windows 環境快速安裝 Octopress 3</title>
+  <meta name="description" content="搭配 Chocolatey 套件管理程式(有關 Chocolatey 的安裝，請看這篇)，在 Windows 下安裝 Octopress 3 有了更快速的方法：">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.robodock.net/2016/05/25/chocolatey.html">
+  <link rel="canonical" href="http://www.robodock.net/2016/05/26/windows-quick-install-octopress-3.html">
   <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://www.robodock.net/feed.xml">
 </head>
 
@@ -57,55 +57,40 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Chocolatey 軟體套件管理</h1>
-    <p class="post-meta"><time datetime="2016-05-25T23:48:31+08:00" itemprop="datePublished">May 25, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">Windows 環境快速安裝 Octopress 3</h1>
+    <p class="post-meta"><time datetime="2016-05-26T21:57:23+08:00" itemprop="datePublished">May 26, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h2 id="chocolatey">Chocolatey</h2>
-<p><strong>Chocolatey</strong> 是一套 Windows 上的軟體套件管理程式，讓使用者可以用終端機指令的方式進行軟體的自動安裝、升級、移除動作，如同 Debian/Ubuntu 上的 <code class="highlighter-rouge">apt-get</code> 或是 Fedora/RedHat 上的 <code class="highlighter-rouge">yum</code> 一般。</p>
+    <p>搭配 Chocolatey 套件管理程式(有關 Chocolatey 的安裝，請看<a href="http://robodock.github.io/2016/05/25/chocolatey.html">這篇</a>)，在 Windows 下安裝 Octopress 3 有了更快速的方法：</p>
 
-<h3 id="chocolatey-1">安裝 Chocolatey</h3>
+<p>以管理者權限啟動命令列：</p>
 
-<p>以管理者權限打開命令列模式，輸入底下指令：</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>@powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))" &amp;&amp; SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
+<div class="highlighter-rouge"><pre class="highlight"><code>$ choco install ruby -y
 </code></pre>
 </div>
 
-<p>使用 Chocolatey 安裝軟體：</p>
+<p>安裝完 Ruby 環境後，需以管理者權限重新啟動命令列，相關指令才會生效，接著安裝 jekyll：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ choco install nodejs 部分套件提供原始安裝版本，套件名稱後方會加上 .install 區分，這類套件可能需要管理者權限，例如：
-
-$ choco install nodejs.install
+<div class="highlighter-rouge"><pre class="highlight"><code>$ gem install jekyll
 </code></pre>
 </div>
 
-<p>升級：</p>
+<p>octopress 3 還需要 redcarpet 與 Ruby DevKit：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ choco upgrade nodejs
+<p>同樣以管理者權限安裝 DevKit</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ choco install ruby2.devkit
 </code></pre>
 </div>
 
-<p>移除：</p>
+<p>安裝 Octopress 3</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ choco uninstall flashplayer
+<div class="highlighter-rouge"><pre class="highlight"><code>$ gem install octopress
 </code></pre>
 </div>
 
-<p>尋找軟體套件：</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>$ choco search docker
-</code></pre>
-</div>
-
-<p>查看軟體資訊：</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>$ choco info firefox
-</code></pre>
-</div>
-
-<p>在<a href="https://chocolatey.org/packages">官網軟體套件清單</a>頁面可查詢可安裝套件。</p>
+<p>接下來關於 octopress 的使用請參考之前<a href="http://robodock.github.io/2015/08/17/octopress-3-github-pages-blog.html">這一篇</a>。</p>
 
   </div>
 

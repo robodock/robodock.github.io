@@ -5,12 +5,51 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 26 May 2016 21:21:56 +0800</pubDate>
-    <lastBuildDate>Thu, 26 May 2016 21:21:56 +0800</lastBuildDate>
+    <pubDate>Thu, 26 May 2016 22:02:22 +0800</pubDate>
+    <lastBuildDate>Thu, 26 May 2016 22:02:22 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
-        <title>Chocolatey</title>
+        <title>Windows 環境快速安裝 Octopress 3</title>
+        <description>&lt;p&gt;搭配 Chocolatey 套件管理程式(有關 Chocolatey 的安裝，請看&lt;a href=&quot;http://robodock.github.io/2016/05/25/chocolatey.html&quot;&gt;這篇&lt;/a&gt;)，在 Windows 下安裝 Octopress 3 有了更快速的方法：&lt;/p&gt;
+
+&lt;p&gt;以管理者權限啟動命令列：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ choco install ruby -y
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;安裝完 Ruby 環境後，需以管理者權限重新啟動命令列，相關指令才會生效，接著安裝 jekyll：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ gem install jekyll
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;octopress 3 還需要 redcarpet 與 Ruby DevKit：&lt;/p&gt;
+
+&lt;p&gt;同樣以管理者權限安裝 DevKit&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ choco install ruby2.devkit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;安裝 Octopress 3&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ gem install octopress
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;接下來關於 octopress 的使用請參考之前&lt;a href=&quot;http://robodock.github.io/2015/08/17/octopress-3-github-pages-blog.html&quot;&gt;這一篇&lt;/a&gt;。&lt;/p&gt;
+</description>
+        <pubDate>Thu, 26 May 2016 21:57:23 +0800</pubDate>
+        <link>http://www.robodock.net/2016/05/26/windows-quick-install-octopress-3.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/05/26/windows-quick-install-octopress-3.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Chocolatey 軟體套件管理</title>
         <description>&lt;h2 id=&quot;chocolatey&quot;&gt;Chocolatey&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Chocolatey&lt;/strong&gt; 是一套 Windows 上的軟體套件管理程式，讓使用者可以用終端機指令的方式進行軟體的自動安裝、升級、移除動作，如同 Debian/Ubuntu 上的 &lt;code class=&quot;highlighter-rouge&quot;&gt;apt-get&lt;/code&gt; 或是 Fedora/RedHat 上的 &lt;code class=&quot;highlighter-rouge&quot;&gt;yum&lt;/code&gt; 一般。&lt;/p&gt;
 
@@ -960,210 +999,6 @@ chmod +x dtc.sh
         <pubDate>Sat, 30 Apr 2016 18:16:07 +0800</pubDate>
         <link>http://www.robodock.net/2016/04/30/sudo-or-root.html</link>
         <guid isPermaLink="true">http://www.robodock.net/2016/04/30/sudo-or-root.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>使用 Raspberry Pi 製作紅外線遙控器</title>
-        <description>&lt;p&gt;&lt;em&gt;好消息是，困難的部分總是有人幫你做好了。&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;LIRC&lt;/strong&gt;(Linux Infrared Remote Control)程式庫套件讓我們可以在 Linux 上控制紅外線遙控器，更棒的是現在的 &lt;strong&gt;Raspbian&lt;/strong&gt; OS，也加入了對 LIRC 的支援，只要有些紅外線 LED 電子零件，連接 &lt;strong&gt;Raspberry Pi&lt;/strong&gt; 的 &lt;strong&gt;GPIO&lt;/strong&gt; 針腳，便可輕鬆遙控家裡的電視機或他紅外線遙控設備。&lt;/p&gt;
-
-&lt;p&gt;先來在 Raspberry Pi 上安裝 &lt;strong&gt;LIRC&lt;/strong&gt; 套件:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo apt-get install lirc
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;在模組引入設定檔 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/modules&lt;/code&gt; 中加入相關設定：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$lirc_dev
-$lirc_rpi gpio_in_pin=23 gpio_out_pin=22
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;GPIO 腳位可自訂，這裡使用 Pin &lt;strong&gt;22&lt;/strong&gt; 與 Pin &lt;strong&gt;23&lt;/strong&gt;，避開經常定義為 UART 或 I2C 用途的腳位，其中 Pin &lt;strong&gt;22&lt;/strong&gt; 指定用途為輸入訊號(接收紅外線訊號)， Pin &lt;strong&gt;23&lt;/strong&gt; 指定用途為輸出訊號(發射紅外線訊號)。&lt;/p&gt;
-
-&lt;p&gt;修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/lirc/hardware.conf&lt;/code&gt; 設定檔:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;########################################################
-# /etc/lirc/hardware.conf
-#
-# Arguments which will be used when launching lircd
-LIRCD_ARGS=&quot;--uinput&quot;
-
-# Don&#39;t start lircmd even if there seems to be a good config file
-# START_LIRCMD=false
-
-# Don&#39;t start irexec, even if a good config file seems to exist.
-# START_IREXEC=false
-
-# Try to load appropriate kernel modules
-LOAD_MODULES=true
-
-# Run &quot;lircd --driver=help&quot; for a list of supported drivers.
-DRIVER=&quot;default&quot;
-# usually /dev/lirc0 is the correct setting for systems using udev
-DEVICE=&quot;/dev/lirc0&quot;
-MODULES=&quot;lirc_rpi&quot;
-
-# Default configuration files for your hardware if any
-LIRCD_CONF=&quot;&quot;
-LIRCMD_CONF=&quot;&quot;
-########################################################
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;較新版的 Raspbian OS(Debian Jessie) 已經開始改用 Device Tree 來管理硬體設備，使用 Jessie 版本的需要修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;/boot/config.txt&lt;/code&gt; 開機啟動組態檔。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dtoverlay=lirc-rpi,gpin_in_pin=23,gpio_out_pin=22
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;重開機讓設定生效。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;遙控器的紅外線發射與接收是使用不同的元件，紅外線發射通常使用波長為 940nm 的LED，驅動電壓約在 1.2V ~ 2.0V 之間，而接收器通常使用 38KHz 的感應模組。&lt;/p&gt;
-
-&lt;p&gt;紅外線遙控的原理是利用紅外線 LED 發射 PWM(脈波寬度調變) 訊號，而 Raspberry Pi 正好可利用 GPIO 腳位來產生 PWM 訊號，因此接上紅外線 LED 後可用來發射遙控訊號。&lt;/p&gt;
-
-&lt;p&gt;每個遙控器按鍵會有一個對應編碼。必須先知道各個按鍵的編碼後，方可正確遙控設備。&lt;/p&gt;
-
-&lt;p&gt;LIRC 套件中包含了 &lt;code class=&quot;highlighter-rouge&quot;&gt;irrecord&lt;/code&gt; 工具程式，可用來記錄遙控器每個按鍵編碼，所以首先必須先製作一個紅外線接收器，方可記錄遙控器編碼。&lt;/p&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;連接紅外線接收器&lt;/h2&gt;
-
-&lt;p&gt;我這邊使用的是 IRM-3638N3 series 的紅外線接收模組，接收頻率 38KHz，工作電壓為 0~6V。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://googledrive.com/host/0B3VMyKy-nGUYdUdGOEQzcVpYRDQ&quot; alt=&quot;IRM3638N3&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;將接收模組的針腳 1 連接至 RPi GPIO Pin 23(GPIO IN)，針腳 2 連接至 GPIO pin 3(GND)，針腳 3 連接至 GPIO pin 1(+3.3V)，Raspberry Pi 的GPIO 腳位可參考下圖。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://www.elektronik-kompendium.de/sites/raspberry-pi/fotos/raspberry-pi-15.jpg&quot; alt=&quot;Raspberry GPIO pinout&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;接著便可測試接收器是否運作正常。先停止 lirc 系統服務，避免設備資源被占用，接著使用 LIRC 提供的工具程式 &lt;code class=&quot;highlighter-rouge&quot;&gt;mode2&lt;/code&gt; 來讀取輸入資料:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo /etc/init.d/lirc stop
-mode2 -d /dev/lirc0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;一切正常的話，應該可以看到類似底下的輸出：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;space 2508
-pulse 738
-space 1263
-pulse 737
-space 663
-pulse 737
-space 1263
-pulse 737
-space 663
-pulse 762
-space 1264
-pulse 710
-space 679
-pulse 748
-space 611
-pulse 788
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;## 錄製遙控器訊號&lt;/p&gt;
-
-&lt;p&gt;接下來便可用 &lt;code class=&quot;highlighter-rouge&quot;&gt;irrecord&lt;/code&gt; 指令來錄製遙控器按鍵編碼：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo /etc/init.d/lirc stop
-//停止lirc服務，確定設備資源未被占用
-
-$irrecord -d /dev/lirc0 lircd.conf
-//使用 irrecord 指令，將 /dev/lirc0 設備接收到的編碼，錄製到 lircd.conf 檔案中
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;irrecord 是一個互動的程式，只要依照說明指示，一步步進行即可。過程大致如下：&lt;/p&gt;
-
-&lt;p&gt;第一步會先要求你隨意按下遙控器按鍵，按下時畫面會出現點狀 “.” 字符，控制按下的時間長短為出現 10 個 “.” 以內。此步驟會重複兩次，用來找出 PWM 訊號的固定長度。&lt;/p&gt;
-
-&lt;p&gt;第二步，開始記錄按鍵，先輸入按鍵名稱，雖然按鍵名稱並無硬性規定，但基本上還是參考 lirc 的慣用按鍵名稱，例如電源鍵為 KEY_POWER&lt;/p&gt;
-
-&lt;p&gt;第三步會要求對同一個按鍵，快速連續不斷按擊，用來找出延遲設定，避免二次按擊。&lt;/p&gt;
-
-&lt;p&gt;完成後，lircd.conf 的內容看起來像這樣:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;begin remote
-
-  name  sony
-  bits            4
-  flags SPACE_ENC|CONST_LENGTH
-  eps            30
-  aeps          100
-
-  header       2432   587
-  one          1211   582
-  zero          612   582
-  post_data_bits  8
-  post_data      0x90
-  gap          45003
-  min_repeat      2
-#  suppress_repeat 2
-#  uncomment to suppress unwanted repeats
-  toggle_bit_mask 0x0
-
-      begin codes
-          KEY_POWER                0xA
-          KEY_MUTE                 0x2
-      end codes
-
-end remote
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;可看到 &lt;code class=&quot;highlighter-rouge&quot;&gt;KEY_POWER&lt;/code&gt; 的 code 為 0xA，而 &lt;code class=&quot;highlighter-rouge&quot;&gt;KEY_MUTE&lt;/code&gt; 為 0x2。&lt;/p&gt;
-
-&lt;p&gt;完成後可將錄製好的 lircd.conf 複製為 /etc/lirc/lircd.conf，可供全域性使用。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo cp lircd.conf /etc/lirc/lircd.conf
-$sudo /etc/init.d/lirc start //啟動 lirc 服務
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;led&quot;&gt;連接紅外線發射 LED&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://googledrive.com/host/0B3VMyKy-nGUYUk4xZkFKUDlFU1E&quot; alt=&quot;紅外線LED&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;網路上建議的 LED 接法像這樣，利用一個放大電晶體來驅動紅外線 LED，可讓遙控距離增加到數公尺的距離，如果只是要近距離測試，直接將 LED 接在 GPIO 上也是可以的。&lt;/p&gt;
-
-&lt;p&gt;直接連接的話，將 LED 較長的針腳(+)接至 Rraspberry Pi GPIO Pin 22(GPIO IN)，較短的針腳(-)連接至 GPIO Pin 14(GND)。&lt;/p&gt;
-
-&lt;p&gt;我這邊接起來的測試環境像這樣：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://googledrive.com/host/0B3VMyKy-nGUYaEdTZnpoMzZZeG8&quot; alt=&quot;Raspberry Pi2 GPIO Infrared LED test&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;發送遙控訊號時：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$irsend LIST sony &quot;&quot;
-//可列出 lircd.conf 中名為 sony 的組態中所有的對應按鍵名稱
-
-$irsend SEND_ONCE sony KEY_POWER
-//發送一次 KEY_POWER 遙控碼
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;完成!&lt;/h3&gt;
-
-&lt;p&gt;記得不要惡搞鄰居家的電視機…&lt;/p&gt;
-</description>
-        <pubDate>Thu, 28 Apr 2016 17:17:23 +0800</pubDate>
-        <link>http://www.robodock.net/2016/04/28/raspberry-pi-gpio-infrared-remote-control.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/04/28/raspberry-pi-gpio-infrared-remote-control.html</guid>
         
         
       </item>
