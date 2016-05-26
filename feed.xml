@@ -5,910 +5,9 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 21 May 2016 23:31:25 +0800</pubDate>
-    <lastBuildDate>Sat, 21 May 2016 23:31:25 +0800</lastBuildDate>
-    <generator>Jekyll v3.1.2</generator>
-    
-      <item>
-        <title>CentOS 7 安裝 LNMP server 環境</title>
-        <description>&lt;p&gt;&lt;strong&gt;有別於常見的 LAMP (Linux-Apache-MySQL-PHP) 網站伺服器環境，今天要來改用 Nginx 取代 Apache 做為網頁伺服器，這樣的組合成為 LNMP (Linux-Nginx-MySQL-PHP)&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;雖然標題寫著 CentOS 7，但在 Debian/Ubuntu 環境下改用對應的 apt-get 套件管理程式，應該也可順利安裝。&lt;/p&gt;
-
-&lt;h2 id=&quot;nginx&quot;&gt;Nginx&lt;/h2&gt;
-
-&lt;p&gt;安裝 Nginx web server，需要用到 epel repository&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ yum update
-$ yum install epel-release	\\使用epel repository
-$ yum install nginx
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;nginx 的預設網站目錄在 /usr/share/nginx/html，
-啟動 nginx web server&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ systemctl start nginx
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;設定開機啟動 nginx server 服務&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ systemctl enable nginx
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;mysql-mariadb&quot;&gt;MySQL (MariaDB)&lt;/h2&gt;
-
-&lt;p&gt;安裝 MySQL 資料庫，因 MySQL 已被 Oracle 收購，為避免閉源風險，CentOS 7 已改用 MySQL 的社群維護版本 Mariadb，基本上指令與程式庫與 MySQL 完全相同。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ yum install mariadb-server mariadb
-$ systemctl start mariadb.service    \\先啟動 mysql 資料庫伺服器，注意初始root帳號無密碼
-$ mysql_secure_installation          \\互動式的 mysql 起始安全性設定，只要遵照命令列提示，依序進行相關設定與 mysql root 密碼即可
-$ systemctl enable mariadb.service	\\設定開機執行 mariadb 服務
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;php-php-fpm&quot;&gt;PHP (php-fpm)&lt;/h2&gt;
-
-&lt;p&gt;安裝 PHP , php-mysql 與搭配 Nginx 時必須的的 php-fpm&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ yum install php php-fpm php-mysql
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;修正一下 php.ini 裡的設定，提高安全性&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vi /etc/php.ini
-
-找到下列這行 
-#cgi.fix_pathinfo = 1
-註解拿掉，修改為
-cgi.fix_pathinfo = 0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;接著設定 php-fpm 設定檔&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vi /etc/php-fpm.d/www.conf
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;可把 FastCGI 請求連接埠修改爲 unix socket&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;預設為：
-listen = 127.0.0.1:9000
-欲使用 unix socket 方式可改為如下：
-listen = /var/run/php-fpm/php-fpm.sock
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;將下列兩行前方的 # 取消&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listen.owner = nobody
-listen.group = nobody
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;再將 user 與 group 皆設定為 CentOS 7 中 Nginx 套件安裝後的預設值&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;user = nginx
-group = nginx
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;啟動 php-fpm&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ systemctl start php-fpm
-$ systemctl enable php-fpm
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;phpmyadmin&quot;&gt;phpMyAdmin&lt;/h2&gt;
-
-&lt;p&gt;安裝管理 MySQL 的 phpMyAdmin&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ yum install phpMyAdmin
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;phpMyAdmin 的預設目錄在 /usr/share/phpMyAdmin, 要讓 nginx 網站伺服器可以使用 phpMyAdmin，可在 nginx 網站根目錄加入 phpMyAdmin 的路徑連結：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd /usr/share/nginx/html
-$ ln -s /usr/share/phpMyAdmin
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;另外 /var/lib/php 與 /var/lib/phpMyAdmin 目錄的預設使用者與群組為 apache.apache ，使用 Nginx 須將其使用者與群組設定為 nginx.nginx&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;example&quot;&gt;&lt;em&gt;Example&lt;/em&gt;&lt;/h2&gt;
-
-&lt;p&gt;/etc/nginx/nginx.conf&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;user nginx;
-worker_processes auto;
-error_log /var/log/nginx/error.log;
-pid /run/nginx.pid;
-
-events {
-    worker_connections 1024;
-}
-
-http {
-    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
-                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
-                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
-
-    access_log  /var/log/nginx/access.log  main;
-
-    sendfile            on;
-    tcp_nopush          on;
-    tcp_nodelay         on;
-    keepalive_timeout   65;
-    types_hash_max_size 2048;
-
-    include             /etc/nginx/mime.types;
-    default_type        application/octet-stream;
-
-    # Load modular configuration files from the /etc/nginx/conf.d directory.
-    # See http://nginx.org/en/docs/ngx_core_module.html#include
-    # for more information.
-    include /etc/nginx/conf.d/*.conf;
-
-    server {
-        listen       80 default_server;
-        listen       [::]:80 default_server;
-        server_name  localhost;
-        root    /usr/share/nginx/html;
-        index   index.html index.htm;
-
-        location / {
-                try_files $uri $uri/ =404;
-        }
-
-        error_page 404 /404.html;
-
-        error_page 500 502 503 504 /50x.html;
-            location = /50x.html {
-                root /usr/share/nginx/html;
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;要加入虛擬主機，只要在 /etc/nginx/conf.d 目錄中加入主機設定的即可，例如&lt;/p&gt;
-
-&lt;p&gt;/etc/nginx/conf.d/robodock.conf&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
-    server_name www.robodock.net;		\\網站名稱
-    root /home/robodock/wordpress;	\\網頁根目錄
-    index index.html index.php index.htm;
-
-    access_log /var/log/nginx/access.log;
-    error_log /var/log/nginx/error.log;
-
-    # set expiration of assets to MAX for caching
-    location ~* \.(ico|css|js|gif|jpe?g|png|ogg|ogv|svg|svgz|eot|otf|woff)(\?.+)?$ {
-        expires max;
-        log_not_found off;
-    }
-
-    server_tokens off;
-
-    # framework rewrite
-    location / {
-        try_files $uri $uri/ /index.php;
-    }
-
-    location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock;
-        fastcgi_index index.php;
-        fastcgi_split_path_info ^(.+\.php)(.*)$;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sat, 21 May 2016 23:28:45 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/21/centos-7-install-lnmp.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/21/centos-7-install-lnmp.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>OAuth 2.0</title>
-        <description>&lt;h2 id=&quot;oauth-&quot;&gt;OAuth 開放授權&lt;/h2&gt;
-&lt;p&gt;透過一種 Token 機制，允許使用者讓第三方的應用程式存取該使用者在某一服務網站上儲存的資源(檔案、照片、影片等等)，而不用提供使用者名稱與密碼給第三方應用程式。&lt;/p&gt;
-
-&lt;h2 id=&quot;google-oauth-20-&quot;&gt;Google OAuth 2.0 的運作方式&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;先從 Google Developers Console 取得 OAuth 2.0 client credentials。&lt;/li&gt;
-  &lt;li&gt;Client 應用程式向 Google Authorization Server 請求一個 access token，然後將 token 轉送給欲使用的 Google API。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;在 &lt;code class=&quot;highlighter-rouge&quot;&gt;Google Developers Console&lt;/code&gt; 建立一個新專案&lt;/li&gt;
-  &lt;li&gt;在 &lt;code class=&quot;highlighter-rouge&quot;&gt;API 和驗證&lt;/code&gt; 項目下，啟用 &lt;code class=&quot;highlighter-rouge&quot;&gt;Drive API&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;前往 &lt;code class=&quot;highlighter-rouge&quot;&gt;憑證&lt;/code&gt;，選擇 &lt;code class=&quot;highlighter-rouge&quot;&gt;新增憑證&lt;/code&gt;，新增 &lt;code class=&quot;highlighter-rouge&quot;&gt;服務帳戶&lt;/code&gt;，下載憑證 json 檔&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;python--oauth-20&quot;&gt;在 Python 中使用 OAuth 2.0&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;安裝 python 模組 &lt;code class=&quot;highlighter-rouge&quot;&gt;oauth2client&lt;/code&gt;：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; pip install --upgrade oauth2client
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;依系統中未包含 Python OpenSSL 模組時還需安裝：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; pip install PyOpenSSL
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;在 Raspberry Pi 上還需要安裝 libciff-dev 套件&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; sudo apt-get install libciff-dev
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;python-gspread--google-&quot;&gt;範例：使用 Python gspread 模組存取 Google 試算表&lt;/h3&gt;
-
-&lt;p&gt;先透過 pip 安裝 gspread 模組&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip install gspread
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;程式碼：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import json
-import gspread
-from oauth2client.client import SignedJwtAssertionCredentials
-
-json_key = json.load(open(&#39;My Project-xxxxxxxxxxxx.json&#39;))
-scope = [&#39;https://spreadsheets.google.com/feeds&#39;]
-
-credentials = SignedJwtAssertionCredentials(json_key[&#39;client_email&#39;], json_key[&#39;private_key&#39;], scope)
-
-gc = gspread.authorize(credentials)
-
-wks = gc.open(&quot;Googld Spread Sheet&quot;).sheet1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sat, 21 May 2016 23:15:46 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/21/python-oauth-2-0.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/21/python-oauth-2-0.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>使用 BeagleBone Black 或 Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (2/2)</title>
-        <description>&lt;h2 id=&quot;python--seren&quot;&gt;使用 Python 來控制 Seren&lt;/h2&gt;
-
-&lt;h3 id=&quot;pybbio-&quot;&gt;安裝 PyBBIO 模組&lt;/h3&gt;
-
-&lt;p&gt;我這邊打算使用 Python 來處理 IO 控制，這樣就可透過按鍵或開關，來控制連線通訊，也可接個燈號顯示來電。&lt;/p&gt;
-
-&lt;p&gt;PyBBIO 模組應可達到我想要的功能。&lt;/p&gt;
-
-&lt;p&gt;先滿足相依性需求：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# apt-get install python-serial python-setuptools python-dev python-smbus python-pip
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;註：目前 PyBBIO 穩定版只支援到 3.8 版 Linux 核心。&lt;/p&gt;
-
-&lt;p&gt;同時需要 Device Tree 編譯器 dtc，若系統中沒有，可至下列位址安裝:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# wget -c https://raw.github.com/RobertCNelson/tools/master/pkgs/dtc.sh
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;上述環境準備好之後，安裝 PyBBIO Python 程式庫模組&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# pip install --upgrade PyBBIO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;想要自己編譯的，可至下列位址下載:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# git clone git:/github.com/alexanderhiam/PyBBIO.git
-# cd PyBBIO
-# python setup.py install
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;我的 ugly 控制程式如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;bbio&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;bbio.libraries.EventIO&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;	&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bbio&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;的&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EventIO&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;可建立額外的事件偵測迴圈&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pexpect&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;使用&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pexpect&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;來建立子程序呼叫其他程式並與其溝通&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;bbio&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bbio_init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#指定對應GPIO針腳&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinAccept&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GPIO1_13&lt;/span&gt; 	&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P8_11&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinHangup&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GPIO1_12&lt;/span&gt; 	&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P8_12&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinCall&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GPIO1_15&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P8_15&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinLED&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GPIO1_14&lt;/span&gt;    	&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P8_16&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#設定 GPIO 針腳功能&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinAccept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INPUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinHangup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INPUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinCall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INPUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinLED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OUTPUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#建立子行程，呼叫 seren 程式，並給予相關參數&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;child&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pexpect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spawn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;seren -n Engine -NS -d hw:1,0&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#方便除錯，先將子行程輸出顯示在 stdout&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logfile_read&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stdout&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#定義觸發事件與進行的動作，記得要回傳 EVENT_CONTINUE，事件才可重複觸發&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;accept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;/y&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EVENT_CONTINUE&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;hangup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;/H&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;digitalWrite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinLED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LOW&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EVENT_CONTINUE&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;/c 192.168.168.114&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EVENT_CONTINUE&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#建立事件偵測迴圈，並加進偵測事件，後方之數值 400 為消除 bounce 的延遲時間&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EventLoop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DigitalTrigger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinAccept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HIGH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;accept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;400&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DigitalTrigger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinHangup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HIGH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hangup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;400&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DigitalTrigger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinCall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HIGH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;400&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#透過偵測子行程 seren 的輸出回應，顯示來電燈號，因 expect事件會 blocking 其他行程，這裡指定 timeout 秒數為 1，以持續不斷偵測。&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;is calling:&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pexpect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TIMEOUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-	    &lt;span class=&quot;c&quot;&gt;#print &#39;\nIncoming Call!&#39;&lt;/span&gt;
-	    &lt;span class=&quot;n&quot;&gt;digitalWrite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinLED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HIGH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    	&lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Thu, 19 May 2016 22:20:08 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-2.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-2.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>使用 BeagleBone Black 或 Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (1/2)</title>
-        <description>&lt;h2 id=&quot;seren-on-beaglebone-black&quot;&gt;Seren on BeagleBone Black&lt;/h2&gt;
-
-&lt;p&gt;在 Linux 上有隻名為 &lt;strong&gt;Seren&lt;/strong&gt; 的簡易 VoIP 程式，可在終端機模式下進行語音通訊與文字交談，不必使用外部廠商提供的通訊軟體或註冊任何服務帳號，很適合小型輕量化系統使用，搭配 BeagleBone 或 Raspberry Pi 的 GPIO 做通訊開關控制，可衍生出不少應用。&lt;/p&gt;
-
-&lt;p&gt;Seren 的前身稱為 Parole，使用 &lt;strong&gt;&lt;em&gt;C&lt;/em&gt;&lt;/strong&gt; 語言開發，利用 &lt;strong&gt;&lt;em&gt;alsa&lt;/em&gt;&lt;/strong&gt; 程式庫與音效卡溝通，並用 &lt;strong&gt;&lt;em&gt;opus&lt;/em&gt;&lt;/strong&gt; codec 處理音訊壓縮，進化至 Seren 後，增加了使用 &lt;strong&gt;&lt;em&gt;gmp&lt;/em&gt;&lt;/strong&gt; 演算法程式庫優化程式，可允許多達 10 人加入同一音訊會議，並加入利用 &lt;strong&gt;&lt;em&gt;ncurse&lt;/em&gt;&lt;/strong&gt; 做成的文字使用者介面，方便操作。&lt;/p&gt;
-
-&lt;p&gt;Seren 目前可在 Fedora/RHEL/CentOS Linux 版本中，直接從官方程式庫(Repositories)下載：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# yum install seren
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Debian/Ubuntu 系列則還未收入官方程式庫，因此要在 BeagleBone Black/Raspberry Pi 上使用 Seren，須自行&lt;a href=&quot;http://holdenc.altervista.org/seren/downloads/seren-0.0.21.tar.gz&quot;&gt;下載&lt;/a&gt;原始碼編譯，編譯時需要的相依性套件如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo apt-get install build-essential libasound2-dev libopus-dev libogg-dev libgmp-dev libncursesw5-dev
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;將原始碼下載解壓至一工作目錄後，在工作目錄下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./configure	
-//確認滿足編譯所需相依性，並產生 make 組態檔
-$ make	
-//編譯程式...，在 BeagleBone Black 上需要幾分鐘時間
-
-//如果想將執行檔安裝至系統目錄下，可再執行這行
-$ sudo make install
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;seren&quot;&gt;使用 Seren&lt;/h2&gt;
-
-&lt;p&gt;操作方法相當簡單，使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;seren -h&lt;/code&gt; 查看可用命令列參數，或直接執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;seren&lt;/code&gt; 進入互動操作模式，&lt;code class=&quot;highlighter-rouge&quot;&gt;seren&lt;/code&gt; 執行後便會進入接聽待命模式，要撥打電話的一方只要鍵入 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/c 對方IP位址&lt;/code&gt;&lt;/strong&gt; 即可進行連線。&lt;/p&gt;
-
-&lt;p&gt;若系統未連接音效卡或預設的音效卡設備無法提供 seren 連接使用時，可能會出現如下訊息：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[alsa] Cannot open audio device &#39;hw:0,0&#39;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;可利用下列方式排除問題:&lt;/p&gt;
-
-&lt;p&gt;列出可用的音效卡設備編號 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;hw:x,x&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat /proc/asound/pcm
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;亦可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;$ cat /proc/asound/cards&lt;/code&gt; 或是 &lt;code class=&quot;highlighter-rouge&quot;&gt;$ cat /proc/asound/devices&lt;/code&gt; 查看&lt;/p&gt;
-
-&lt;p&gt;若系統中也裝有 &lt;code class=&quot;highlighter-rouge&quot;&gt;alsa-utils&lt;/code&gt; 音效卡工具程式庫，可用 &lt;code class=&quot;highlighter-rouge&quot;&gt;aplay -l&lt;/code&gt; 指令列出音效卡設備。&lt;/p&gt;
-
-&lt;p&gt;確認音效卡編號後，可在啟動 seren 時使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;-d hw:x,x&lt;/code&gt; 參數，指定實際之音效卡編號載入使用。&lt;/p&gt;
-</description>
-        <pubDate>Thu, 19 May 2016 22:20:03 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-1.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-1.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>使用 BeagleBone Black 打造 Tor Bridge Relay</title>
-        <description>&lt;h2 id=&quot;beaglebone-black--tor-bridge-relay&quot;&gt;使用 BeagleBone Black 打造 Tor Bridge Relay&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;安裝標準 Debian 系統 Image，因為要作為網路服務器使用，只要安裝 Console 版本即可。
- 我這裡裝的是可安裝至 onboard 2GB eMMC 中的 debian wheezy。&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; BBB-eMMC-flasher-debian-7.8-console-armhf-2015-07-28-2gb.img
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;安裝 Tor package&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; apt-get update; apt-get install tor
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;安裝 python 環境&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; apt-get install python2.7 python-pip python-dev build-essential
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;安裝 obfsproxy&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; pip install obfsproxy
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;編輯 /etc/tor/torrc&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; SocksPort 0
- ORPort auto
- BridgeRelay 1
- Exitpolicy reject *:*
-
- ## CHANGEME_1 -&amp;gt; provide a nickname for your bridge, can be anything you like
- #Nickname CHANGEME_1
- ## CHANGEME_2 -&amp;gt; provide some email address so we can contact you if there&#39;s a problem
- #ContactInfo CHANGEME_2
-
- ServerTransportPlugin obfs3 exec /usr/local/bin/obfsproxy managed
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;修正系統時間&lt;/p&gt;
-
-    &lt;p&gt;若系統中沒有 ntpdate ，請先安裝&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; apt-get install ntpdate 
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;校時&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ntpdate -b -s -u pool.ntp.org
- hwclock -w
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;我這邊是將校時的動作，寫至 &lt;code class=&quot;highlighter-rouge&quot;&gt;rc.local&lt;/code&gt; 中&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;啟動 tor&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; service tor restart
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;檢查 /var/log/tor/log 中是否有相關紀錄&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;開啟防火牆連接埠轉送&lt;/p&gt;
-
-    &lt;p&gt;ORPort 與 obfsproxy 兩個連接埠都須開啟允許外部連接轉送至 BeagleBone 上。&lt;/p&gt;
-
-    &lt;p&gt;obfsproxy 使用埠號可至 /var/log/tor/log 中查詢。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;可安裝 arm 套件觀看 Tor 系統使用狀況&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; apt-get install tor-arm
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;若需 HTTP 代理伺服器服務可安裝 polipo&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install polipo	
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Sat, 14 May 2016 18:07:33 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/14/beaglebonetor-relay.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/14/beaglebonetor-relay.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>建立 Chroot 環境</title>
-        <description>&lt;h2 id=&quot;chroot&quot;&gt;Chroot&lt;/h2&gt;
-&lt;p&gt;暫時將系統根目錄指到特定的目錄下，建立ㄧ個獨立的環境供測試、開發用。在此環境下執行的程式無法看到系統中的其他部分。&lt;/p&gt;
-
-&lt;h3 id=&quot;section&quot;&gt;建立工具&lt;/h3&gt;
-&lt;p&gt;在 chroot 建立的環境中，需要基本的系統程式才能運作。手動建立環境程序太繁雜，還好有 &lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 與 &lt;code class=&quot;highlighter-rouge&quot;&gt;debootstrap&lt;/code&gt; 工具程式幫我們處理。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 用來管理不同的 chroot 環境，&lt;code class=&quot;highlighter-rouge&quot;&gt;debootstrap&lt;/code&gt; 則用來在指定目錄中建立一個基本作業系統。附帶一提的是 &lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 已被 &lt;code class=&quot;highlighter-rouge&quot;&gt;schroot&lt;/code&gt; 取代，雖然仍可用 &lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 指令存取，事實上會連結至 &lt;code class=&quot;highlighter-rouge&quot;&gt;schroot&lt;/code&gt;。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo apt-get update
-$sudo apt-get install dchroot debootstrap
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;編輯 &lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 設定組態檔&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo vi /etc/schroot/schroot.conf
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;底下是個範例&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[saucy]
-description=Ubuntu Saucy
-location=/test
-priority=3
-users=demouser
-groups=sbuild
-root-groups=root
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;在指令目錄中安裝系統&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo debootstrap --variant=buildd --arch amd64 saucy /test/ http://mirror.cc.columbia.edu/pub/linux/ubuntu/archive/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--variant＝&lt;/code&gt; 項目表示使用何種類型的環境，&lt;code class=&quot;highlighter-rouge&quot;&gt;buildd&lt;/code&gt; 表示直接安裝成程式開發工具，也就是會安裝 &lt;code class=&quot;highlighter-rouge&quot;&gt;build-essential&lt;/code&gt; 套件。&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--arch&lt;/code&gt; 指定系統架構&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;saucy&lt;/code&gt; 則對應於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/schroot/schroot.conf&lt;/code&gt; 中的設定&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/test/&lt;/code&gt; 安裝目錄，後方之網址則為來源路徑&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;安裝完成後，如果查看 &lt;code class=&quot;highlighter-rouge&quot;&gt;/test/&lt;/code&gt; 目錄內容，可看到如同系統根目錄般的目錄結構：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bin   dev  home  lib64  mnt  proc  run   srv  tmp  var boot  etc  lib   media  opt  root  sbin  sys  usr
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;最後，進行主系統的 fstab 檔設定，好讓主系統能認得子系統的系統程序檔：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo vi /etc/fstab	
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;proc /test/proc proc defaults 0 0
-sysfs /test/sys sysfs defaults 0 0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;掛載進子系統&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo mount proc /test/proc -t proc
-$sudo mount sysfs /test/sys -t sysfs
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;子系統若需要存取與主系統相同的網路環境，可將主系統的 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; 檔案複製進子系統&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$cp /etc/hosts /test/etc/hosts
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;完成&lt;/h3&gt;
-
-&lt;p&gt;chroot 到子系統：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo chroot /test/ /bin/bash
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sat, 14 May 2016 18:01:18 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/14/chroot.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/14/chroot.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>BeagleBone Black 的 Device Tree overlays</title>
-        <description>&lt;p&gt;Device Tree (DT)是一種用來描述系統中硬體設備的方法，例如描述 UART 如何與系統介接，接腳定義，啟用與否，使用何種驅動程式等等。&lt;/p&gt;
-
-&lt;p&gt;過去數年，各式各樣硬體架構的 Linux 設備蓬勃快速發展，特別是 ARM 架構系統，然而百家爭鳴的場面，加上 ARM 社群無人出面整合，各方的開發者經常隨意的修改並要求 Kernel pull request，讓老大 Torvalds 還因此&lt;a href=&quot;http://article.gmane.org/gmane.linux.ports.arm.omap/55060&quot;&gt;動怒&lt;/a&gt;，因此 BeagleBone 開發人員便實作了 Device Tree 方法，來處理這些硬體設備。&lt;/p&gt;
-
-&lt;p&gt;BeagleBone Black 從 Linux Kernel 3.8 後開始使用 Device Tree，底下來實際看看一個 BB-UART1 DT 檔案內容，如何設定使用 BBB 的 P9_24 與 P9_26 來作為 UART 接腳。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/dts-v1/;
-/plugin/;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;DT overlay 檔案中的前兩行說明此 dts 檔案的版本，並說明這是一個 plugin。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/ {
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;接下來的大括號描述此 DT 的根節點(root node)。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;compatible = &quot;ti,beaglebone&quot;, &quot;ti,beaglebone-black&quot;;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;“compatible” 說明此 DT 設計用來在何種硬體平台使用，從最相容到最少相容依序排列。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/* identification */
-part-number = &quot;BB-UART1&quot;;
-version = &quot;00A0&quot;; 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;part-number 與 version 進一步確保載入適當的 DT overlays。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/* state the resources this cape uses */
-    exclusive-use =
-            /* the pin header uses */
-            &quot;P9.24&quot;,        /* uart1_txd */
-            &quot;P9.26&quot;,        /* uart1_rxd */
-            /* the hardware ip uses */
-            &quot;uart1&quot;;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;exclusive-use 描述需要的資源，防止其他 overlays 使用這些資源，例如這裏指定的 UART1 TX 與 RX 分別使用 P9.24 與 P9.26 針腳。&lt;/p&gt;
-
-&lt;p&gt;接下來是 device tree 片段，描述要 overlay 哪個 target，例如底下指定的 am33x_pinmux，相容於 pinctrl-single driver(?)&lt;/p&gt;
-
-&lt;p&gt;__overlay__ 節點中的第一項屬性為 bb_uart1_pins，包含針腳的定義，以便供 pinctrl-single driver 使用。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fragment@0 {
-            target = &amp;lt;&amp;amp;am33xx_pinmux&amp;gt;;
-            __overlay__ {
-                    bb_uart1_pins: pinmux_bb_uart1_pins {
-                            pinctrl-single,pins = &amp;lt;
-                                    0x184 0x20 /* P9.24 uart1_txd.uart1_txd MODE0 OUTPUT (TX)  */
-                                    0x180 0x20 /* P9.26 uart1_rxd.uart1_rxd MODE0 INPUT (RX)  */
-                            &amp;gt;;
-                    };
-            };
-    };
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;最後一段用來啟動 uart 設備，指定 uart2 與相對應的 pin (bb_uart1_pins)。&lt;/p&gt;
-
-&lt;p&gt;在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/lib/firmware&lt;/code&gt; 目錄中可以查看許多的 DT overlays 檔案，dts 為原始檔，dtbo則為已編譯檔。而目前系統中已透過 bone cape manager 啟用中的 overlays 則位於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/sys/devices/bone_capemgr.*&lt;/code&gt; 註：(Jessie 版本改至 &lt;code class=&quot;highlighter-rouge&quot;&gt;/sys/devices/platform/bone_capemgr/&lt;/code&gt;下)&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@beaglebone:/lib/firmware# cd /sys/devices/bone_capemgr.*
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;會用 * 的原因為，有時會因啟動順序而改變。接著查看其中的 slots 檔案：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@beaglebone:/sys/devices/bone_capemgr.8# cat slots
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;會出現如下的內容：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0: 54:PF--- 
-1: 55:PF--- 
-2: 56:PF--- 
-3: 57:PF--- 
-4: ff:P-O-L Bone-LT-eMMC-2G,00A0,Texas Instrument,BB-BONE-EMMC-2G
-5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;前三個 slots 是由 capes 的 EEPROM IDs 指定，接下來兩個是開機時載入，第 4 項為板子內建的 EMMC 記憶體，第 5 項用來啟用 HDMI component。&lt;/p&gt;
-
-&lt;p&gt;接著來嘗試載入 UART1 overlay，剛剛在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/lib/firmware&lt;/code&gt; 目錄中可查得 uart1 的 overlay dtbo 檔名為 &lt;code class=&quot;highlighter-rouge&quot;&gt;BB-UART1.dtbo&lt;/code&gt;，因此我們可以如此做：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@beaglebone:/sys/devices/bone_capemgr.8# echo BB-UART1 &amp;gt; slots
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;此動作會使用 overlay 來啟用 UART1 設備與驅動程式，確認一下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@beaglebone:/sys/devices/bone_capemgr.8# cat slots
-
-0: 54:PF--- 
-1: 55:PF--- 
-2: 56:PF--- 
-3: 57:PF--- 
-4: ff:P-O-L Bone-LT-eMMC-2G,00A0,Texas Instrument,BB-BONE-EMMC-2G
-5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
-6: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-UART1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;要手動卸載時，在項目號碼前加上 &lt;code class=&quot;highlighter-rouge&quot;&gt;-&lt;/code&gt; 號，echo 進 slots 檔案中：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@beaglebone:/sys/devices/bone_capemgr.8# echo -6 &amp;gt; slots
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;上述手動載入的 overlay 會在重開機即消失，要在開機時自動載入，必須修改 /boot/uEnv.txt 檔案，加入此行：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;capemgr.enable_partno=BB-UART1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;##編譯新的 Device Tree&lt;/p&gt;
-
-&lt;p&gt;有時需要加入原始系統中沒有的 DT overlays，需要自己將 dts 檔編譯成 dtbo 檔，例如底下 Adafruit 的 SPI bus overlay，方法如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dtc -O dtb -o ADAFRUIT-SPI0-00A0.dtbo -b 0 -@ ADAFRUIT-SPI0-00A0.dts
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;系統中如果沒有 dtc 編譯器，可至此處下載：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget -c https://raw.githubusercontent.com/RobertCNelson/tools/master/pkgs/dtc.sh
-chmod +x dtc.sh
-./dtc.sh 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sat, 14 May 2016 17:55:30 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/14/beaglebone-black-device-tree.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/14/beaglebone-black-device-tree.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>sudo or root?</title>
-        <description>&lt;p&gt;取得 Root 特權的方法：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;直接登入 root 帳號&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;遠端使用 ssh 登入 root 帳號&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ssh root@IP_address
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;遠端主機需執行 sshd ，同時允許 root 可透過 ssh 登入， 確定遠端主機中的 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/ssh/sshd.config&lt;/code&gt; 設定檔中有下列一行設定：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  PermitRootLogin Yes
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;使用 su 取得 root 特權(成為 root)，系統會要求輸入 &lt;strong&gt;root&lt;/strong&gt; 密碼&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $su
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;使用 sudo 以 root 特權執行程式，不一樣的是系統要求輸入的是 &lt;strong&gt;使用者&lt;/strong&gt; 的密碼&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $sudo command
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;為何一般使用者透過 sudo 指令與自己的密碼，就可取得 root 特權執行程式，其實是透過 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/sudoers&lt;/code&gt; 檔案來進行控管。&lt;/p&gt;
-
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/sudoers&lt;/code&gt;檔案內的設定可決定誰具有取得 root 特權的能力，因此檔案屬性預設為無法編輯，且只有 root 才能檢視，&lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/sudoers&lt;/code&gt;檔案屬性如下：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  -r--r----- 1 root root 800 Aug 19  2014 sudoers	   要修改 `/etc/sudoers` 檔內容時，必須使用 **`visudo`** 指令來編輯 `/etc/sudoers` 檔，`visudo` 會啟動系統預設的文字編輯器如 `vi` 或 `nano` ，存檔時會自動檢查輸入內容是否符合 `/etc/sudoers` 語法，確保內容無誤。
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;在 ubuntu 中可看到如下的 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/sudoers&lt;/code&gt; 檔內容：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  Defaults        env_reset
-  Defaults        mail_badpass
-  Defaults        secure_path=&quot;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;
-	
-  # User privilege specification
-  root    ALL=(ALL:ALL) ALL
-
-  # Members of the admin group may gain root privileges
-  %admin ALL=(ALL) ALL
-
-  # Allow members of group sudo to execute any command
-  %sudo   ALL=(ALL:ALL) ALL
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;再來看看設定檔內容怎麼寫：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  Defaults env_reset
-  // 這行用來清除使用者環境變數，避免有害的變數帶入 sudo 環境。
-  Defaults secure_path=
-  // 這行則定義 sudo 環境下的執行檔搜尋路徑。
-	
-  root ALL=(ALL:ALL) ALL
-  //root 為要套用規則的使用者名稱
-  //第一個欄位 ALL 表示要套用到所有“主機”
-  //第二個欄位 ALL 表示此使用者可像所有的 users 般執行 commands
-  //第三個欄位 ALL 表示此使用者可像所有的 groups 般執行 commands
-  //第四個欄位 ALL 表示此使用者可執行所有的 commands
-	
-  %admin ALL=(ALL) ALL
-  使用者名稱前加上 % 則表示群組，在此群組內的使用者將可套用規則。
-  依此方法，可對個別使用者進行對不同程式執行權限的詳細控管。
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;查詢自己的 sudo 權限內容：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $sudo -l
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Sat, 30 Apr 2016 18:16:07 +0800</pubDate>
-        <link>http://www.robodock.net/2016/04/30/sudo-or-root.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/04/30/sudo-or-root.html</guid>
-        
-        
-      </item>
+    <pubDate>Thu, 26 May 2016 13:55:19 +0800</pubDate>
+    <lastBuildDate>Thu, 26 May 2016 13:55:19 +0800</lastBuildDate>
+    <generator>Jekyll v3.1.6</generator>
     
       <item>
         <title>使用 Raspberry Pi 製作紅外線遙控器</title>
@@ -933,7 +32,7 @@ $lirc_rpi gpio_in_pin=23 gpio_out_pin=22
 
 &lt;p&gt;修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/lirc/hardware.conf&lt;/code&gt; 設定檔:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;########################################################
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$########################################################
 # /etc/lirc/hardware.conf
 #
 # Arguments which will be used when launching lircd
@@ -1018,7 +117,7 @@ pulse 788
 &lt;/div&gt;
 
 &lt;hr /&gt;
-&lt;p&gt;## 錄製遙控器訊號&lt;/p&gt;
+&lt;p&gt;##錄製遙控器訊號##&lt;/p&gt;
 
 &lt;p&gt;接下來便可用 &lt;code class=&quot;highlighter-rouge&quot;&gt;irrecord&lt;/code&gt; 指令來錄製遙控器按鍵編碼：&lt;/p&gt;
 
@@ -1079,7 +178,7 @@ $sudo /etc/init.d/lirc start //啟動 lirc 服務
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;led&quot;&gt;連接紅外線發射 LED&lt;/h2&gt;
+&lt;p&gt;##連接紅外線發射 LED##&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://googledrive.com/host/0B3VMyKy-nGUYUk4xZkFKUDlFU1E&quot; alt=&quot;紅外線LED&quot; /&gt;&lt;/p&gt;
 
@@ -1103,7 +202,7 @@ $irsend SEND_ONCE sony KEY_POWER
 
 &lt;hr /&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;完成!&lt;/h3&gt;
+&lt;p&gt;###完成!###&lt;/p&gt;
 
 &lt;p&gt;記得不要惡搞鄰居家的電視機…&lt;/p&gt;
 </description>
@@ -1134,7 +233,7 @@ $ sudo pip install Adafruit_BBIO
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;用法:&lt;/h2&gt;
+&lt;p&gt;##用法：##&lt;/p&gt;
 
 &lt;p&gt;匯入模組:&lt;/p&gt;
 
@@ -1176,7 +275,7 @@ if GPIO.event_detected(&quot;P8_12&quot;):
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;beaglebone-black-gpio-&quot;&gt;BeagleBone Black GPIO 腳位參考圖&lt;/h3&gt;
+&lt;p&gt;###BeagleBone Black GPIO 腳位參考圖###&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://www.mathworks.com/help/supportpkg/beagleboneio/ug/beaglebone_black_pinmap.png&quot; alt=&quot;BeagleBone Black GPIO pin&quot; /&gt;&lt;/p&gt;
 
@@ -1197,6 +296,351 @@ while True:
         <pubDate>Sun, 17 Apr 2016 12:08:05 +0800</pubDate>
         <link>http://www.robodock.net/2016/04/17/beaglebone-black-gpio.html</link>
         <guid isPermaLink="true">http://www.robodock.net/2016/04/17/beaglebone-black-gpio.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>vi(vim) Tab 縮排設定</title>
+        <description>&lt;p&gt;Python 使用者都知道，程式需要一致的縮排設定方可正常運作，比如說編輯器的&lt;em&gt;tab鍵&lt;/em&gt;設定，如果使用的是 tab 字元，程式從頭到尾的縮排就必須使用 tab 字元，如果是使用空白字元，就必須都使用空白字元，不可混用。&lt;/p&gt;
+
+&lt;p&gt;為了方便統一，我習慣使用 4 個空白字元當作 Python 程式的縮排，底下是使用 vi 編輯器時的設定。&lt;/p&gt;
+
+&lt;p&gt;可設定在 ~/.vimrc 中，做為永久設定：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:set expandtab
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;使用空白字元 (space) 取代 Tab。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:set tabstop=4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;設定插入 tab 時用 4 個空白 (space) 字元取代。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:set shiftwidth=4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;設定程式縮排為 4 個空白字元 (space)。&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 14 Apr 2016 21:21:47 +0800</pubDate>
+        <link>http://www.robodock.net/2016/04/14/vi-tab-stop.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/04/14/vi-tab-stop.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>OS X 下建置 Ruby 開發應用環境</title>
+        <description>&lt;h2 id=&quot;os-x--ruby-&quot;&gt;OS X 下建置 Ruby 開發應用環境&lt;/h2&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;基本安裝&lt;/h3&gt;
+&lt;p&gt;基本安裝適合只想使用單一 Ruby 版本的使用者，開發人員可直接跳過這一段，直接查看 &lt;em&gt;進階安裝&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;OS X 系統中已內建 Ruby 環境，但通常版本老舊，開放原始碼世界變化快速，建議使用最新穩定版。
+若環境單純，無多版本需求者，可使用 Homebrew 套件管理工具來安裝：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew install ruby
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;進階安裝&lt;/h3&gt;
+
+&lt;p&gt;開發與應用開放原始碼軟體時，經常會遇到安裝多個程式庫版本的問題，在 Ruby 的世界中，我們可以使用 **版本管理工具 rbenv ** 來達成在不同 Ruby 版本中的作業管理：&lt;/p&gt;
+
+&lt;p&gt;###rbenv###&lt;/p&gt;
+
+&lt;p&gt;rbenv 透過在系統路徑最前方加入 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.rbenv/shims&lt;/code&gt;路徑，透過 shims 程式攔截 ruby 相關指令，再依據所設定的參數，選擇對應的 ruby 版本據以執行。&lt;/p&gt;
+
+&lt;p&gt;rbenv 管理下的不同版本 ruby 系統程式會安裝在 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.rbenv/versions/x.x.x&lt;/code&gt; 目錄下。&lt;/p&gt;
+
+&lt;p&gt;使用 Homebrew 安裝 rbenv 版本環境管理工具：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew install rbenv
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;更新 rbenv&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ brew upgrade rbenv ruby-build
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;第一次使用須執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;rbenv init&lt;/code&gt;，依照說明進行初始化設定。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv init
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;安裝不同版本 Ruby :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv install -l  //列出可安裝版本
+$ rbenv install 2.2.3	//安裝 ruby 2.2.3 版
+$ rbenv rehash		//在安裝的版本目錄中加入 shims
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;要切換使用的 ruby 版本環境：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv version	//查看目前使用版本
+$ rbenv local x.x.x	//選擇使用版本
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;然後便可正常執行諸如 gem 之類的指令。&lt;/p&gt;
+
+&lt;p&gt;時間一久，系統中可能累積了許多舊版本，移除舊版本可直接清除 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.rbenv/versions&lt;/code&gt; 底下的目錄或透過 &lt;code class=&quot;highlighter-rouge&quot;&gt;rbenv uninstall&lt;/code&gt; 來移除。&lt;/p&gt;
+
+&lt;p&gt;其他參考指令：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ rbenv versions //查看系統中安裝了哪些版本
+$ rbenv version	//查看目前使用版本
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 09 Apr 2016 19:33:41 +0800</pubDate>
+        <link>http://www.robodock.net/2016/04/09/osx-ruby-environment.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/04/09/osx-ruby-environment.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>在 BeagleBone Black 或 Raspberry Pi 上使用 RTL-SDR usb dongle</title>
+        <description>&lt;h2 id=&quot;beaglebone-black--raspberry-pi--rtl-sdr-usb-dongle&quot;&gt;在 BeagleBone Black 或 Raspberry Pi 上使用 RTL-SDR usb dongle&lt;/h2&gt;
+
+&lt;p&gt;編譯參數如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd rtl-sdr/build
+cmake ../ -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON
+make
+sudo make install
+ldconfig
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;重新開機後應可成功驅動，可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;rtl_test&lt;/code&gt; 命令測試。&lt;/p&gt;
+
+&lt;p&gt;啟動 rtl_tcp server 供其他用戶端程式(如 &lt;code class=&quot;highlighter-rouge&quot;&gt;SDR#&lt;/code&gt; 或 &lt;code class=&quot;highlighter-rouge&quot;&gt;GQRX&lt;/code&gt; 連接使用：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rtl_tcp -a xxx.xxx.xxx.xxx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;xxx 為 ip 位址。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 09 Apr 2016 15:51:52 +0800</pubDate>
+        <link>http://www.robodock.net/2016/04/09/rtl-sdr-usb-dongle.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/04/09/rtl-sdr-usb-dongle.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>使用 FFmpeg 將序列圖片轉換成影片</title>
+        <description>&lt;h2 id=&quot;ffmpeg-&quot;&gt;使用 FFmpeg 將序列圖片轉換成影片&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-framerate&lt;/code&gt; 每秒多少張圖片，預設值為 25, &lt;code class=&quot;highlighter-rouge&quot;&gt;-r&lt;/code&gt; 影片播放 fps, 省略時使用與輸入framerate 相同數值。&lt;/p&gt;
+
+&lt;p&gt;如果想從一系列的圖片中的特定號碼開始，可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;-start_number&lt;/code&gt; 參數，&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -start_number 126 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;如果影片無法正確顯示時，嘗試使用下列 fps video filter 格式取代 &lt;code class=&quot;highlighter-rouge&quot;&gt;-r&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p output.mp4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;或指定 format video filter:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -vf &quot;fps=25,format=yuv420p&quot; output.mp4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 09 Apr 2016 15:32:16 +0800</pubDate>
+        <link>http://www.robodock.net/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/04/09/use-ffmpeg-create-video-from-series-of-images.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>BeagleBone Black 使用 Connman 管理設定網路</title>
+        <description>&lt;p&gt;新的 Debian(armhf) for BeagleBone Black (簡稱BBB)改用 ConnMan 來作為網路管理程式，感覺比設定 wpa_supplicant.conf 組態檔更為簡易，用法如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;connmanctl&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;connmanctl 為 ConnMan 的標準命令列用戶端程式，有兩種使用方式：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- connmanctl [arguments] 的方式啟動。
+- 或直接執行 connmanctl，進入互動模式，在 connmanctl&amp;gt; 提示符號後輸入指令。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;在 BBB 上通常搭配 USB 無線網卡，接上網卡後須先啟用：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$connmanctl enable wifi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;接下來掃描可用無線網路存取點：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$connmanctl scan wifi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;掃瞄完成後列出可用 AP:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$connmanctl services
+Network1	wifi_dc85de828967_68756773616d_managed_none
+Network2	wifi_dc85de828967_38303944616e69656c73_managed_psk 
+Network3	wifi_dc85de828967_3257495245363836_managed_wep	 接下有兩種情況：
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果連接的是開放式網路(無密碼保護):&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $connmanctl connect wifi_dc85de828967_68756773616d_managed_none
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果連接的是有密碼保護的 AP，必須使用互動模式:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $connmanctl
+  connmanctl&amp;gt; scan wifi
+	
+  connmanctl&amp;gt; services
+  Network1	wifi_dc85de828967_68756773616d_managed_none
+  Network2	wifi_dc85de828967_38303944616e69656c73_managed_psk 
+              wifi_74da38557d81_hidden_managed_psk
+	
+  connmanctl&amp;gt; connect wifi_dc85de828967_38303944616e69656c73_managed_psk
+  connmanctl&amp;gt; agent on
+  Agent registered
+	
+  connmanctl&amp;gt; connect wifi_dc85de828967_38303944616e69656c73_managed_psk
+  Agent RequestInput wifi_74da38557d81_hidden_managed_psk
+  Name = [ Type=string, Requirement=mandatory, Alternates=[ SSID ] ]
+  SSID = [ Type=ssid, Requirement=alternate ]
+  Passphrase = [ Type=psk, Requirement=mandatory ]
+  Hidden SSID name?
+  Passphrase?
+	
+  connmanctl&amp;gt; quit
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;最後可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;ifconfig&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;iwconfig&lt;/code&gt; 檢查無線網路連線狀況。&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 27 Mar 2016 20:44:48 +0800</pubDate>
+        <link>http://www.robodock.net/2016/03/27/beaglebone-black-connman.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/03/27/beaglebone-black-connman.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>迷你 USB WiFi 網卡與 BeagleBone Black HDMI 的干擾問題</title>
+        <description>&lt;p&gt;如果你跟我一樣被 BeagleBone Black 與 mini USB 無線網卡搞的灰頭土臉，那你可能要看看這篇。&lt;/p&gt;
+
+&lt;p&gt;在 BeagleBone 上 USB 插槽就在 HDMI 插槽旁邊，當使用如 Edimax EW-7811Un 這類的迷你 USB 無線網卡時，因為 USB 迷你網卡的天線過於接近 HDMI 插槽，HDMI 的訊號射頻會嚴重干擾 WiFi 天線。&lt;/p&gt;
+
+&lt;p&gt;我這邊的實際狀況是，當距離 AP 在 2 公尺內時還可正常通訊，到 5 公尺左右就已無法建立穩定的通訊。這種問題有時令人摸不著頭緒，徒勞耗費了許多時間在嘗試不同的組態檔設定。&lt;/p&gt;
+
+&lt;p&gt;解決方法有兩種：&lt;/p&gt;
+
+&lt;p&gt;第一：使用 USB 延長線或延伸出來的 USB 集線器，將 USB 迷你無線網卡遠離 HDMI 插槽，或是改用體積較大，附有外部天線的 USB 無線網卡。&lt;/p&gt;
+
+&lt;p&gt;第二：如果 BeagleBone 是當成 Headless 操作，不會連接螢幕使用，那就把 HDMI 輸出關閉，作法如下：&lt;/p&gt;
+
+&lt;p&gt;修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;/boot/uEnv.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;找到 &lt;code class=&quot;highlighter-rouge&quot;&gt;##Disable HDMI&lt;/code&gt; 項目，將 &lt;code class=&quot;highlighter-rouge&quot;&gt;##cape_disable=....&lt;/code&gt; 前方的 ## 註解拿掉如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;##Disable HDMI (v3.8.x)
+cape_disable=capemgr.disable_partno=BB-BONELT-HDMI,BB-BONELT-HDMIN 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;注意 uEnv.txt 設定檔中有很多類似的項目，例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;##Disable HDMI/eMMC&lt;/code&gt; 等等，不要改錯了，這個設定檔的內容會影響硬體功能的運作。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;存檔後重新開機。&lt;/p&gt;
+
+&lt;p&gt;OK，現在會影響 BeagleBone 與 AP 通訊的就只有距離了。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 26 Mar 2016 17:54:59 +0800</pubDate>
+        <link>http://www.robodock.net/2016/03/26/usb-wifi-beaglebone-black-hdmi.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/03/26/usb-wifi-beaglebone-black-hdmi.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>快速下載 Youtube 影片</title>
+        <description>&lt;p&gt;##快速下載 Youtube 影片的方法##&lt;/p&gt;
+
+&lt;p&gt;找到喜愛的 youtube 影片後，暫停播放，直接到上方的網址列，將 &lt;code class=&quot;highlighter-rouge&quot;&gt;www.youtube.com&lt;/code&gt; 改成 &lt;code class=&quot;highlighter-rouge&quot;&gt;ssyoutube.com&lt;/code&gt;，其他部分都不變。&lt;/p&gt;
+
+&lt;p&gt;網頁會轉址到 savefrom.net，並產生下載連結，選取對應的影片大小格式下載即可。&lt;/p&gt;
+</description>
+        <pubDate>Tue, 19 Jan 2016 22:29:53 +0800</pubDate>
+        <link>http://www.robodock.net/2016/01/19/download-youtube-video.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/01/19/download-youtube-video.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Screenly Install Nodejs+npm</title>
+        <description>&lt;p&gt;目前的 Screenly 使用 Raspbian (基於Debian 7 Wheezy)版本，系統預設並未安裝 node.js，若直接 apt-get 從預設 repository 安裝 node.js，則版本過於老舊。&lt;/p&gt;
+
+&lt;p&gt;###手動安裝新的 node.js 版本###
+直接下載最新的官方的 arm 架構 binary 檔案，
+注意 Raspberry Pi Model A, B, B+ 為 &lt;strong&gt;armv6&lt;/strong&gt; 架構，而 Raspberry Pi 2 則為 &lt;strong&gt;armv7&lt;/strong&gt; 架構，須選用相對應的 binary 檔案。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget https://nodejs.org/dist/v4.2.2/node-v4.2.2-linux-armv6l.tar.gz
+tar -xvf node-v4.2.2-linux-armv6l.tar.gz
+cd node-v4.2.2-linux-armv6l
+
+sudo cp -R * /usr/local/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;新版的 nodejs 已包含 npm 套件管理程式。&lt;/p&gt;
+
+&lt;p&gt;###安裝 http-server 套件###&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo npm install http-server -g
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Wed, 02 Dec 2015 15:22:28 +0800</pubDate>
+        <link>http://www.robodock.net/2015/12/02/screenly-install-nodejs-npm.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2015/12/02/screenly-install-nodejs-npm.html</guid>
         
         
       </item>

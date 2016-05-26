@@ -83,7 +83,7 @@ $lirc_rpi gpio_in_pin=23 gpio_out_pin=22
 
 <p>修改 <code class="highlighter-rouge">/etc/lirc/hardware.conf</code> 設定檔:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>########################################################
+<div class="highlighter-rouge"><pre class="highlight"><code>$########################################################
 # /etc/lirc/hardware.conf
 #
 # Arguments which will be used when launching lircd
@@ -168,7 +168,7 @@ pulse 788
 </div>
 
 <hr />
-<p>## 錄製遙控器訊號</p>
+<p>##錄製遙控器訊號##</p>
 
 <p>接下來便可用 <code class="highlighter-rouge">irrecord</code> 指令來錄製遙控器按鍵編碼：</p>
 
@@ -229,7 +229,7 @@ $sudo /etc/init.d/lirc start //啟動 lirc 服務
 
 <hr />
 
-<h2 id="led">連接紅外線發射 LED</h2>
+<p>##連接紅外線發射 LED##</p>
 
 <p><img src="https://googledrive.com/host/0B3VMyKy-nGUYUk4xZkFKUDlFU1E" alt="紅外線LED" /></p>
 
@@ -253,7 +253,7 @@ $irsend SEND_ONCE sony KEY_POWER
 
 <hr />
 
-<h3 id="section-1">完成!</h3>
+<p>###完成!###</p>
 
 <p>記得不要惡搞鄰居家的電視機…</p>
 
