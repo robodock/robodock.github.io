@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>BeableBone Black 使用 GPIO</title>
-  <meta name="description" content="安裝 Adafruit.BBIO python 模組">
+  <title>使用 BeagleBone Black 或 Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (1/2)</title>
+  <meta name="description" content="Seren on BeagleBone Black">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.robodock.net/2016/04/17/beaglebone-black-gpio.html">
+  <link rel="canonical" href="http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-1.html">
   <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://www.robodock.net/feed.xml">
 </head>
 
@@ -57,88 +57,64 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">BeableBone Black 使用 GPIO</h1>
-    <p class="post-meta"><time datetime="2016-04-17T12:08:05+08:00" itemprop="datePublished">Apr 17, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">使用 BeagleBone Black 或 Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (1/2)</h1>
+    <p class="post-meta"><time datetime="2016-05-19T22:20:03+08:00" itemprop="datePublished">May 19, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>安裝 Adafruit.BBIO python 模組</p>
+    <h2 id="seren-on-beaglebone-black">Seren on BeagleBone Black</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ sudo apt-get update
-$ sudo apt-get install build-essential python-dev python-setuptools python-pip python -smbus
+<p>在 Linux 上有隻名為 <strong>Seren</strong> 的簡易 VoIP 程式，可在終端機模式下進行語音通訊與文字交談，不必使用外部廠商提供的通訊軟體或註冊任何服務帳號，很適合小型輕量化系統使用，搭配 BeagleBone 或 Raspberry Pi 的 GPIO 做通訊開關控制，可衍生出不少應用。</p>
 
-$ sudo pip install Adafruit_BBIO
+<p>Seren 的前身稱為 Parole，使用 <strong><em>C</em></strong> 語言開發，利用 <strong><em>alsa</em></strong> 程式庫與音效卡溝通，並用 <strong><em>opus</em></strong> codec 處理音訊壓縮，進化至 Seren 後，增加了使用 <strong><em>gmp</em></strong> 演算法程式庫優化程式，可允許多達 10 人加入同一音訊會議，並加入利用 <strong><em>ncurse</em></strong> 做成的文字使用者介面，方便操作。</p>
+
+<p>Seren 目前可在 Fedora/RHEL/CentOS Linux 版本中，直接從官方程式庫(Repositories)下載：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># yum install seren
 </code></pre>
 </div>
 
-<p>執行下列指令測試模組是否成功安裝：</p>
+<p>Debian/Ubuntu 系列則還未收入官方程式庫，因此要在 BeagleBone Black/Raspberry Pi 上使用 Seren，須自行<a href="http://holdenc.altervista.org/seren/downloads/seren-0.0.21.tar.gz">下載</a>原始碼編譯，編譯時需要的相依性套件如下：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo python -c "import Adafruit_BBIO.GPIO as GPIO; print GPIO"
-
-#you should see this or similar:
-&lt;module 'Adafruit_BBIO.GPIO' from '/usr/local/lib/python2.7/dist-packages/Adafruit_BBIO/GPIO.so'&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>$ sudo apt-get install build-essential libasound2-dev libopus-dev libogg-dev libgmp-dev libncursesw5-dev
 </code></pre>
 </div>
 
-<h2 id="section">用法:</h2>
+<p>將原始碼下載解壓至一工作目錄後，在工作目錄下：</p>
 
-<p>匯入模組:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>$ ./configure	
+//確認滿足編譯所需相依性，並產生 make 組態檔
+$ make	
+//編譯程式...，在 BeagleBone Black 上需要幾分鐘時間
 
-<div class="highlighter-rouge"><pre class="highlight"><code>import Adafruit_BBIO.GPIO as GPIO
+//如果想將執行檔安裝至系統目錄下，可再執行這行
+$ sudo make install
 </code></pre>
 </div>
 
-<p>設定 GPIO 為輸入或輸出</p>
+<h2 id="seren">使用 Seren</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>GPIO.setup("P8_12", GPIO.IN)
+<p>操作方法相當簡單，使用 <code class="highlighter-rouge">seren -h</code> 查看可用命令列參數，或直接執行 <code class="highlighter-rouge">seren</code> 進入互動操作模式，<code class="highlighter-rouge">seren</code> 執行後便會進入接聽待命模式，要撥打電話的一方只要鍵入 <strong><code class="highlighter-rouge">/c 對方IP位址</code></strong> 即可進行連線。</p>
+
+<p>若系統未連接音效卡或預設的音效卡設備無法提供 seren 連接使用時，可能會出現如下訊息：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[alsa] Cannot open audio device 'hw:0,0'
 </code></pre>
 </div>
 
-<p>偵測 GPIO 輸入</p>
+<p>可利用下列方式排除問題:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>if GPIO.input("P8_12"):
-   		print("HIGH")
-else:
-   		print("LOW")
+<p>列出可用的音效卡設備編號 <strong><code class="highlighter-rouge">hw:x,x</code></strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ cat /proc/asound/pcm
 </code></pre>
 </div>
 
-<p>等候 GPIO 事件發生，此方式會一直等候，直到事件發生</p>
+<p>亦可使用 <code class="highlighter-rouge">$ cat /proc/asound/cards</code> 或是 <code class="highlighter-rouge">$ cat /proc/asound/devices</code> 查看</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>GPIO.wait_for_edge("P8_12", GPIO.RISING)
-\\GPIO.RISING 從低位變高位
-\\GPIO.FALLING 從高位變低位
-</code></pre>
-</div>
+<p>若系統中也裝有 <code class="highlighter-rouge">alsa-utils</code> 音效卡工具程式庫，可用 <code class="highlighter-rouge">aplay -l</code> 指令列出音效卡設備。</p>
 
-<p>另一種偵測事件方式，僅在執行時檢查，通常會搭配迴圈進行持續檢測</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>#加入偵測事件
-GPIO.add_event_detect("P8_12", GPIO.FALLING)
-#接著可執行其他程式碼
-#在想要偵測的地方加入:
-if GPIO.event_detected("P8_12"):
-   		print "event detected!"
-</code></pre>
-</div>
-
-<h3 id="beaglebone-black-gpio-">BeagleBone Black GPIO 腳位參考圖</h3>
-
-<p><img src="http://www.mathworks.com/help/supportpkg/beagleboneio/ug/beaglebone_black_pinmap.png" alt="BeagleBone Black GPIO pin" /></p>
-
-<p>連接按鈕元件(push button)，避免按壓按鈕時多次觸發</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>import Adafruit_BBIO.GPIO as GPIO
-import time
-
-GPIO.setup("P8_12", GPIO.IN)
-
-while True:
-   		if GPIO.input("P8_12"):
-  		print('button pressed!')
-   	time.sleep(0.1)	//簡單加入延遲迴圈可避免多次觸發
-</code></pre>
-</div>
+<p>確認音效卡編號後，可在啟動 seren 時使用 <code class="highlighter-rouge">-d hw:x,x</code> 參數，指定實際之音效卡編號載入使用。</p>
 
   </div>
 

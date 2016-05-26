@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>BeagleBone Black 的 Device Tree overlays</title>
+  <meta name="description" content="Device Tree (DT)是一種用來描述系統中硬體設備的方法，例如描述 UART 如何與系統介接，接腳定義，啟用與否，使用何種驅動程式等等。">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://www.robodock.net/2016/05/14/beaglebone-black-device-tree.html">
+  <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://www.robodock.net/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">RoboDock</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">BeagleBone Black 的 Device Tree overlays</h1>
+    <p class="post-meta"><time datetime="2016-05-14T17:55:30+08:00" itemprop="datePublished">May 14, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>Device Tree (DT)是一種用來描述系統中硬體設備的方法，例如描述 UART 如何與系統介接，接腳定義，啟用與否，使用何種驅動程式等等。</p>
+
+<p>過去數年，各式各樣硬體架構的 Linux 設備蓬勃快速發展，特別是 ARM 架構系統，然而百家爭鳴的場面，加上 ARM 社群無人出面整合，各方的開發者經常隨意的修改並要求 Kernel pull request，讓老大 Torvalds 還因此<a href="http://article.gmane.org/gmane.linux.ports.arm.omap/55060">動怒</a>，因此 BeagleBone 開發人員便實作了 Device Tree 方法，來處理這些硬體設備。</p>
+
+<p>BeagleBone Black 從 Linux Kernel 3.8 後開始使用 Device Tree，底下來實際看看一個 BB-UART1 DT 檔案內容，如何設定使用 BBB 的 P9_24 與 P9_26 來作為 UART 接腳。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/dts-v1/;
+/plugin/;
+</code></pre>
+</div>
+
+<p>DT overlay 檔案中的前兩行說明此 dts 檔案的版本，並說明這是一個 plugin。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/ {
+</code></pre>
+</div>
+
+<p>接下來的大括號描述此 DT 的根節點(root node)。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>compatible = "ti,beaglebone", "ti,beaglebone-black";
+</code></pre>
+</div>
+
+<p>“compatible” 說明此 DT 設計用來在何種硬體平台使用，從最相容到最少相容依序排列。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/* identification */
+part-number = "BB-UART1";
+version = "00A0"; 
+</code></pre>
+</div>
+
+<p>part-number 與 version 進一步確保載入適當的 DT overlays。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/* state the resources this cape uses */
+    exclusive-use =
+            /* the pin header uses */
+            "P9.24",        /* uart1_txd */
+            "P9.26",        /* uart1_rxd */
+            /* the hardware ip uses */
+            "uart1";
+</code></pre>
+</div>
+
+<p>exclusive-use 描述需要的資源，防止其他 overlays 使用這些資源，例如這裏指定的 UART1 TX 與 RX 分別使用 P9.24 與 P9.26 針腳。</p>
+
+<p>接下來是 device tree 片段，描述要 overlay 哪個 target，例如底下指定的 am33x_pinmux，相容於 pinctrl-single driver(?)</p>
+
+<p>__overlay__ 節點中的第一項屬性為 bb_uart1_pins，包含針腳的定義，以便供 pinctrl-single driver 使用。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>fragment@0 {
+            target = &lt;&amp;am33xx_pinmux&gt;;
+            __overlay__ {
+                    bb_uart1_pins: pinmux_bb_uart1_pins {
+                            pinctrl-single,pins = &lt;
+                                    0x184 0x20 /* P9.24 uart1_txd.uart1_txd MODE0 OUTPUT (TX)  */
+                                    0x180 0x20 /* P9.26 uart1_rxd.uart1_rxd MODE0 INPUT (RX)  */
+                            &gt;;
+                    };
+            };
+    };
+</code></pre>
+</div>
+
+<p>最後一段用來啟動 uart 設備，指定 uart2 與相對應的 pin (bb_uart1_pins)。</p>
+
+<p>在 <code class="highlighter-rouge">/lib/firmware</code> 目錄中可以查看許多的 DT overlays 檔案，dts 為原始檔，dtbo則為已編譯檔。而目前系統中已透過 bone cape manager 啟用中的 overlays 則位於 <code class="highlighter-rouge">/sys/devices/bone_capemgr.*</code> 註：(Jessie 版本改至 <code class="highlighter-rouge">/sys/devices/platform/bone_capemgr/</code>下)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>root@beaglebone:/lib/firmware# cd /sys/devices/bone_capemgr.*
+</code></pre>
+</div>
+
+<p>會用 * 的原因為，有時會因啟動順序而改變。接著查看其中的 slots 檔案：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>root@beaglebone:/sys/devices/bone_capemgr.8# cat slots
+</code></pre>
+</div>
+
+<p>會出現如下的內容：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>0: 54:PF--- 
+1: 55:PF--- 
+2: 56:PF--- 
+3: 57:PF--- 
+4: ff:P-O-L Bone-LT-eMMC-2G,00A0,Texas Instrument,BB-BONE-EMMC-2G
+5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
+</code></pre>
+</div>
+
+<p>前三個 slots 是由 capes 的 EEPROM IDs 指定，接下來兩個是開機時載入，第 4 項為板子內建的 EMMC 記憶體，第 5 項用來啟用 HDMI component。</p>
+
+<p>接著來嘗試載入 UART1 overlay，剛剛在 <code class="highlighter-rouge">/lib/firmware</code> 目錄中可查得 uart1 的 overlay dtbo 檔名為 <code class="highlighter-rouge">BB-UART1.dtbo</code>，因此我們可以如此做：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>root@beaglebone:/sys/devices/bone_capemgr.8# echo BB-UART1 &gt; slots
+</code></pre>
+</div>
+
+<p>此動作會使用 overlay 來啟用 UART1 設備與驅動程式，確認一下：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>root@beaglebone:/sys/devices/bone_capemgr.8# cat slots
+
+0: 54:PF--- 
+1: 55:PF--- 
+2: 56:PF--- 
+3: 57:PF--- 
+4: ff:P-O-L Bone-LT-eMMC-2G,00A0,Texas Instrument,BB-BONE-EMMC-2G
+5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
+6: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-UART1
+</code></pre>
+</div>
+
+<p>要手動卸載時，在項目號碼前加上 <code class="highlighter-rouge">-</code> 號，echo 進 slots 檔案中：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>root@beaglebone:/sys/devices/bone_capemgr.8# echo -6 &gt; slots
+</code></pre>
+</div>
+
+<p>上述手動載入的 overlay 會在重開機即消失，要在開機時自動載入，必須修改 /boot/uEnv.txt 檔案，加入此行：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>capemgr.enable_partno=BB-UART1
+</code></pre>
+</div>
+
+<p>##編譯新的 Device Tree</p>
+
+<p>有時需要加入原始系統中沒有的 DT overlays，需要自己將 dts 檔編譯成 dtbo 檔，例如底下 Adafruit 的 SPI bus overlay，方法如下：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>dtc -O dtb -o ADAFRUIT-SPI0-00A0.dtbo -b 0 -@ ADAFRUIT-SPI0-00A0.dts
+</code></pre>
+</div>
+
+<p>系統中如果沒有 dtc 編譯器，可至此處下載：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>wget -c https://raw.githubusercontent.com/RobertCNelson/tools/master/pkgs/dtc.sh
+chmod +x dtc.sh
+./dtc.sh 
+</code></pre>
+</div>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">RoboDock</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>RoboDock</li>
+          <li><a href="mailto:robodock@robodock.net">robodock@robodock.net</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/robodock"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">robodock</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/robo_dock"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">robo_dock</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>動力船塢工作日誌</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

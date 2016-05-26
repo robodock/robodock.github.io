@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>BeableBone Black 使用 GPIO</title>
-  <meta name="description" content="安裝 Adafruit.BBIO python 模組">
+  <title>Chocolatey</title>
+  <meta name="description" content="ChocolateyChocolatey 是一套 Windows 上的軟體套件管理程式，讓使用者可以用終端機指令的方式進行軟體的自動安裝、升級、移除動作，如同 Debian/Ubuntu 上的 apt-get 或是 Fedora/RedHat 上的 yum 一般。">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.robodock.net/2016/04/17/beaglebone-black-gpio.html">
+  <link rel="canonical" href="http://www.robodock.net/2016/05/25/chocolatey.html">
   <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://www.robodock.net/feed.xml">
 </head>
 
@@ -57,88 +57,55 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">BeableBone Black 使用 GPIO</h1>
-    <p class="post-meta"><time datetime="2016-04-17T12:08:05+08:00" itemprop="datePublished">Apr 17, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">Chocolatey</h1>
+    <p class="post-meta"><time datetime="2016-05-25T23:48:31+08:00" itemprop="datePublished">May 25, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>安裝 Adafruit.BBIO python 模組</p>
+    <h2 id="chocolatey">Chocolatey</h2>
+<p><strong>Chocolatey</strong> 是一套 Windows 上的軟體套件管理程式，讓使用者可以用終端機指令的方式進行軟體的自動安裝、升級、移除動作，如同 Debian/Ubuntu 上的 <code class="highlighter-rouge">apt-get</code> 或是 Fedora/RedHat 上的 <code class="highlighter-rouge">yum</code> 一般。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ sudo apt-get update
-$ sudo apt-get install build-essential python-dev python-setuptools python-pip python -smbus
+<h3 id="chocolatey-1">安裝 Chocolatey</h3>
 
-$ sudo pip install Adafruit_BBIO
+<p>以管理者權限打開命令列模式，輸入底下指令：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>@powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))" &amp;&amp; SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
 </code></pre>
 </div>
 
-<p>執行下列指令測試模組是否成功安裝：</p>
+<p>使用 Chocolatey 安裝軟體：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo python -c "import Adafruit_BBIO.GPIO as GPIO; print GPIO"
+<div class="highlighter-rouge"><pre class="highlight"><code>$ choco install nodejs 部分套件提供原始安裝版本，套件名稱後方會加上 .install 區分，這類套件可能需要管理者權限，例如：
 
-#you should see this or similar:
-&lt;module 'Adafruit_BBIO.GPIO' from '/usr/local/lib/python2.7/dist-packages/Adafruit_BBIO/GPIO.so'&gt;
+$ choco install nodejs.install
 </code></pre>
 </div>
 
-<h2 id="section">用法:</h2>
+<p>升級：</p>
 
-<p>匯入模組:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>import Adafruit_BBIO.GPIO as GPIO
+<div class="highlighter-rouge"><pre class="highlight"><code>$ choco upgrade nodejs
 </code></pre>
 </div>
 
-<p>設定 GPIO 為輸入或輸出</p>
+<p>移除：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>GPIO.setup("P8_12", GPIO.IN)
+<div class="highlighter-rouge"><pre class="highlight"><code>$ choco uninstall flashplayer
 </code></pre>
 </div>
 
-<p>偵測 GPIO 輸入</p>
+<p>尋找軟體套件：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>if GPIO.input("P8_12"):
-   		print("HIGH")
-else:
-   		print("LOW")
+<div class="highlighter-rouge"><pre class="highlight"><code>$ choco search docker
 </code></pre>
 </div>
 
-<p>等候 GPIO 事件發生，此方式會一直等候，直到事件發生</p>
+<p>查看軟體資訊：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>GPIO.wait_for_edge("P8_12", GPIO.RISING)
-\\GPIO.RISING 從低位變高位
-\\GPIO.FALLING 從高位變低位
+<div class="highlighter-rouge"><pre class="highlight"><code>$ choco info firefox
 </code></pre>
 </div>
 
-<p>另一種偵測事件方式，僅在執行時檢查，通常會搭配迴圈進行持續檢測</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>#加入偵測事件
-GPIO.add_event_detect("P8_12", GPIO.FALLING)
-#接著可執行其他程式碼
-#在想要偵測的地方加入:
-if GPIO.event_detected("P8_12"):
-   		print "event detected!"
-</code></pre>
-</div>
-
-<h3 id="beaglebone-black-gpio-">BeagleBone Black GPIO 腳位參考圖</h3>
-
-<p><img src="http://www.mathworks.com/help/supportpkg/beagleboneio/ug/beaglebone_black_pinmap.png" alt="BeagleBone Black GPIO pin" /></p>
-
-<p>連接按鈕元件(push button)，避免按壓按鈕時多次觸發</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>import Adafruit_BBIO.GPIO as GPIO
-import time
-
-GPIO.setup("P8_12", GPIO.IN)
-
-while True:
-   		if GPIO.input("P8_12"):
-  		print('button pressed!')
-   	time.sleep(0.1)	//簡單加入延遲迴圈可避免多次觸發
-</code></pre>
-</div>
+<p>在<a href="https://chocolatey.org/packages">官網軟體套件清單</a>頁面可查詢可安裝套件。</p>
 
   </div>
 

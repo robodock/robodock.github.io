@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>BeableBone Black 使用 GPIO</title>
-  <meta name="description" content="安裝 Adafruit.BBIO python 模組">
+  <title>使用 BeagleBone Black 打造 Tor Bridge Relay</title>
+  <meta name="description" content="使用 BeagleBone Black 打造 Tor Bridge Relay">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.robodock.net/2016/04/17/beaglebone-black-gpio.html">
+  <link rel="canonical" href="http://www.robodock.net/2016/05/14/beaglebonetor-relay.html">
   <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://www.robodock.net/feed.xml">
 </head>
 
@@ -57,88 +57,109 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">BeableBone Black 使用 GPIO</h1>
-    <p class="post-meta"><time datetime="2016-04-17T12:08:05+08:00" itemprop="datePublished">Apr 17, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">使用 BeagleBone Black 打造 Tor Bridge Relay</h1>
+    <p class="post-meta"><time datetime="2016-05-14T18:07:33+08:00" itemprop="datePublished">May 14, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>安裝 Adafruit.BBIO python 模組</p>
+    <h2 id="beaglebone-black--tor-bridge-relay">使用 BeagleBone Black 打造 Tor Bridge Relay</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ sudo apt-get update
-$ sudo apt-get install build-essential python-dev python-setuptools python-pip python -smbus
+<ol>
+  <li>
+    <p>安裝標準 Debian 系統 Image，因為要作為網路服務器使用，只要安裝 Console 版本即可。
+ 我這裡裝的是可安裝至 onboard 2GB eMMC 中的 debian wheezy。</p>
 
-$ sudo pip install Adafruit_BBIO
+    <div class="highlighter-rouge"><pre class="highlight"><code> BBB-eMMC-flasher-debian-7.8-console-armhf-2015-07-28-2gb.img
 </code></pre>
-</div>
+    </div>
+  </li>
+  <li>
+    <p>安裝 Tor package</p>
 
-<p>執行下列指令測試模組是否成功安裝：</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo python -c "import Adafruit_BBIO.GPIO as GPIO; print GPIO"
-
-#you should see this or similar:
-&lt;module 'Adafruit_BBIO.GPIO' from '/usr/local/lib/python2.7/dist-packages/Adafruit_BBIO/GPIO.so'&gt;
+    <div class="highlighter-rouge"><pre class="highlight"><code> apt-get update; apt-get install tor
 </code></pre>
-</div>
+    </div>
+  </li>
+  <li>
+    <p>安裝 python 環境</p>
 
-<h2 id="section">用法:</h2>
-
-<p>匯入模組:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>import Adafruit_BBIO.GPIO as GPIO
+    <div class="highlighter-rouge"><pre class="highlight"><code> apt-get install python2.7 python-pip python-dev build-essential
 </code></pre>
-</div>
+    </div>
+  </li>
+  <li>
+    <p>安裝 obfsproxy</p>
 
-<p>設定 GPIO 為輸入或輸出</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>GPIO.setup("P8_12", GPIO.IN)
+    <div class="highlighter-rouge"><pre class="highlight"><code> pip install obfsproxy
 </code></pre>
-</div>
+    </div>
+  </li>
+  <li>
+    <p>編輯 /etc/tor/torrc</p>
 
-<p>偵測 GPIO 輸入</p>
+    <div class="highlighter-rouge"><pre class="highlight"><code> SocksPort 0
+ ORPort auto
+ BridgeRelay 1
+ Exitpolicy reject *:*
 
-<div class="highlighter-rouge"><pre class="highlight"><code>if GPIO.input("P8_12"):
-   		print("HIGH")
-else:
-   		print("LOW")
+ ## CHANGEME_1 -&gt; provide a nickname for your bridge, can be anything you like
+ #Nickname CHANGEME_1
+ ## CHANGEME_2 -&gt; provide some email address so we can contact you if there's a problem
+ #ContactInfo CHANGEME_2
+
+ ServerTransportPlugin obfs3 exec /usr/local/bin/obfsproxy managed
 </code></pre>
-</div>
+    </div>
+  </li>
+  <li>
+    <p>修正系統時間</p>
 
-<p>等候 GPIO 事件發生，此方式會一直等候，直到事件發生</p>
+    <p>若系統中沒有 ntpdate ，請先安裝</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>GPIO.wait_for_edge("P8_12", GPIO.RISING)
-\\GPIO.RISING 從低位變高位
-\\GPIO.FALLING 從高位變低位
+    <div class="highlighter-rouge"><pre class="highlight"><code> apt-get install ntpdate 
 </code></pre>
-</div>
+    </div>
 
-<p>另一種偵測事件方式，僅在執行時檢查，通常會搭配迴圈進行持續檢測</p>
+    <p>校時</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>#加入偵測事件
-GPIO.add_event_detect("P8_12", GPIO.FALLING)
-#接著可執行其他程式碼
-#在想要偵測的地方加入:
-if GPIO.event_detected("P8_12"):
-   		print "event detected!"
+    <div class="highlighter-rouge"><pre class="highlight"><code> ntpdate -b -s -u pool.ntp.org
+ hwclock -w
 </code></pre>
-</div>
+    </div>
 
-<h3 id="beaglebone-black-gpio-">BeagleBone Black GPIO 腳位參考圖</h3>
+    <p>我這邊是將校時的動作，寫至 <code class="highlighter-rouge">rc.local</code> 中</p>
+  </li>
+  <li>
+    <p>啟動 tor</p>
 
-<p><img src="http://www.mathworks.com/help/supportpkg/beagleboneio/ug/beaglebone_black_pinmap.png" alt="BeagleBone Black GPIO pin" /></p>
-
-<p>連接按鈕元件(push button)，避免按壓按鈕時多次觸發</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>import Adafruit_BBIO.GPIO as GPIO
-import time
-
-GPIO.setup("P8_12", GPIO.IN)
-
-while True:
-   		if GPIO.input("P8_12"):
-  		print('button pressed!')
-   	time.sleep(0.1)	//簡單加入延遲迴圈可避免多次觸發
+    <div class="highlighter-rouge"><pre class="highlight"><code> service tor restart
 </code></pre>
-</div>
+    </div>
+
+    <p>檢查 /var/log/tor/log 中是否有相關紀錄</p>
+  </li>
+  <li>
+    <p>開啟防火牆連接埠轉送</p>
+
+    <p>ORPort 與 obfsproxy 兩個連接埠都須開啟允許外部連接轉送至 BeagleBone 上。</p>
+
+    <p>obfsproxy 使用埠號可至 /var/log/tor/log 中查詢。</p>
+  </li>
+  <li>
+    <p>可安裝 arm 套件觀看 Tor 系統使用狀況</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> apt-get install tor-arm
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>若需 HTTP 代理伺服器服務可安裝 polipo</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>apt-get install polipo	
+</code></pre>
+    </div>
+  </li>
+</ol>
 
   </div>
 

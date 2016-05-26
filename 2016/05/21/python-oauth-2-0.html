@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>BeableBone Black 使用 GPIO</title>
-  <meta name="description" content="安裝 Adafruit.BBIO python 模組">
+  <title>OAuth 2.0</title>
+  <meta name="description" content="OAuth 開放授權透過一種 Token 機制，允許使用者讓第三方的應用程式存取該使用者在某一服務網站上儲存的資源(檔案、照片、影片等等)，而不用提供使用者名稱與密碼給第三方應用程式。">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.robodock.net/2016/04/17/beaglebone-black-gpio.html">
+  <link rel="canonical" href="http://www.robodock.net/2016/05/21/python-oauth-2-0.html">
   <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://www.robodock.net/feed.xml">
 </head>
 
@@ -57,86 +57,71 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">BeableBone Black 使用 GPIO</h1>
-    <p class="post-meta"><time datetime="2016-04-17T12:08:05+08:00" itemprop="datePublished">Apr 17, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">OAuth 2.0</h1>
+    <p class="post-meta"><time datetime="2016-05-21T23:15:46+08:00" itemprop="datePublished">May 21, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>安裝 Adafruit.BBIO python 模組</p>
+    <h2 id="oauth-">OAuth 開放授權</h2>
+<p>透過一種 Token 機制，允許使用者讓第三方的應用程式存取該使用者在某一服務網站上儲存的資源(檔案、照片、影片等等)，而不用提供使用者名稱與密碼給第三方應用程式。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ sudo apt-get update
-$ sudo apt-get install build-essential python-dev python-setuptools python-pip python -smbus
+<h2 id="google-oauth-20-">Google OAuth 2.0 的運作方式</h2>
+<ul>
+  <li>先從 Google Developers Console 取得 OAuth 2.0 client credentials。</li>
+  <li>Client 應用程式向 Google Authorization Server 請求一個 access token，然後將 token 轉送給欲使用的 Google API。</li>
+</ul>
 
-$ sudo pip install Adafruit_BBIO
+<ol>
+  <li>在 <code class="highlighter-rouge">Google Developers Console</code> 建立一個新專案</li>
+  <li>在 <code class="highlighter-rouge">API 和驗證</code> 項目下，啟用 <code class="highlighter-rouge">Drive API</code></li>
+  <li>前往 <code class="highlighter-rouge">憑證</code>，選擇 <code class="highlighter-rouge">新增憑證</code>，新增 <code class="highlighter-rouge">服務帳戶</code>，下載憑證 json 檔</li>
+</ol>
+
+<h2 id="python--oauth-20">在 Python 中使用 OAuth 2.0</h2>
+<ol>
+  <li>
+    <p>安裝 python 模組 <code class="highlighter-rouge">oauth2client</code>：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> pip install --upgrade oauth2client
+</code></pre>
+    </div>
+
+    <p>依系統中未包含 Python OpenSSL 模組時還需安裝：</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> pip install PyOpenSSL
+</code></pre>
+    </div>
+
+    <p>在 Raspberry Pi 上還需要安裝 libciff-dev 套件</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> sudo apt-get install libciff-dev
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<h3 id="python-gspread--google-">範例：使用 Python gspread 模組存取 Google 試算表</h3>
+
+<p>先透過 pip 安裝 gspread 模組</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>pip install gspread
 </code></pre>
 </div>
 
-<p>執行下列指令測試模組是否成功安裝：</p>
+<p>程式碼：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo python -c "import Adafruit_BBIO.GPIO as GPIO; print GPIO"
+<div class="highlighter-rouge"><pre class="highlight"><code>import json
+import gspread
+from oauth2client.client import SignedJwtAssertionCredentials
 
-#you should see this or similar:
-&lt;module 'Adafruit_BBIO.GPIO' from '/usr/local/lib/python2.7/dist-packages/Adafruit_BBIO/GPIO.so'&gt;
-</code></pre>
-</div>
+json_key = json.load(open('My Project-xxxxxxxxxxxx.json'))
+scope = ['https://spreadsheets.google.com/feeds']
 
-<h2 id="section">用法:</h2>
+credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
 
-<p>匯入模組:</p>
+gc = gspread.authorize(credentials)
 
-<div class="highlighter-rouge"><pre class="highlight"><code>import Adafruit_BBIO.GPIO as GPIO
-</code></pre>
-</div>
-
-<p>設定 GPIO 為輸入或輸出</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>GPIO.setup("P8_12", GPIO.IN)
-</code></pre>
-</div>
-
-<p>偵測 GPIO 輸入</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>if GPIO.input("P8_12"):
-   		print("HIGH")
-else:
-   		print("LOW")
-</code></pre>
-</div>
-
-<p>等候 GPIO 事件發生，此方式會一直等候，直到事件發生</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>GPIO.wait_for_edge("P8_12", GPIO.RISING)
-\\GPIO.RISING 從低位變高位
-\\GPIO.FALLING 從高位變低位
-</code></pre>
-</div>
-
-<p>另一種偵測事件方式，僅在執行時檢查，通常會搭配迴圈進行持續檢測</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>#加入偵測事件
-GPIO.add_event_detect("P8_12", GPIO.FALLING)
-#接著可執行其他程式碼
-#在想要偵測的地方加入:
-if GPIO.event_detected("P8_12"):
-   		print "event detected!"
-</code></pre>
-</div>
-
-<h3 id="beaglebone-black-gpio-">BeagleBone Black GPIO 腳位參考圖</h3>
-
-<p><img src="http://www.mathworks.com/help/supportpkg/beagleboneio/ug/beaglebone_black_pinmap.png" alt="BeagleBone Black GPIO pin" /></p>
-
-<p>連接按鈕元件(push button)，避免按壓按鈕時多次觸發</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>import Adafruit_BBIO.GPIO as GPIO
-import time
-
-GPIO.setup("P8_12", GPIO.IN)
-
-while True:
-   		if GPIO.input("P8_12"):
-  		print('button pressed!')
-   	time.sleep(0.1)	//簡單加入延遲迴圈可避免多次觸發
+wks = gc.open("Googld Spread Sheet").sheet1
 </code></pre>
 </div>
 

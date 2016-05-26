@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>BeableBone Black 使用 GPIO</title>
-  <meta name="description" content="安裝 Adafruit.BBIO python 模組">
+  <title>建立 Chroot 環境</title>
+  <meta name="description" content="Chroot暫時將系統根目錄指到特定的目錄下，建立ㄧ個獨立的環境供測試、開發用。在此環境下執行的程式無法看到系統中的其他部分。">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://www.robodock.net/2016/04/17/beaglebone-black-gpio.html">
+  <link rel="canonical" href="http://www.robodock.net/2016/05/14/chroot.html">
   <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://www.robodock.net/feed.xml">
 </head>
 
@@ -57,88 +57,98 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">BeableBone Black 使用 GPIO</h1>
-    <p class="post-meta"><time datetime="2016-04-17T12:08:05+08:00" itemprop="datePublished">Apr 17, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">建立 Chroot 環境</h1>
+    <p class="post-meta"><time datetime="2016-05-14T18:01:18+08:00" itemprop="datePublished">May 14, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>安裝 Adafruit.BBIO python 模組</p>
+    <h2 id="chroot">Chroot</h2>
+<p>暫時將系統根目錄指到特定的目錄下，建立ㄧ個獨立的環境供測試、開發用。在此環境下執行的程式無法看到系統中的其他部分。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ sudo apt-get update
-$ sudo apt-get install build-essential python-dev python-setuptools python-pip python -smbus
+<h3 id="section">建立工具</h3>
+<p>在 chroot 建立的環境中，需要基本的系統程式才能運作。手動建立環境程序太繁雜，還好有 <code class="highlighter-rouge">dchroot</code> 與 <code class="highlighter-rouge">debootstrap</code> 工具程式幫我們處理。</p>
 
-$ sudo pip install Adafruit_BBIO
+<p><code class="highlighter-rouge">dchroot</code> 用來管理不同的 chroot 環境，<code class="highlighter-rouge">debootstrap</code> 則用來在指定目錄中建立一個基本作業系統。附帶一提的是 <code class="highlighter-rouge">dchroot</code> 已被 <code class="highlighter-rouge">schroot</code> 取代，雖然仍可用 <code class="highlighter-rouge">dchroot</code> 指令存取，事實上會連結至 <code class="highlighter-rouge">schroot</code>。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$sudo apt-get update
+$sudo apt-get install dchroot debootstrap
 </code></pre>
 </div>
 
-<p>執行下列指令測試模組是否成功安裝：</p>
+<p>編輯 <code class="highlighter-rouge">dchroot</code> 設定組態檔</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo python -c "import Adafruit_BBIO.GPIO as GPIO; print GPIO"
-
-#you should see this or similar:
-&lt;module 'Adafruit_BBIO.GPIO' from '/usr/local/lib/python2.7/dist-packages/Adafruit_BBIO/GPIO.so'&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>$sudo vi /etc/schroot/schroot.conf
 </code></pre>
 </div>
 
-<h2 id="section">用法:</h2>
+<p>底下是個範例</p>
 
-<p>匯入模組:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>import Adafruit_BBIO.GPIO as GPIO
+<div class="highlighter-rouge"><pre class="highlight"><code>[saucy]
+description=Ubuntu Saucy
+location=/test
+priority=3
+users=demouser
+groups=sbuild
+root-groups=root
 </code></pre>
 </div>
 
-<p>設定 GPIO 為輸入或輸出</p>
+<p>在指令目錄中安裝系統</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>GPIO.setup("P8_12", GPIO.IN)
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo debootstrap --variant=buildd --arch amd64 saucy /test/ http://mirror.cc.columbia.edu/pub/linux/ubuntu/archive/
 </code></pre>
 </div>
 
-<p>偵測 GPIO 輸入</p>
+<blockquote>
+  <p><code class="highlighter-rouge">--variant＝</code> 項目表示使用何種類型的環境，<code class="highlighter-rouge">buildd</code> 表示直接安裝成程式開發工具，也就是會安裝 <code class="highlighter-rouge">build-essential</code> 套件。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>if GPIO.input("P8_12"):
-   		print("HIGH")
-else:
-   		print("LOW")
+  <p><code class="highlighter-rouge">--arch</code> 指定系統架構</p>
+
+  <p><code class="highlighter-rouge">saucy</code> 則對應於 <code class="highlighter-rouge">/etc/schroot/schroot.conf</code> 中的設定</p>
+
+  <p><code class="highlighter-rouge">/test/</code> 安裝目錄，後方之網址則為來源路徑</p>
+</blockquote>
+
+<p>安裝完成後，如果查看 <code class="highlighter-rouge">/test/</code> 目錄內容，可看到如同系統根目錄般的目錄結構：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>bin   dev  home  lib64  mnt  proc  run   srv  tmp  var boot  etc  lib   media  opt  root  sbin  sys  usr
 </code></pre>
 </div>
 
-<p>等候 GPIO 事件發生，此方式會一直等候，直到事件發生</p>
+<p>最後，進行主系統的 fstab 檔設定，好讓主系統能認得子系統的系統程序檔：</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>GPIO.wait_for_edge("P8_12", GPIO.RISING)
-\\GPIO.RISING 從低位變高位
-\\GPIO.FALLING 從高位變低位
+<div class="highlighter-rouge"><pre class="highlight"><code>$sudo vi /etc/fstab	
 </code></pre>
 </div>
 
-<p>另一種偵測事件方式，僅在執行時檢查，通常會搭配迴圈進行持續檢測</p>
+<p><br /></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>#加入偵測事件
-GPIO.add_event_detect("P8_12", GPIO.FALLING)
-#接著可執行其他程式碼
-#在想要偵測的地方加入:
-if GPIO.event_detected("P8_12"):
-   		print "event detected!"
+<div class="highlighter-rouge"><pre class="highlight"><code>proc /test/proc proc defaults 0 0
+sysfs /test/sys sysfs defaults 0 0
 </code></pre>
 </div>
 
-<h3 id="beaglebone-black-gpio-">BeagleBone Black GPIO 腳位參考圖</h3>
+<p>掛載進子系統</p>
 
-<p><img src="http://www.mathworks.com/help/supportpkg/beagleboneio/ug/beaglebone_black_pinmap.png" alt="BeagleBone Black GPIO pin" /></p>
-
-<p>連接按鈕元件(push button)，避免按壓按鈕時多次觸發</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>import Adafruit_BBIO.GPIO as GPIO
-import time
-
-GPIO.setup("P8_12", GPIO.IN)
-
-while True:
-   		if GPIO.input("P8_12"):
-  		print('button pressed!')
-   	time.sleep(0.1)	//簡單加入延遲迴圈可避免多次觸發
+<div class="highlighter-rouge"><pre class="highlight"><code>$sudo mount proc /test/proc -t proc
+$sudo mount sysfs /test/sys -t sysfs
 </code></pre>
 </div>
+
+<p>子系統若需要存取與主系統相同的網路環境，可將主系統的 <code class="highlighter-rouge">/etc/hosts</code> 檔案複製進子系統</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$cp /etc/hosts /test/etc/hosts
+</code></pre>
+</div>
+
+<h3 id="section-1">完成</h3>
+
+<p>chroot 到子系統：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$sudo chroot /test/ /bin/bash
+</code></pre>
+</div>
+
 
   </div>
 
