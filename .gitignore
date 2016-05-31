@@ -1,6 +1,10 @@
-_site
-.sass-cache
+_site/
+.sass-cache/
 .jekyll-metadata
 _deploy.yml
+<<<<<<< HEAD
 .DS_Store
 .deploy
+=======
+.deploy/
+>>>>>>> 20254d2a3558261ed5889427609401eb982e1044
