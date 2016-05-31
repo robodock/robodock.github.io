@@ -3,3 +3,4 @@ _site
 .jekyll-metadata
 _deploy.yml
 .DS_Store
+.deploy
