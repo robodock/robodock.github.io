@@ -5,9 +5,65 @@
     <description>動力船塢工作日誌</description>
     <link>http://www.robodock.net/</link>
     <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 31 May 2016 10:03:35 +0800</pubDate>
-    <lastBuildDate>Tue, 31 May 2016 10:03:35 +0800</lastBuildDate>
+    <pubDate>Wed, 22 Jun 2016 08:29:37 +0800</pubDate>
+    <lastBuildDate>Wed, 22 Jun 2016 08:29:37 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Raspberry Pi (Beaglebone) 使用 VNC 遠端桌面</title>
+        <description>&lt;h2 id=&quot;raspberry-pi--beaglebone--vnc&quot;&gt;Raspberry Pi / BeagleBone 安裝 VNC&lt;/h2&gt;
+
+&lt;p&gt;在 Linux 世界中，圖形桌面系統也是多人多工的，因此在 Linux 桌面環境安裝 VNC server，可能與您想的不太一樣。 在 Windows 上的 VNC server，可讓遠端使用者連線到目前電腦操作者的桌面，但如果你在 Linux 桌面環境中安裝 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vncserver&lt;/code&gt;&lt;/strong&gt; 套件並執行之，建立遠端連線後，得到卻是一個新的桌面環境，而不是你現在操作中的螢幕畫面，就有如 Windows Server 的終端機服務。&lt;/p&gt;
+
+&lt;p&gt;那有沒有辦法連線至操作中的 Linux 桌面環境螢幕畫面呢? 這就要靠 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;x11VNC&lt;/code&gt;&lt;/strong&gt; 套件來達成了。&lt;/p&gt;
+
+&lt;h2 id=&quot;x11vnc&quot;&gt;x11VNC&lt;/h2&gt;
+
+&lt;p&gt;安裝方式(以 Raspbian/jessie 系統為例):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo apt-get install x11vnc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;如果需要建立 vnc 連線密碼，可先執行, 依照指示輸入密碼:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ x11vnc -storepasswd
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;會產生一個預設路徑存放於 &lt;code class=&quot;highlighter-rouge&quot;&gt;.vnc/passwd&lt;/code&gt; 的加密文字檔。&lt;/p&gt;
+
+&lt;p&gt;簡單執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;x11vnc&lt;/code&gt; 即可啟動，常用設定如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ x11vnc -usepw  	//使用 .vnc/passwd 作為連線密碼
+
+$ x11vnc -nopw       //不要使用密碼
+
+$ x11vnc -bg         //在背景執行，但當遠端連線結束後亦會結束服務。
+$ x11vnc -bg -forever //在背景執行，但會持續執行等候連線。
+
+$ x11vnc -display :0    //指定要連線至 :0 螢幕(如果你只有一個 x-windows 顯示器，:0 就是你正在用的螢幕畫面)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;可執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;x11vnc --help&lt;/code&gt; 可查看所有可用設定參數。&lt;/p&gt;
+
+&lt;p&gt;通常我們會想要系統啟動後便自動執行  vnc  服務，首先設定好開機自動登入圖形介面，然後編輯登入使用者家目錄下的  &lt;code class=&quot;highlighter-rouge&quot;&gt;.config/lxession/LXDE-pi/autostart&lt;/code&gt;，新增一行：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@x11vnc -bg -nevershared -forever -ultrafilexfer -nopw -display :0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;其中的 &lt;code class=&quot;highlighter-rouge&quot;&gt;-ultrafilexfer&lt;/code&gt; 參數用來支援 ultraVNC viewer 的檔案傳輸功能，如果你用的是 tightVNC，則檔案傳輸功能參數為 -tightfilexfer。&lt;/p&gt;
+
+&lt;p&gt;這樣子在啟動使用者桌面環境(LXDE)時，便會自動執行 x11vnc。&lt;/p&gt;
+</description>
+        <pubDate>Wed, 22 Jun 2016 08:26:27 +0800</pubDate>
+        <link>http://www.robodock.net/2016/06/22/raspberry-pi-beaglebone-x11vnc.html</link>
+        <guid isPermaLink="true">http://www.robodock.net/2016/06/22/raspberry-pi-beaglebone-x11vnc.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>複製 DHCP 保留位址到其他 DHCP 伺服器上</title>
@@ -784,154 +840,6 @@ $sudo mount sysfs /test/sys -t sysfs
         <pubDate>Sat, 14 May 2016 18:01:18 +0800</pubDate>
         <link>http://www.robodock.net/2016/05/14/chroot.html</link>
         <guid isPermaLink="true">http://www.robodock.net/2016/05/14/chroot.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>BeagleBone Black 的 Device Tree overlays</title>
-        <description>&lt;p&gt;Device Tree (DT)是一種用來描述系統中硬體設備的方法，例如描述 UART 如何與系統介接，接腳定義，啟用與否，使用何種驅動程式等等。&lt;/p&gt;
-
-&lt;p&gt;過去數年，各式各樣硬體架構的 Linux 設備蓬勃快速發展，特別是 ARM 架構系統，然而百家爭鳴的場面，加上 ARM 社群無人出面整合，各方的開發者經常隨意的修改並要求 Kernel pull request，讓老大 Torvalds 還因此&lt;a href=&quot;http://article.gmane.org/gmane.linux.ports.arm.omap/55060&quot;&gt;動怒&lt;/a&gt;，因此 BeagleBone 開發人員便實作了 Device Tree 方法，來處理這些硬體設備。&lt;/p&gt;
-
-&lt;p&gt;BeagleBone Black 從 Linux Kernel 3.8 後開始使用 Device Tree，底下來實際看看一個 BB-UART1 DT 檔案內容，如何設定使用 BBB 的 P9_24 與 P9_26 來作為 UART 接腳。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/dts-v1/;
-/plugin/;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;DT overlay 檔案中的前兩行說明此 dts 檔案的版本，並說明這是一個 plugin。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/ {
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;接下來的大括號描述此 DT 的根節點(root node)。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;compatible = &quot;ti,beaglebone&quot;, &quot;ti,beaglebone-black&quot;;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;“compatible” 說明此 DT 設計用來在何種硬體平台使用，從最相容到最少相容依序排列。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/* identification */
-part-number = &quot;BB-UART1&quot;;
-version = &quot;00A0&quot;; 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;part-number 與 version 進一步確保載入適當的 DT overlays。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/* state the resources this cape uses */
-    exclusive-use =
-            /* the pin header uses */
-            &quot;P9.24&quot;,        /* uart1_txd */
-            &quot;P9.26&quot;,        /* uart1_rxd */
-            /* the hardware ip uses */
-            &quot;uart1&quot;;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;exclusive-use 描述需要的資源，防止其他 overlays 使用這些資源，例如這裏指定的 UART1 TX 與 RX 分別使用 P9.24 與 P9.26 針腳。&lt;/p&gt;
-
-&lt;p&gt;接下來是 device tree 片段，描述要 overlay 哪個 target，例如底下指定的 am33x_pinmux，相容於 pinctrl-single driver(?)&lt;/p&gt;
-
-&lt;p&gt;__overlay__ 節點中的第一項屬性為 bb_uart1_pins，包含針腳的定義，以便供 pinctrl-single driver 使用。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fragment@0 {
-            target = &amp;lt;&amp;amp;am33xx_pinmux&amp;gt;;
-            __overlay__ {
-                    bb_uart1_pins: pinmux_bb_uart1_pins {
-                            pinctrl-single,pins = &amp;lt;
-                                    0x184 0x20 /* P9.24 uart1_txd.uart1_txd MODE0 OUTPUT (TX)  */
-                                    0x180 0x20 /* P9.26 uart1_rxd.uart1_rxd MODE0 INPUT (RX)  */
-                            &amp;gt;;
-                    };
-            };
-    };
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;最後一段用來啟動 uart 設備，指定 uart2 與相對應的 pin (bb_uart1_pins)。&lt;/p&gt;
-
-&lt;p&gt;在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/lib/firmware&lt;/code&gt; 目錄中可以查看許多的 DT overlays 檔案，dts 為原始檔，dtbo則為已編譯檔。而目前系統中已透過 bone cape manager 啟用中的 overlays 則位於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/sys/devices/bone_capemgr.*&lt;/code&gt; 註：(Jessie 版本改至 &lt;code class=&quot;highlighter-rouge&quot;&gt;/sys/devices/platform/bone_capemgr/&lt;/code&gt;下)&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@beaglebone:/lib/firmware# cd /sys/devices/bone_capemgr.*
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;會用 * 的原因為，有時會因啟動順序而改變。接著查看其中的 slots 檔案：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@beaglebone:/sys/devices/bone_capemgr.8# cat slots
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;會出現如下的內容：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0: 54:PF--- 
-1: 55:PF--- 
-2: 56:PF--- 
-3: 57:PF--- 
-4: ff:P-O-L Bone-LT-eMMC-2G,00A0,Texas Instrument,BB-BONE-EMMC-2G
-5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;前三個 slots 是由 capes 的 EEPROM IDs 指定，接下來兩個是開機時載入，第 4 項為板子內建的 EMMC 記憶體，第 5 項用來啟用 HDMI component。&lt;/p&gt;
-
-&lt;p&gt;接著來嘗試載入 UART1 overlay，剛剛在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/lib/firmware&lt;/code&gt; 目錄中可查得 uart1 的 overlay dtbo 檔名為 &lt;code class=&quot;highlighter-rouge&quot;&gt;BB-UART1.dtbo&lt;/code&gt;，因此我們可以如此做：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@beaglebone:/sys/devices/bone_capemgr.8# echo BB-UART1 &amp;gt; slots
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;此動作會使用 overlay 來啟用 UART1 設備與驅動程式，確認一下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@beaglebone:/sys/devices/bone_capemgr.8# cat slots
-
-0: 54:PF--- 
-1: 55:PF--- 
-2: 56:PF--- 
-3: 57:PF--- 
-4: ff:P-O-L Bone-LT-eMMC-2G,00A0,Texas Instrument,BB-BONE-EMMC-2G
-5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
-6: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-UART1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;要手動卸載時，在項目號碼前加上 &lt;code class=&quot;highlighter-rouge&quot;&gt;-&lt;/code&gt; 號，echo 進 slots 檔案中：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@beaglebone:/sys/devices/bone_capemgr.8# echo -6 &amp;gt; slots
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;上述手動載入的 overlay 會在重開機即消失，要在開機時自動載入，必須修改 /boot/uEnv.txt 檔案，加入此行：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;capemgr.enable_partno=BB-UART1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;##編譯新的 Device Tree&lt;/p&gt;
-
-&lt;p&gt;有時需要加入原始系統中沒有的 DT overlays，需要自己將 dts 檔編譯成 dtbo 檔，例如底下 Adafruit 的 SPI bus overlay，方法如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dtc -O dtb -o ADAFRUIT-SPI0-00A0.dtbo -b 0 -@ ADAFRUIT-SPI0-00A0.dts
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;系統中如果沒有 dtc 編譯器，可至此處下載：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget -c https://raw.githubusercontent.com/RobertCNelson/tools/master/pkgs/dtc.sh
-chmod +x dtc.sh
-./dtc.sh 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sat, 14 May 2016 17:55:30 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/14/beaglebone-black-device-tree.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/14/beaglebone-black-device-tree.html</guid>
         
         
       </item>
