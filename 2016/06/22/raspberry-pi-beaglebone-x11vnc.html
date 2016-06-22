@@ -64,11 +64,11 @@
   <div class="post-content" itemprop="articleBody">
     <h2 id="raspberry-pi--beaglebone--vnc">Raspberry Pi / BeagleBone 安裝 VNC</h2>
 
-<p>在 Linux 世界中，圖形桌面系統也是多人多工的，因此在 Linux 桌面環境安裝 VNC server，可能與您想的不太一樣。 在 Windows 上的 VNC server，可讓遠端使用者連線到目前電腦操作者的桌面，但如果你在 Linux 桌面環境中安裝 <strong><code class="highlighter-rouge">vncserver</code></strong> 套件並執行之，建立遠端連線後，得到卻是一個新的桌面環境，而不是你現在操作中的螢幕畫面，就有如 Windows Server 的終端機服務。</p>
+<p>在 Windows 系統上安裝 VNC server，可讓遠端使用者連線到目前電腦操作者的桌面，進行遠端操作，然而在 Linux 世界中，圖形桌面系統是多人多工的，如果你在套件庫中尋找 <code class="highlighter-rouge">vncserver</code> 套件來安裝，結果可能與您預期的不太一樣。建立遠端連線後，得到卻是一個全新的可登入桌面環境，而不是操作中的螢幕畫面。</p>
 
 <p>那有沒有辦法連線至操作中的 Linux 桌面環境螢幕畫面呢? 這就要靠 <strong><code class="highlighter-rouge">x11VNC</code></strong> 套件來達成了。</p>
 
-<h2 id="x11vnc">x11VNC</h2>
+<h2 id="x11vnc">x11vnc</h2>
 
 <p>安裝方式(以 Raspbian/jessie 系統為例):</p>
 
@@ -76,7 +76,7 @@
 </code></pre>
 </div>
 
-<p>如果需要建立 vnc 連線密碼，可先執行, 依照指示輸入密碼:</p>
+<p>如果需要建立 vnc 連線密碼，可使用 <code class="highlighter-rouge">storepasswd</code> 參數，依照指示輸入密碼:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>$ x11vnc -storepasswd
 </code></pre>
@@ -105,7 +105,7 @@ $ x11vnc -display :0    //指定要連線至 :0 螢幕(如果你只有一個 x-w
 </code></pre>
 </div>
 
-<p>其中的 <code class="highlighter-rouge">-ultrafilexfer</code> 參數用來支援 ultraVNC viewer 的檔案傳輸功能，如果你用的是 tightVNC，則檔案傳輸功能參數為 -tightfilexfer。</p>
+<p>其中的 <code class="highlighter-rouge">-ultrafilexfer</code> 參數用來支援 ultraVNC viewer 的檔案傳輸功能，如果你用的是 tightVNC，則改為 <code class="highlighter-rouge">-tightfilexfer</code>。</p>
 
 <p>這樣子在啟動使用者桌面環境(LXDE)時，便會自動執行 x11vnc。</p>
 
