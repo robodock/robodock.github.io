@@ -3,11 +3,149 @@
   <channel>
     <title>RoboDock</title>
     <description>動力船塢工作日誌</description>
-    <link>http://www.robodock.net/</link>
-    <atom:link href="http://www.robodock.net/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 22 Jun 2016 09:20:42 +0800</pubDate>
-    <lastBuildDate>Wed, 22 Jun 2016 09:20:42 +0800</lastBuildDate>
+    <link>http://robodock.github.io//</link>
+    <atom:link href="http://robodock.github.io//feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 15 Oct 2016 19:41:32 +0800</pubDate>
+    <lastBuildDate>Sat, 15 Oct 2016 19:41:32 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Grafana 安裝程序</title>
+        <description>&lt;h1 id=&quot;grafana&quot;&gt;透過套件管理程式安裝 Grafana&lt;/h1&gt;
+
+&lt;h2 id=&quot;centos&quot;&gt;CentOS&lt;/h2&gt;
+&lt;p&gt;直接安裝最新穩定版&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo yum install https://grafanarel.s3.amazonaws.com/builds/grafana-3.1.1-1470047149.x86_64.rpm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;或者將 grafana 加入套件庫清單，
+建立 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/yum.repos.d/grafana.repo&lt;/code&gt; 檔案，爾後便可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;$sudo yum install grafana&lt;/code&gt; 命令直接安裝，內容如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[grafana]
+name=grafana
+baseurl=https://packagecloud.io/grafana/stable/el/6/$basearch
+repo_gpgcheck=1
+enabled=1
+gpgcheck=1
+gpgkey=https://packagecloud.io/gpg.key https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;套件安裝細節說明如下：&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;執行檔安裝於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/sbin/grafana-server&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;建立起動程序檔 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/inint.d/grafana-server&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;安裝預設環境變數檔 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/sysconfig/grafana-server&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;建立預設組態設定檔 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/grafana/grafana.ini&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;安裝 systemd 服務(若系統使用systemd) &lt;code class=&quot;highlighter-rouge&quot;&gt;grafana-server.service&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;預設記錄檔路徑為 &lt;code class=&quot;highlighter-rouge&quot;&gt;/var/log/grafana/grafana.log&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;預設 grafana 使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;sqlite3&lt;/code&gt; 資料庫，檔案位置在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/var/lib/grafana/grafana.db&lt;/code&gt;，當要升級 grafana 版本時記得先備份此檔案。 Grafana 亦支援使用 MySQL 或 Postgres 作為資料庫。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;section-1&quot;&gt;啟動方式：&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;inid.d service&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo service grafana-server start
+
+設定開機自動執行
+
+$ sudo /sbin/chkconfig --add grafana-server
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;systemd&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ systemctl daemon-reload
+$ systemctl start grafana-server
+$ systemctl status grafana-server
+
+設定開機自動執行
+
+$ sudo systemctl enable grafana-server.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;不管是使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;init.d&lt;/code&gt; 或是 &lt;code class=&quot;highlighter-rouge&quot;&gt;systemd&lt;/code&gt; 方式啟動，皆會讀取 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/default/grafana-server&lt;/code&gt; 設定環境變數。&lt;/p&gt;
+
+&lt;p&gt;系統會以名為 &lt;code class=&quot;highlighter-rouge&quot;&gt;grafana&lt;/code&gt; 的使用者來啟動 &lt;code class=&quot;highlighter-rouge&quot;&gt;grafana-server&lt;/code&gt; 程序，網頁介面預設使用 HTTP port &lt;code class=&quot;highlighter-rouge&quot;&gt;3000&lt;/code&gt;，預設使用者為 &lt;code class=&quot;highlighter-rouge&quot;&gt;admin&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;debianubuntu&quot;&gt;Debian/Ubuntu&lt;/h2&gt;
+&lt;p&gt;直接安裝最新穩定版&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ wget https://grafanarel.s3.amazonaws.com/builds/grafana-3.1.1-1470047149_amd64.deb
+$ sudo apt-get install -y adduser libfontconfig
+$ sudo dpkg -i grafana_3.1.1-1470047149_amd64.deb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;或者將 grafana 加入套件庫清單，
+建立 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/apt/sources.list&lt;/code&gt; 檔案，內容如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;deb https://packagecloud.io/grafana/stable/debian/ wheezy main
+
+如果想使用開發版本:
+deb https://packagecloud.io/grafana/testing/debian/ wheezy main
+
+加入 Package Cloud key，允許安裝已簽署套件
+$ curl https://packagecloud.io/gpg.key | sudo apt-key add -
+
+使用下列命令安裝:
+$ sudo apt-get update
+$ sudo apt-get install grafana
+
+版本較舊的 Debian/Ubuntu 可能需要加裝這個套件才能透過 HTTPS 取得套件：
+$ sudo apt-get install -y apt-transport-https
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;套件安裝細節說明如下：&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;執行檔安裝於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/sbin/grafana-server&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;建立起動程序檔 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/inint.d/grafana-server&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;安裝預設環境變數檔 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/default/grafana-server&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;建立預設組態設定檔 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/grafana/grafana.ini&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;安裝 systemd 服務(若系統使用systemd) &lt;code class=&quot;highlighter-rouge&quot;&gt;grafana-server.service&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;預設記錄檔路徑為 &lt;code class=&quot;highlighter-rouge&quot;&gt;/var/log/grafana/grafana.log&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;預設 grafana 使用 sqlite3 資料庫，檔案位置在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/var/lib/grafana/grafana.db&lt;/code&gt;，當要升級 grafana 版本時記得先備份此檔案。 Grafana 亦支援使用 MySQL 或 Postgres 作為資料庫。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;section-3&quot;&gt;啟動方式：&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;inid.d service&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo service grafana-server start
+
+設定開機自動執行
+
+$ sudo update-rc.d grafana-server defaults 95 10
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;systemd&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ systemctl daemon-reload
+$ systemctl start grafana-server
+$ systemctl status grafana-server
+
+設定開機自動執行
+
+$ sudo systemctl enable grafana-server.service
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 15 Oct 2016 19:29:00 +0800</pubDate>
+        <link>http://robodock.github.io//2016/10/15/grafana-installation.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/10/15/grafana-installation.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Raspberry Pi (Beaglebone) 使用 VNC 遠端桌面</title>
@@ -59,8 +197,8 @@ $ x11vnc -display :0    //指定要連線至 :0 螢幕(如果你只有一個 x-w
 &lt;p&gt;這樣子在啟動使用者桌面環境(LXDE)時，便會自動執行 x11vnc。&lt;/p&gt;
 </description>
         <pubDate>Wed, 22 Jun 2016 08:26:27 +0800</pubDate>
-        <link>http://www.robodock.net/2016/06/22/raspberry-pi-beaglebone-x11vnc.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/06/22/raspberry-pi-beaglebone-x11vnc.html</guid>
+        <link>http://robodock.github.io//2016/06/22/raspberry-pi-beaglebone-x11vnc.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/06/22/raspberry-pi-beaglebone-x11vnc.html</guid>
         
         
       </item>
@@ -88,8 +226,8 @@ $ x11vnc -display :0    //指定要連線至 :0 螢幕(如果你只有一個 x-w
 &lt;/div&gt;
 </description>
         <pubDate>Tue, 31 May 2016 10:03:13 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/31/copy-dhcp-reservations.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/31/copy-dhcp-reservations.html</guid>
+        <link>http://robodock.github.io//2016/05/31/copy-dhcp-reservations.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/05/31/copy-dhcp-reservations.html</guid>
         
         
       </item>
@@ -127,8 +265,8 @@ $ x11vnc -display :0    //指定要連線至 :0 螢幕(如果你只有一個 x-w
 &lt;p&gt;接下來關於 octopress 的使用請參考之前&lt;a href=&quot;http://robodock.github.io/2015/08/17/octopress-3-github-pages-blog.html&quot;&gt;這一篇&lt;/a&gt;。&lt;/p&gt;
 </description>
         <pubDate>Thu, 26 May 2016 21:57:23 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/26/windows-quick-install-octopress-3.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/26/windows-quick-install-octopress-3.html</guid>
+        <link>http://robodock.github.io//2016/05/26/windows-quick-install-octopress-3.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/05/26/windows-quick-install-octopress-3.html</guid>
         
         
       </item>
@@ -181,8 +319,8 @@ $ choco install nodejs.install
 &lt;p&gt;在&lt;a href=&quot;https://chocolatey.org/packages&quot;&gt;官網軟體套件清單&lt;/a&gt;頁面可查詢可安裝套件。&lt;/p&gt;
 </description>
         <pubDate>Wed, 25 May 2016 23:48:31 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/25/chocolatey.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/25/chocolatey.html</guid>
+        <link>http://robodock.github.io//2016/05/25/chocolatey.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/05/25/chocolatey.html</guid>
         
         
       </item>
@@ -394,8 +532,8 @@ http {
 &lt;/div&gt;
 </description>
         <pubDate>Sat, 21 May 2016 23:28:45 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/21/centos-7-install-lnmp.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/21/centos-7-install-lnmp.html</guid>
+        <link>http://robodock.github.io//2016/05/21/centos-7-install-lnmp.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/05/21/centos-7-install-lnmp.html</guid>
         
         
       </item>
@@ -466,8 +604,8 @@ wks = gc.open(&quot;Googld Spread Sheet&quot;).sheet1
 &lt;/div&gt;
 </description>
         <pubDate>Sat, 21 May 2016 23:15:46 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/21/python-oauth-2-0.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/21/python-oauth-2-0.html</guid>
+        <link>http://robodock.github.io//2016/05/21/python-oauth-2-0.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/05/21/python-oauth-2-0.html</guid>
         
         
       </item>
@@ -570,8 +708,8 @@ wks = gc.open(&quot;Googld Spread Sheet&quot;).sheet1
 
 </description>
         <pubDate>Thu, 19 May 2016 22:20:08 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-2.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-2.html</guid>
+        <link>http://robodock.github.io//2016/05/19/beaglebone-black-seren-voip-2.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/05/19/beaglebone-black-seren-voip-2.html</guid>
         
         
       </item>
@@ -633,8 +771,8 @@ $ sudo make install
 &lt;p&gt;確認音效卡編號後，可在啟動 seren 時使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;-d hw:x,x&lt;/code&gt; 參數，指定實際之音效卡編號載入使用。&lt;/p&gt;
 </description>
         <pubDate>Thu, 19 May 2016 22:20:03 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-1.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/19/beaglebone-black-seren-voip-1.html</guid>
+        <link>http://robodock.github.io//2016/05/19/beaglebone-black-seren-voip-1.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/05/19/beaglebone-black-seren-voip-1.html</guid>
         
         
       </item>
@@ -741,105 +879,8 @@ $ sudo make install
 &lt;/ol&gt;
 </description>
         <pubDate>Sat, 14 May 2016 18:07:33 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/14/beaglebonetor-relay.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/14/beaglebonetor-relay.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>建立 Chroot 環境</title>
-        <description>&lt;h2 id=&quot;chroot&quot;&gt;Chroot&lt;/h2&gt;
-&lt;p&gt;暫時將系統根目錄指到特定的目錄下，建立ㄧ個獨立的環境供測試、開發用。在此環境下執行的程式無法看到系統中的其他部分。&lt;/p&gt;
-
-&lt;h3 id=&quot;section&quot;&gt;建立工具&lt;/h3&gt;
-&lt;p&gt;在 chroot 建立的環境中，需要基本的系統程式才能運作。手動建立環境程序太繁雜，還好有 &lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 與 &lt;code class=&quot;highlighter-rouge&quot;&gt;debootstrap&lt;/code&gt; 工具程式幫我們處理。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 用來管理不同的 chroot 環境，&lt;code class=&quot;highlighter-rouge&quot;&gt;debootstrap&lt;/code&gt; 則用來在指定目錄中建立一個基本作業系統。附帶一提的是 &lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 已被 &lt;code class=&quot;highlighter-rouge&quot;&gt;schroot&lt;/code&gt; 取代，雖然仍可用 &lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 指令存取，事實上會連結至 &lt;code class=&quot;highlighter-rouge&quot;&gt;schroot&lt;/code&gt;。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo apt-get update
-$sudo apt-get install dchroot debootstrap
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;編輯 &lt;code class=&quot;highlighter-rouge&quot;&gt;dchroot&lt;/code&gt; 設定組態檔&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo vi /etc/schroot/schroot.conf
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;底下是個範例&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[saucy]
-description=Ubuntu Saucy
-location=/test
-priority=3
-users=demouser
-groups=sbuild
-root-groups=root
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;在指令目錄中安裝系統&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo debootstrap --variant=buildd --arch amd64 saucy /test/ http://mirror.cc.columbia.edu/pub/linux/ubuntu/archive/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--variant＝&lt;/code&gt; 項目表示使用何種類型的環境，&lt;code class=&quot;highlighter-rouge&quot;&gt;buildd&lt;/code&gt; 表示直接安裝成程式開發工具，也就是會安裝 &lt;code class=&quot;highlighter-rouge&quot;&gt;build-essential&lt;/code&gt; 套件。&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--arch&lt;/code&gt; 指定系統架構&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;saucy&lt;/code&gt; 則對應於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/schroot/schroot.conf&lt;/code&gt; 中的設定&lt;/p&gt;
-
-  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/test/&lt;/code&gt; 安裝目錄，後方之網址則為來源路徑&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;安裝完成後，如果查看 &lt;code class=&quot;highlighter-rouge&quot;&gt;/test/&lt;/code&gt; 目錄內容，可看到如同系統根目錄般的目錄結構：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bin   dev  home  lib64  mnt  proc  run   srv  tmp  var boot  etc  lib   media  opt  root  sbin  sys  usr
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;最後，進行主系統的 fstab 檔設定，好讓主系統能認得子系統的系統程序檔：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo vi /etc/fstab	
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;proc /test/proc proc defaults 0 0
-sysfs /test/sys sysfs defaults 0 0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;掛載進子系統&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo mount proc /test/proc -t proc
-$sudo mount sysfs /test/sys -t sysfs
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;子系統若需要存取與主系統相同的網路環境，可將主系統的 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; 檔案複製進子系統&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$cp /etc/hosts /test/etc/hosts
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;完成&lt;/h3&gt;
-
-&lt;p&gt;chroot 到子系統：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$sudo chroot /test/ /bin/bash
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sat, 14 May 2016 18:01:18 +0800</pubDate>
-        <link>http://www.robodock.net/2016/05/14/chroot.html</link>
-        <guid isPermaLink="true">http://www.robodock.net/2016/05/14/chroot.html</guid>
+        <link>http://robodock.github.io//2016/05/14/beaglebonetor-relay.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/05/14/beaglebonetor-relay.html</guid>
         
         
       </item>
