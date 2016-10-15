@@ -126,6 +126,19 @@ $ sudo systemctl enable grafana-server.service
 
 <p>系統會以名為 <code class="highlighter-rouge">grafana</code> 的使用者來啟動 <code class="highlighter-rouge">grafana-server</code> 程序，網頁介面預設使用 HTTP port <code class="highlighter-rouge">3000</code>，預設使用者為 <code class="highlighter-rouge">admin</code></p>
 
+<p>在 CentOS 7 中，開啟防火牆</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ firewall-cmd --permanent --add-port=3000/tcp
+</code></pre>
+</div>
+
+<p>另外還有 SELinux 的問題，無法連線時先檢查</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ sestatus          # 查看 selinux 狀態
+$ setenforce 0      # 暫時使用 permissive 模式
+</code></pre>
+</div>
+
 <h2 id="debianubuntu">Debian/Ubuntu</h2>
 <p>直接安裝最新穩定版</p>
 

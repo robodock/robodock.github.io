@@ -5,8 +5,8 @@
     <description>動力船塢工作日誌</description>
     <link>http://robodock.github.io//</link>
     <atom:link href="http://robodock.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 15 Oct 2016 21:42:52 +0800</pubDate>
-    <lastBuildDate>Sat, 15 Oct 2016 21:42:52 +0800</lastBuildDate>
+    <pubDate>Sat, 15 Oct 2016 23:00:39 +0800</pubDate>
+    <lastBuildDate>Sat, 15 Oct 2016 23:00:39 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -316,6 +316,19 @@ $ sudo systemctl enable grafana-server.service
 &lt;p&gt;不管是使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;init.d&lt;/code&gt; 或是 &lt;code class=&quot;highlighter-rouge&quot;&gt;systemd&lt;/code&gt; 方式啟動，皆會讀取 &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/default/grafana-server&lt;/code&gt; 設定環境變數。&lt;/p&gt;
 
 &lt;p&gt;系統會以名為 &lt;code class=&quot;highlighter-rouge&quot;&gt;grafana&lt;/code&gt; 的使用者來啟動 &lt;code class=&quot;highlighter-rouge&quot;&gt;grafana-server&lt;/code&gt; 程序，網頁介面預設使用 HTTP port &lt;code class=&quot;highlighter-rouge&quot;&gt;3000&lt;/code&gt;，預設使用者為 &lt;code class=&quot;highlighter-rouge&quot;&gt;admin&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;在 CentOS 7 中，開啟防火牆&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ firewall-cmd --permanent --add-port=3000/tcp
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;另外還有 SELinux 的問題，無法連線時先檢查&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sestatus          # 查看 selinux 狀態
+$ setenforce 0      # 暫時使用 permissive 模式
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h2 id=&quot;debianubuntu&quot;&gt;Debian/Ubuntu&lt;/h2&gt;
 &lt;p&gt;直接安裝最新穩定版&lt;/p&gt;
