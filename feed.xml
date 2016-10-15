@@ -5,9 +5,154 @@
     <description>動力船塢工作日誌</description>
     <link>http://robodock.github.io//</link>
     <atom:link href="http://robodock.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 15 Oct 2016 19:41:32 +0800</pubDate>
-    <lastBuildDate>Sat, 15 Oct 2016 19:41:32 +0800</lastBuildDate>
+    <pubDate>Sat, 15 Oct 2016 19:50:49 +0800</pubDate>
+    <lastBuildDate>Sat, 15 Oct 2016 19:50:49 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>influxDB-backup</title>
+        <description>&lt;h1 id=&quot;influxdb-&quot;&gt;influxDB 備份與回復&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;influxDB 具備對某個時間點實施&lt;strong&gt;“快照”&lt;/strong&gt;與回存的能力。&lt;/li&gt;
+  &lt;li&gt;influxDB 的備份接為完全備份，目前尚不支援&lt;strong&gt;“增量備份”&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;有兩種資料型式需要備份&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;metastore&lt;/strong&gt; : 資料庫的系統資訊，一次備份整個系統資訊。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;metrics&lt;/strong&gt; : 資料內容，依各個資料庫分別備份。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;註：開源版的 OSS influxDB 與 企業版的 InfluxEnterprise 資料庫備份無法互通使用&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;metastore-&quot;&gt;Metastore 備份&lt;/h2&gt;
+
+&lt;p&gt;influxDB metastore 包含系統狀態、使用者資訊、資料庫、標記資料等等資訊。當節點執行時，可執行底下命令進行備份：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;influxd backup &amp;lt;path-to-backup&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;命令未加入任何參數時，備份目前狀態&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ influxd backup /tmp/backup
+2016/02/01 17:15:03 backing up metastore to /tmp/backup/meta.00
+2016/02/01 17:15:03 backup complete
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;database-&quot;&gt;Database 備份&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;每個資料需要分開單獨備份&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;加入 &lt;code class=&quot;highlighter-rouge&quot;&gt;-database&lt;/code&gt; 參數來備份資料庫：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;influxd backup -database &amp;lt;mydatabase&amp;gt; &amp;lt;path-to-backup&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;其他參數選項：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-retention &amp;lt;retention policy name&amp;gt;&lt;/code&gt; : 使用特定的資料庫保留策略來進行備份&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-shard &amp;lt;shard ID&amp;gt;&lt;/code&gt; : 使用特定的 shard ID 進行備份&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-since &amp;lt;data&amp;gt;&lt;/code&gt; : 指定備份特定的時間起的資料，時間戳記需使用 RFC3339 格式，(例如 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;2015-12-24T08:12:23Z&lt;/code&gt;&lt;/strong&gt;)，使用指定時間的方式可間接達成增量備份的目的。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;註：Database 的備份中同時也會包含 Metastore 資料備份&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;範例：針對名為 &lt;code class=&quot;highlighter-rouge&quot;&gt;telegraf&lt;/code&gt; 的資料庫，使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;autogen&lt;/code&gt; 策略，從 2016/2/1 起進行&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ influxd backup -database telegraf -retention autogen -since 2016-02-01T00:00:00Z /tmp/backup
+2016/02/01 18:02:36 backing up rp=default since 2016-02-01 00:00:00 +0000 UTC
+2016/02/01 18:02:36 backing up metastore to /tmp/backup/meta.01
+2016/02/01 18:02:36 backing up db=telegraf rp=default shard=2 to /tmp/backup/telegraf.default.00002.01 since 2016-02-01 00:00:00 +0000 UTC
+2016/02/01 18:02:36 backup complete
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;遠端備份&lt;/h2&gt;
+&lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;-host&lt;/code&gt; 參數，指定遠端主機位址與埠號，可對遠端主機進行備份：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ influxd backup -database mydatabase -host 10.0.0.1:8088 /tmp/mysnapshot
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;資料庫回復&lt;/h2&gt;
+&lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;influxd restore&lt;/code&gt; 命令來復原資料庫。
+&amp;gt; 註：只有在資料庫 daemon 停止執行時，才能進行資料庫回復動作。&lt;/p&gt;
+
+&lt;p&gt;復原資料庫時，須指定備份型式，資料庫位置與備份檔所在位置：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;influxd restore [ -metadir | -datadir ] &amp;lt;path-to-meta-or-data-directory&amp;gt; &amp;lt;path-to-backup&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-metadir &amp;lt;path-to-meta-directory&amp;gt;&lt;/code&gt; 如果使用來自系統套件安裝方式，資料庫 metastore 位置應該在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/var/lib/influxdb/meta&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-datadir &amp;lt;path-to-data-directory&amp;gt;&lt;/code&gt; 如果使用來自系統套件安裝方式，資料庫 metastore 位置應該在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/var/lib/influxdb/data&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;其他回復資料庫參數：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-database &amp;lt;database&amp;gt;&lt;/code&gt; 指定要回復的資料庫名稱，如果回復的資料型式為 data(亦即指定 &lt;code class=&quot;highlighter-rouge&quot;&gt;-datadir&lt;/code&gt;參數後)，此項參數為必要項目。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-retention &amp;lt;retention policy&amp;gt;&lt;/code&gt; 指定特定的保留策略。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-shard &amp;lt;shard id&amp;gt;&lt;/code&gt; 指定回復特定的 shard data，須配合 &lt;code class=&quot;highlighter-rouge&quot;&gt;-database&lt;/code&gt; 與 &lt;code class=&quot;highlighter-rouge&quot;&gt;-retention&lt;/code&gt; 參數使用。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;資料庫回復範例：
+首先必須復原 metastore 資料，influxDB 才知道有哪些資料庫存在。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ influxd restore -metadir /var/lib/influxdb/meta /tmp/backup
+Using metastore snapshot: /tmp/backup/meta.00
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;metastore 資料復原後，再進行資料部分復原，以前述的 &lt;code class=&quot;highlighter-rouge&quot;&gt;telegraf&lt;/code&gt; 資料庫例子：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ influxd restore -database telegraf -datadir /var/lib/influxdb/data /tmp/backup                                                                         
+Restoring from backup /tmp/backup/telegraf.*
+unpacking /var/lib/influxdb/data/telegraf/default/2/000000004-000000003.tsm
+unpacking /var/lib/influxdb/data/telegraf/default/2/000000005-000000001.tsm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;當資料庫復原後，shards 上的權限可能不正確，可使用下列命令，確保檔案權限正確：&lt;/p&gt;
+
+  &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;$ sudo chown -R influxdb:influxdb /var/lib/influxdb&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;資料庫復原動作完成後，重新啟動資料庫&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ service influxdb start
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;可簡單快速執行資料庫查詢命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;show database&lt;/code&gt;，確定資料庫回復成功：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;influx -execute &#39;show databases&#39;
+name: databases
+---------------
+name
+_internal
+telegraf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 15 Oct 2016 19:48:00 +0800</pubDate>
+        <link>http://robodock.github.io//2016/10/15/influxdb-backup.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/10/15/influxdb-backup.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Grafana 安裝程序</title>
@@ -773,114 +918,6 @@ $ sudo make install
         <pubDate>Thu, 19 May 2016 22:20:03 +0800</pubDate>
         <link>http://robodock.github.io//2016/05/19/beaglebone-black-seren-voip-1.html</link>
         <guid isPermaLink="true">http://robodock.github.io//2016/05/19/beaglebone-black-seren-voip-1.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>使用 BeagleBone Black 打造 Tor Bridge Relay</title>
-        <description>&lt;h2 id=&quot;beaglebone-black--tor-bridge-relay&quot;&gt;使用 BeagleBone Black 打造 Tor Bridge Relay&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;安裝標準 Debian 系統 Image，因為要作為網路服務器使用，只要安裝 Console 版本即可。
- 我這裡裝的是可安裝至 onboard 2GB eMMC 中的 debian wheezy。&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; BBB-eMMC-flasher-debian-7.8-console-armhf-2015-07-28-2gb.img
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;安裝 Tor package&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; apt-get update; apt-get install tor
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;安裝 python 環境&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; apt-get install python2.7 python-pip python-dev build-essential
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;安裝 obfsproxy&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; pip install obfsproxy
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;編輯 /etc/tor/torrc&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; SocksPort 0
- ORPort auto
- BridgeRelay 1
- Exitpolicy reject *:*
-
- ## CHANGEME_1 -&amp;gt; provide a nickname for your bridge, can be anything you like
- #Nickname CHANGEME_1
- ## CHANGEME_2 -&amp;gt; provide some email address so we can contact you if there&#39;s a problem
- #ContactInfo CHANGEME_2
-
- ServerTransportPlugin obfs3 exec /usr/local/bin/obfsproxy managed
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;修正系統時間&lt;/p&gt;
-
-    &lt;p&gt;若系統中沒有 ntpdate ，請先安裝&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; apt-get install ntpdate 
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;校時&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ntpdate -b -s -u pool.ntp.org
- hwclock -w
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;我這邊是將校時的動作，寫至 &lt;code class=&quot;highlighter-rouge&quot;&gt;rc.local&lt;/code&gt; 中&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;啟動 tor&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; service tor restart
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;檢查 /var/log/tor/log 中是否有相關紀錄&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;開啟防火牆連接埠轉送&lt;/p&gt;
-
-    &lt;p&gt;ORPort 與 obfsproxy 兩個連接埠都須開啟允許外部連接轉送至 BeagleBone 上。&lt;/p&gt;
-
-    &lt;p&gt;obfsproxy 使用埠號可至 /var/log/tor/log 中查詢。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;可安裝 arm 套件觀看 Tor 系統使用狀況&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; apt-get install tor-arm
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;若需 HTTP 代理伺服器服務可安裝 polipo&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install polipo	
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Sat, 14 May 2016 18:07:33 +0800</pubDate>
-        <link>http://robodock.github.io//2016/05/14/beaglebonetor-relay.html</link>
-        <guid isPermaLink="true">http://robodock.github.io//2016/05/14/beaglebonetor-relay.html</guid>
         
         
       </item>
