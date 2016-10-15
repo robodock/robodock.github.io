@@ -5,9 +5,101 @@
     <description>動力船塢工作日誌</description>
     <link>http://robodock.github.io//</link>
     <atom:link href="http://robodock.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 15 Oct 2016 20:03:04 +0800</pubDate>
-    <lastBuildDate>Sat, 15 Oct 2016 20:03:04 +0800</lastBuildDate>
+    <pubDate>Sat, 15 Oct 2016 20:05:38 +0800</pubDate>
+    <lastBuildDate>Sat, 15 Oct 2016 20:05:38 +0800</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>influxDB 使用 HTTP API 寫入資料</title>
+        <description>&lt;h1 id=&quot;http-api--influxdb&quot;&gt;使用 HTTP API 寫入資料到 influxDB&lt;/h1&gt;
+
+&lt;h2 id=&quot;http-api-&quot;&gt;使用 HTTP API 建立資料庫&lt;/h2&gt;
+&lt;p&gt;透過傳送一個 HTTP &lt;code class=&quot;highlighter-rouge&quot;&gt;POST&lt;/code&gt; 請求至 &lt;code class=&quot;highlighter-rouge&quot;&gt;/query&lt;/code&gt; 網頁端點並設定參數 &lt;code class=&quot;highlighter-rouge&quot;&gt;q=CREATE DATABASE &amp;lt;new_database_name&amp;gt;&lt;/code&gt;，可建立資料庫：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -i -XPOST http://localhost:8086/query --data-urlencode &quot;q=CREATE DATABASE mydb&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;http-api--1&quot;&gt;使用 HTTP API 寫入資料&lt;/h2&gt;
+&lt;p&gt;透過傳送一個 HTTP &lt;code class=&quot;highlighter-rouge&quot;&gt;POST&lt;/code&gt; 請求至 &lt;code class=&quot;highlighter-rouge&quot;&gt;/write&lt;/code&gt; 網頁端點並指定相關參數，可將資料寫入 influxDB 資料庫。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -i -XPOST &#39;http://localhost:8086/write?db=mydb&#39; --data-binary &#39;cpu_load_short,host=server01,region=us-west value=0.64 1434055562000000000&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;上述命令會將一筆資料寫入名為 &lt;code class=&quot;highlighter-rouge&quot;&gt;mydb&lt;/code&gt; (透過指定 &lt;code class=&quot;highlighter-rouge&quot;&gt;db=mydb&lt;/code&gt;) 的資料庫，資料如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;measurement : &lt;code class=&quot;highlighter-rouge&quot;&gt;cpu_load_short&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;tag keys : &lt;code class=&quot;highlighter-rouge&quot;&gt;host=server01,region=us-west&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;fidle key : &lt;code class=&quot;highlighter-rouge&quot;&gt;value=0.64&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;timestamp : &lt;code class=&quot;highlighter-rouge&quot;&gt;1434055562000000000&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;資料格式&lt;/h2&gt;
+
+&lt;p&gt;上述的資料型式即為典型的 influxDB 資料格式，influxDB 稱這為 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Line Protocol&lt;/code&gt;&lt;/strong&gt; ，說明如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;measurement : 記錄項目&lt;/li&gt;
+  &lt;li&gt;tags : 選項欄位，用來標記不同資料來源或地點，有利於查詢效率。tag keys 與 tag values 皆為 &lt;strong&gt;字串&lt;/strong&gt; 格式。&lt;/li&gt;
+  &lt;li&gt;fields : 資料數值欄位。field keys 為 &lt;strong&gt;字串&lt;/strong&gt; 格式，而 field value &lt;strong&gt;預設格式&lt;/strong&gt; 則為 &lt;strong&gt;float(浮點小數)&lt;/strong&gt;。&lt;/li&gt;
+  &lt;li&gt;timestamp : epoch 格式，但以 nanosecond 單位記錄(所以總位數為19位數)。在 influxDB 中，所有時間皆以 UTC 記錄。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;寫入多點資料&lt;/h3&gt;
+&lt;p&gt;多筆資料只要以 &lt;strong&gt;new line &lt;code class=&quot;highlighter-rouge&quot;&gt;\n&lt;/code&gt;&lt;/strong&gt; 字元分隔，即可在一個 HTTP 請求中，寫入多筆資料到資料庫中，效率也會比分開多次 HTTP 請求來的好。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;註：僅能使用 new line 字元 &lt;code class=&quot;highlighter-rouge&quot;&gt;\n&lt;/code&gt;，不可使用 new line + carriage return &lt;code class=&quot;highlighter-rouge&quot;&gt;\n\r&lt;/code&gt; 作為分隔。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;例如：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -i -XPOST &#39;http://localhost:8086/write?db=mydb&#39; --data-binary &#39;cpu_load_short,host=server02 value=0.67
+cpu_load_short,host=server02,region=us-west value=0.55 1422568543702900257
+cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702900257&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;讀取檔案來寫入&lt;/h3&gt;
+&lt;p&gt;透過傳遞 &lt;code class=&quot;highlighter-rouge&quot;&gt;@filename&lt;/code&gt; 參數給 &lt;code class=&quot;highlighter-rouge&quot;&gt;curl&lt;/code&gt;，可將整個檔案資料寫入資料庫，當然檔案內容格式必須遵循前述的 &lt;code class=&quot;highlighter-rouge&quot;&gt;Line Protocol&lt;/code&gt;，注意換行符號僅使用 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;\n&lt;/code&gt;&lt;/strong&gt;，而非 windows 環境下使用的 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;\n\r&lt;/code&gt;&lt;/strong&gt; 換行字元，在 windows 環境中編輯資料檔案時須特別注意，建議使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;notepad++&lt;/code&gt; 之類的文書軟體來處理資料檔案。&lt;/p&gt;
+
+&lt;p&gt;例如：名為 &lt;code class=&quot;highlighter-rouge&quot;&gt;cpu_data.txt&lt;/code&gt; 的檔案中資料如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cpu_load_short,host=server02 value=0.67
+cpu_load_short,host=server02,region=us-west value=0.55 1422568543702900257
+cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702900257
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;將 &lt;code class=&quot;highlighter-rouge&quot;&gt;cpu_data.txt&lt;/code&gt; 檔案寫入 &lt;code class=&quot;highlighter-rouge&quot;&gt;mydb&lt;/code&gt; 資料庫 :&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -i -XPOST &#39;http://localhost:8086/write?db=mydb&#39; --data-binary @cpu_data.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;註：建議單一個檔案的資料少於 5000 點，以避免 HTTP request times out 相關問題。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;schemaless-design&quot;&gt;Schemaless Design&lt;/h2&gt;
+&lt;p&gt;influxDB 是一種 Schemaless 資料庫，資料庫不需要固定樣式的資料表，可隨時加入額外的 measuremen、tag、field。
+但對於已使用中的欄位，則須維持相通的資料格式，不可變更。例如原本使用 &lt;strong&gt;integers&lt;/strong&gt; 的欄位，則無法改寫入 &lt;strong&gt;string&lt;/strong&gt; 格式資料。&lt;/p&gt;
+
+&lt;h2 id=&quot;http-&quot;&gt;關於 HTTP 回應訊息&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;2xx : &lt;code class=&quot;highlighter-rouge&quot;&gt;HTTP 204 No Content&lt;/code&gt; 與 &lt;code class=&quot;highlighter-rouge&quot;&gt;HTTP 200 OK&lt;/code&gt; 皆代表處理成功。&lt;/li&gt;
+  &lt;li&gt;4xx : influxDB 無法處理請求&lt;/li&gt;
+  &lt;li&gt;5xx : 系統超載或受損&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 15 Oct 2016 19:57:00 +0800</pubDate>
+        <link>http://robodock.github.io//2016/10/15/influxdb-http-api-write-data.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/10/15/influxdb-http-api-write-data.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>influxDB 備份與回復</title>
@@ -855,69 +947,6 @@ wks = gc.open(&quot;Googld Spread Sheet&quot;).sheet1
         <pubDate>Thu, 19 May 2016 22:20:08 +0800</pubDate>
         <link>http://robodock.github.io//2016/05/19/beaglebone-black-seren-voip-2.html</link>
         <guid isPermaLink="true">http://robodock.github.io//2016/05/19/beaglebone-black-seren-voip-2.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>使用 BeagleBone Black 或 Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (1/2)</title>
-        <description>&lt;h2 id=&quot;seren-on-beaglebone-black&quot;&gt;Seren on BeagleBone Black&lt;/h2&gt;
-
-&lt;p&gt;在 Linux 上有隻名為 &lt;strong&gt;Seren&lt;/strong&gt; 的簡易 VoIP 程式，可在終端機模式下進行語音通訊與文字交談，不必使用外部廠商提供的通訊軟體或註冊任何服務帳號，很適合小型輕量化系統使用，搭配 BeagleBone 或 Raspberry Pi 的 GPIO 做通訊開關控制，可衍生出不少應用。&lt;/p&gt;
-
-&lt;p&gt;Seren 的前身稱為 Parole，使用 &lt;strong&gt;&lt;em&gt;C&lt;/em&gt;&lt;/strong&gt; 語言開發，利用 &lt;strong&gt;&lt;em&gt;alsa&lt;/em&gt;&lt;/strong&gt; 程式庫與音效卡溝通，並用 &lt;strong&gt;&lt;em&gt;opus&lt;/em&gt;&lt;/strong&gt; codec 處理音訊壓縮，進化至 Seren 後，增加了使用 &lt;strong&gt;&lt;em&gt;gmp&lt;/em&gt;&lt;/strong&gt; 演算法程式庫優化程式，可允許多達 10 人加入同一音訊會議，並加入利用 &lt;strong&gt;&lt;em&gt;ncurse&lt;/em&gt;&lt;/strong&gt; 做成的文字使用者介面，方便操作。&lt;/p&gt;
-
-&lt;p&gt;Seren 目前可在 Fedora/RHEL/CentOS Linux 版本中，直接從官方程式庫(Repositories)下載：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# yum install seren
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Debian/Ubuntu 系列則還未收入官方程式庫，因此要在 BeagleBone Black/Raspberry Pi 上使用 Seren，須自行&lt;a href=&quot;http://holdenc.altervista.org/seren/downloads/seren-0.0.21.tar.gz&quot;&gt;下載&lt;/a&gt;原始碼編譯，編譯時需要的相依性套件如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo apt-get install build-essential libasound2-dev libopus-dev libogg-dev libgmp-dev libncursesw5-dev
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;將原始碼下載解壓至一工作目錄後，在工作目錄下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./configure	
-//確認滿足編譯所需相依性，並產生 make 組態檔
-$ make	
-//編譯程式...，在 BeagleBone Black 上需要幾分鐘時間
-
-//如果想將執行檔安裝至系統目錄下，可再執行這行
-$ sudo make install
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;seren&quot;&gt;使用 Seren&lt;/h2&gt;
-
-&lt;p&gt;操作方法相當簡單，使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;seren -h&lt;/code&gt; 查看可用命令列參數，或直接執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;seren&lt;/code&gt; 進入互動操作模式，&lt;code class=&quot;highlighter-rouge&quot;&gt;seren&lt;/code&gt; 執行後便會進入接聽待命模式，要撥打電話的一方只要鍵入 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/c 對方IP位址&lt;/code&gt;&lt;/strong&gt; 即可進行連線。&lt;/p&gt;
-
-&lt;p&gt;若系統未連接音效卡或預設的音效卡設備無法提供 seren 連接使用時，可能會出現如下訊息：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[alsa] Cannot open audio device &#39;hw:0,0&#39;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;可利用下列方式排除問題:&lt;/p&gt;
-
-&lt;p&gt;列出可用的音效卡設備編號 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;hw:x,x&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat /proc/asound/pcm
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;亦可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;$ cat /proc/asound/cards&lt;/code&gt; 或是 &lt;code class=&quot;highlighter-rouge&quot;&gt;$ cat /proc/asound/devices&lt;/code&gt; 查看&lt;/p&gt;
-
-&lt;p&gt;若系統中也裝有 &lt;code class=&quot;highlighter-rouge&quot;&gt;alsa-utils&lt;/code&gt; 音效卡工具程式庫，可用 &lt;code class=&quot;highlighter-rouge&quot;&gt;aplay -l&lt;/code&gt; 指令列出音效卡設備。&lt;/p&gt;
-
-&lt;p&gt;確認音效卡編號後，可在啟動 seren 時使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;-d hw:x,x&lt;/code&gt; 參數，指定實際之音效卡編號載入使用。&lt;/p&gt;
-</description>
-        <pubDate>Thu, 19 May 2016 22:20:03 +0800</pubDate>
-        <link>http://robodock.github.io//2016/05/19/beaglebone-black-seren-voip-1.html</link>
-        <guid isPermaLink="true">http://robodock.github.io//2016/05/19/beaglebone-black-seren-voip-1.html</guid>
         
         
       </item>

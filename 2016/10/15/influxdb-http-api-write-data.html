@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>influxDB 使用 HTTP API 寫入資料</title>
+  <meta name="description" content="使用 HTTP API 寫入資料到 influxDB">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://robodock.github.io//2016/10/15/influxdb-http-api-write-data.html">
+  <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://robodock.github.io//feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">RoboDock</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">influxDB 使用 HTTP API 寫入資料</h1>
+    <p class="post-meta"><time datetime="2016-10-15T19:57:00+08:00" itemprop="datePublished">Oct 15, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h1 id="http-api--influxdb">使用 HTTP API 寫入資料到 influxDB</h1>
+
+<h2 id="http-api-">使用 HTTP API 建立資料庫</h2>
+<p>透過傳送一個 HTTP <code class="highlighter-rouge">POST</code> 請求至 <code class="highlighter-rouge">/query</code> 網頁端點並設定參數 <code class="highlighter-rouge">q=CREATE DATABASE &lt;new_database_name&gt;</code>，可建立資料庫：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE mydb"
+</code></pre>
+</div>
+
+<h2 id="http-api--1">使用 HTTP API 寫入資料</h2>
+<p>透過傳送一個 HTTP <code class="highlighter-rouge">POST</code> 請求至 <code class="highlighter-rouge">/write</code> 網頁端點並指定相關參數，可將資料寫入 influxDB 資料庫。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary 'cpu_load_short,host=server01,region=us-west value=0.64 1434055562000000000'
+</code></pre>
+</div>
+
+<p>上述命令會將一筆資料寫入名為 <code class="highlighter-rouge">mydb</code> (透過指定 <code class="highlighter-rouge">db=mydb</code>) 的資料庫，資料如下：</p>
+
+<ul>
+  <li>measurement : <code class="highlighter-rouge">cpu_load_short</code></li>
+  <li>tag keys : <code class="highlighter-rouge">host=server01,region=us-west</code></li>
+  <li>fidle key : <code class="highlighter-rouge">value=0.64</code></li>
+  <li>timestamp : <code class="highlighter-rouge">1434055562000000000</code></li>
+</ul>
+
+<h2 id="section">資料格式</h2>
+
+<p>上述的資料型式即為典型的 influxDB 資料格式，influxDB 稱這為 <strong><code class="highlighter-rouge">Line Protocol</code></strong> ，說明如下：</p>
+
+<ul>
+  <li>measurement : 記錄項目</li>
+  <li>tags : 選項欄位，用來標記不同資料來源或地點，有利於查詢效率。tag keys 與 tag values 皆為 <strong>字串</strong> 格式。</li>
+  <li>fields : 資料數值欄位。field keys 為 <strong>字串</strong> 格式，而 field value <strong>預設格式</strong> 則為 <strong>float(浮點小數)</strong>。</li>
+  <li>timestamp : epoch 格式，但以 nanosecond 單位記錄(所以總位數為19位數)。在 influxDB 中，所有時間皆以 UTC 記錄。</li>
+</ul>
+
+<h3 id="section-1">寫入多點資料</h3>
+<p>多筆資料只要以 <strong>new line <code class="highlighter-rouge">\n</code></strong> 字元分隔，即可在一個 HTTP 請求中，寫入多筆資料到資料庫中，效率也會比分開多次 HTTP 請求來的好。</p>
+
+<blockquote>
+  <p>註：僅能使用 new line 字元 <code class="highlighter-rouge">\n</code>，不可使用 new line + carriage return <code class="highlighter-rouge">\n\r</code> 作為分隔。</p>
+</blockquote>
+
+<p>例如：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary 'cpu_load_short,host=server02 value=0.67
+cpu_load_short,host=server02,region=us-west value=0.55 1422568543702900257
+cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702900257'
+</code></pre>
+</div>
+
+<h3 id="section-2">讀取檔案來寫入</h3>
+<p>透過傳遞 <code class="highlighter-rouge">@filename</code> 參數給 <code class="highlighter-rouge">curl</code>，可將整個檔案資料寫入資料庫，當然檔案內容格式必須遵循前述的 <code class="highlighter-rouge">Line Protocol</code>，注意換行符號僅使用 <strong><code class="highlighter-rouge">\n</code></strong>，而非 windows 環境下使用的 <strong><code class="highlighter-rouge">\n\r</code></strong> 換行字元，在 windows 環境中編輯資料檔案時須特別注意，建議使用 <code class="highlighter-rouge">notepad++</code> 之類的文書軟體來處理資料檔案。</p>
+
+<p>例如：名為 <code class="highlighter-rouge">cpu_data.txt</code> 的檔案中資料如下：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cpu_load_short,host=server02 value=0.67
+cpu_load_short,host=server02,region=us-west value=0.55 1422568543702900257
+cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702900257
+</code></pre>
+</div>
+
+<p>將 <code class="highlighter-rouge">cpu_data.txt</code> 檔案寫入 <code class="highlighter-rouge">mydb</code> 資料庫 :</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary @cpu_data.txt
+</code></pre>
+</div>
+
+<blockquote>
+  <p>註：建議單一個檔案的資料少於 5000 點，以避免 HTTP request times out 相關問題。</p>
+</blockquote>
+
+<h2 id="schemaless-design">Schemaless Design</h2>
+<p>influxDB 是一種 Schemaless 資料庫，資料庫不需要固定樣式的資料表，可隨時加入額外的 measuremen、tag、field。
+但對於已使用中的欄位，則須維持相通的資料格式，不可變更。例如原本使用 <strong>integers</strong> 的欄位，則無法改寫入 <strong>string</strong> 格式資料。</p>
+
+<h2 id="http-">關於 HTTP 回應訊息</h2>
+<ul>
+  <li>2xx : <code class="highlighter-rouge">HTTP 204 No Content</code> 與 <code class="highlighter-rouge">HTTP 200 OK</code> 皆代表處理成功。</li>
+  <li>4xx : influxDB 無法處理請求</li>
+  <li>5xx : 系統超載或受損</li>
+</ul>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">RoboDock</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>RoboDock</li>
+          <li><a href="mailto:robodock@robodock.net">robodock@robodock.net</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/robodock"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">robodock</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/robo_dock"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">robo_dock</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>動力船塢工作日誌</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
