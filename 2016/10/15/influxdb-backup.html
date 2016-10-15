@@ -136,8 +136,12 @@
 </div>
 
 <h2 id="section-1">資料庫回復</h2>
-<p>使用 <code class="highlighter-rouge">influxd restore</code> 命令來復原資料庫。
-&gt; 註：只有在資料庫 daemon 停止執行時，才能進行資料庫回復動作。</p>
+
+<p>使用 <code class="highlighter-rouge">influxd restore</code> 命令來復原資料庫。</p>
+
+<blockquote>
+  <p><strong>註：只有在資料庫 daemon 停止執行時，才能進行資料庫回復動作。</strong></p>
+</blockquote>
 
 <p>復原資料庫時，須指定備份型式，資料庫位置與備份檔所在位置：</p>
 
@@ -158,8 +162,9 @@
   <li><code class="highlighter-rouge">-shard &lt;shard id&gt;</code> 指定回復特定的 shard data，須配合 <code class="highlighter-rouge">-database</code> 與 <code class="highlighter-rouge">-retention</code> 參數使用。</li>
 </ul>
 
-<p>資料庫回復範例：
-首先必須復原 metastore 資料，influxDB 才知道有哪些資料庫存在。</p>
+<p>資料庫回復範例：</p>
+
+<p>首先必須復原 metastore 資料，influxDB 才知道有哪些資料庫存在。</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>$ influxd restore -metadir /var/lib/influxdb/meta /tmp/backup
 Using metastore snapshot: /tmp/backup/meta.00
