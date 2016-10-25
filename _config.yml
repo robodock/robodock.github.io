@@ -1,11 +1,10 @@
 title: RoboDock
 email: robodock@robodock.net
-description: 動力船塢工作日誌
+description: 船塢日誌
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://www.robodock.net" # the base hostname & protocol for your site
+url: "http://robodock.github.io/" # the base hostname & protocol for your site
 twitter_username: robo_dock
 github_username:  robodock
 
 # Build settings
 markdown: kramdown
-
