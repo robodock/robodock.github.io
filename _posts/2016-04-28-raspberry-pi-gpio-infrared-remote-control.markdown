@@ -167,7 +167,7 @@ irrecord 是一個互動的程式，只要依照說明指示，一步步進行�
 
 我這邊接起來的測試環境像這樣：
 
-![Raspberry Pi2 GPIO Infrared LED test]((http://robodock.github.io/images/2016/04/IMG_4771.JPG)
+![Raspberry Pi2 GPIO Infrared LED test](http://robodock.github.io/images/2016/04/IMG_4771.JPG)
 
 發送遙控訊號時：
 
