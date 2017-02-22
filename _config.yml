@@ -8,9 +8,3 @@ github_username:  robodock
 
 # Build settings
 markdown: kramdown
-
-gems:
-    - octopress-solarized
-    - octopress-genesis-theme
-    - octopress-codefence
-    - octopress-codeblock

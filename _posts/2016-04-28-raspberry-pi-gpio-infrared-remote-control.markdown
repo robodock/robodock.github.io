@@ -69,7 +69,7 @@ LIRC 套件中包含了 `irrecord` 工具程式，可用來記錄遙控器每個
 
 我這邊使用的是 IRM-3638N3 series 的紅外線接收模組，接收頻率 38KHz，工作電壓為 0~6V。
 
-![IRM3638N3](https://googledrive.com/host/0B3VMyKy-nGUYdUdGOEQzcVpYRDQ)
+![IRM-3638N3](images/2016/IRM-3638N3.png)
 
 將接收模組的針腳 1 連接至 RPi GPIO Pin 23(GPIO IN)，針腳 2 連接至 GPIO pin 3(GND)，針腳 3 連接至 GPIO pin 1(+3.3V)，Raspberry Pi 的GPIO 腳位可參考下圖。
 
