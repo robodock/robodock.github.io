@@ -9,9 +9,9 @@ date: 2015-12-01T12:14:15+08:00
 ## CR 2032 電池
 **CR** 型電池的化學成分為**鋰-錳**(Lithium Manganese Dioxide, LiMnO2)，單位能量密度高，低溫環境可工作，可快速放電，常使用於相機與電腦中。
 
-![CR2032電池](http://robodock.github.io/images/2015/11/Panasonic_CR2032.jpg)
+![CR2032電池](https://github.com/robodock/robodock.github.io/raw/master/images/2015/11/Panasonic_CR2032.jpg)
 
-![Panasonic CR2032規格](http://robodock.github.io/images/2015/11/Panasonic_CR2032.png)
+![Panasonic CR2032規格](https://github.com/robodock/robodock.github.io/raw/master/images/2015/11/Panasonic_CR2032.png)
 
 ---
 
@@ -19,9 +19,9 @@ date: 2015-12-01T12:14:15+08:00
 
 **BR** 型電池的化學成分為**鋰-氟碳化物**(Lithium Carbon Monofluoride, Li(CF)x)，優異的低自放電性質(低於0.5%/year)，可保存較久，工作壽命期間電壓一致，常用於時鐘，心律調節器，導向飛彈上。
 
-![BR2032電池](http://robodock.github.io/images/2015/11/Panasonic_BR2032.jpg)
+![BR2032電池](https://github.com/robodock/robodock.github.io/raw/master/images/2015/11/Panasonic_BR2032.jpg)
 
-![Panasonic BR2032規格](http://robodock.github.io/images/2015/11/Panasonic_BR2032.png)
+![Panasonic BR2032規格](https://github.com/robodock/robodock.github.io/raw/master/images/2015/11/Panasonic_BR2032.png)
 
 ---
 
