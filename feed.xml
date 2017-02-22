@@ -5,13 +5,13 @@
     <description>船塢日誌</description>
     <link>http://robodock.github.io//</link>
     <atom:link href="http://robodock.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 22 Feb 2017 17:16:19 +0800</pubDate>
-    <lastBuildDate>Wed, 22 Feb 2017 17:16:19 +0800</lastBuildDate>
-    <generator>Jekyll v3.4.0</generator>
+    <pubDate>Wed, 22 Feb 2017 20:47:14 +0800</pubDate>
+    <lastBuildDate>Wed, 22 Feb 2017 20:47:14 +0800</lastBuildDate>
+    <generator>Jekyll v3.3.0</generator>
     
       <item>
         <title>Let's Encrypt 免費網站憑證</title>
-        <description>&lt;h1 id=&quot;使用-certbot-acme-client-自動化流程&quot;&gt;使用 Certbot ACME client 自動化流程&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;certbot-acme-client-&quot;&gt;使用 Certbot ACME client 自動化流程&lt;/h1&gt;
 
 &lt;p&gt;Let’s Encrypt 建議使用 EFF 的 Certbot ACME client 進行自動化流程，
 Certbot 網頁 &lt;a href=&quot;https://certbot.eff.org&quot;&gt;(https://certbot.eff.org)&lt;/a&gt; 提供各種不同網頁伺服器與作業系統的安裝說明。&lt;/p&gt;
@@ -24,7 +24,7 @@ Certbot 網頁 &lt;a href=&quot;https://certbot.eff.org&quot;&gt;(https://certbo
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;使用-nginx-伺服器&quot;&gt;使用 Nginx 伺服器&lt;/h3&gt;
+&lt;h3 id=&quot;nginx-&quot;&gt;使用 Nginx 伺服器&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -57,7 +57,7 @@ Certbot 網頁 &lt;a href=&quot;https://certbot.eff.org&quot;&gt;(https://certbo
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;使用-apache-伺服器&quot;&gt;使用 Apache 伺服器&lt;/h3&gt;
+&lt;h3 id=&quot;apache-&quot;&gt;使用 Apache 伺服器&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -83,7 +83,7 @@ Certbot 網頁 &lt;a href=&quot;https://certbot.eff.org&quot;&gt;(https://certbo
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;自動更新&quot;&gt;自動更新&lt;/h3&gt;
+&lt;h3 id=&quot;section&quot;&gt;自動更新&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -120,7 +120,7 @@ $ chmod a+x certbot-auto
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;使用-nginx-伺服器-1&quot;&gt;使用 Nginx 伺服器&lt;/h3&gt;
+&lt;h3 id=&quot;nginx--1&quot;&gt;使用 Nginx 伺服器&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -139,7 +139,7 @@ $ chmod a+x certbot-auto
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;使用-apache-伺服器-1&quot;&gt;使用 Apache 伺服器&lt;/h3&gt;
+&lt;h3 id=&quot;apache--1&quot;&gt;使用 Apache 伺服器&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -158,7 +158,7 @@ $ chmod a+x certbot-auto
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;自動更新-1&quot;&gt;自動更新&lt;/h3&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;自動更新&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -174,7 +174,7 @@ $ chmod a+x certbot-auto
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;運作原理&quot;&gt;運作原理&lt;/h2&gt;
+&lt;h2 id=&quot;section-2&quot;&gt;運作原理&lt;/h2&gt;
 
 &lt;p&gt;在網站伺服器上執行一個憑證管理代理程式，使用 ACME protocol 來向 Let’s Encrypt CA 自動取得瀏覽器信任憑證。&lt;/p&gt;
 
@@ -232,16 +232,16 @@ $ chmod a+x certbot-auto
     
       <item>
         <title>influxDB 使用 HTTP API 寫入資料</title>
-        <description>&lt;h1 id=&quot;使用-http-api-寫入資料到-influxdb&quot;&gt;使用 HTTP API 寫入資料到 influxDB&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;http-api--influxdb&quot;&gt;使用 HTTP API 寫入資料到 influxDB&lt;/h1&gt;
 
-&lt;h2 id=&quot;使用-http-api-建立資料庫&quot;&gt;使用 HTTP API 建立資料庫&lt;/h2&gt;
+&lt;h2 id=&quot;http-api-&quot;&gt;使用 HTTP API 建立資料庫&lt;/h2&gt;
 &lt;p&gt;透過傳送一個 HTTP &lt;code class=&quot;highlighter-rouge&quot;&gt;POST&lt;/code&gt; 請求至 &lt;code class=&quot;highlighter-rouge&quot;&gt;/query&lt;/code&gt; 網頁端點並設定參數 &lt;code class=&quot;highlighter-rouge&quot;&gt;q=CREATE DATABASE &amp;lt;new_database_name&amp;gt;&lt;/code&gt;，可建立資料庫：&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -i -XPOST http://localhost:8086/query --data-urlencode &quot;q=CREATE DATABASE mydb&quot;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;使用-http-api-寫入資料&quot;&gt;使用 HTTP API 寫入資料&lt;/h2&gt;
+&lt;h2 id=&quot;http-api--1&quot;&gt;使用 HTTP API 寫入資料&lt;/h2&gt;
 &lt;p&gt;透過傳送一個 HTTP &lt;code class=&quot;highlighter-rouge&quot;&gt;POST&lt;/code&gt; 請求至 &lt;code class=&quot;highlighter-rouge&quot;&gt;/write&lt;/code&gt; 網頁端點並指定相關參數，可將資料寫入 influxDB 資料庫。&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary 'cpu_load_short,host=server01,region=us-west value=0.64 1434055562000000000'
@@ -257,7 +257,7 @@ $ chmod a+x certbot-auto
   &lt;li&gt;timestamp : &lt;code class=&quot;highlighter-rouge&quot;&gt;1434055562000000000&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;資料格式&quot;&gt;資料格式&lt;/h2&gt;
+&lt;h2 id=&quot;section&quot;&gt;資料格式&lt;/h2&gt;
 
 &lt;p&gt;上述的資料型式即為典型的 influxDB 資料格式，influxDB 稱這為 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Line Protocol&lt;/code&gt;&lt;/strong&gt; ，說明如下：&lt;/p&gt;
 
@@ -268,7 +268,7 @@ $ chmod a+x certbot-auto
   &lt;li&gt;timestamp : epoch 格式，但以 nanosecond 單位記錄(所以總位數為19位數)。在 influxDB 中，所有時間皆以 UTC 記錄。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;寫入多點資料&quot;&gt;寫入多點資料&lt;/h3&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;寫入多點資料&lt;/h3&gt;
 &lt;p&gt;多筆資料只要以 &lt;strong&gt;new line &lt;code class=&quot;highlighter-rouge&quot;&gt;\n&lt;/code&gt;&lt;/strong&gt; 字元分隔，即可在一個 HTTP 請求中，寫入多筆資料到資料庫中，效率也會比分開多次 HTTP 請求來的好。&lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -283,7 +283,7 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;讀取檔案來寫入&quot;&gt;讀取檔案來寫入&lt;/h3&gt;
+&lt;h3 id=&quot;section-2&quot;&gt;讀取檔案來寫入&lt;/h3&gt;
 &lt;p&gt;透過傳遞 &lt;code class=&quot;highlighter-rouge&quot;&gt;@filename&lt;/code&gt; 參數給 &lt;code class=&quot;highlighter-rouge&quot;&gt;curl&lt;/code&gt;，可將整個檔案資料寫入資料庫，當然檔案內容格式必須遵循前述的 &lt;code class=&quot;highlighter-rouge&quot;&gt;Line Protocol&lt;/code&gt;，注意換行符號僅使用 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;\n&lt;/code&gt;&lt;/strong&gt;，而非 windows 環境下使用的 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;\n\r&lt;/code&gt;&lt;/strong&gt; 換行字元，在 windows 環境中編輯資料檔案時須特別注意，建議使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;notepad++&lt;/code&gt; 之類的文書軟體來處理資料檔案。&lt;/p&gt;
 
 &lt;p&gt;例如：名為 &lt;code class=&quot;highlighter-rouge&quot;&gt;cpu_data.txt&lt;/code&gt; 的檔案中資料如下：&lt;/p&gt;
@@ -308,7 +308,7 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
 &lt;p&gt;influxDB 是一種 Schemaless 資料庫，資料庫不需要固定樣式的資料表，可隨時加入額外的 measuremen、tag、field。
 但對於已使用中的欄位，則須維持相通的資料格式，不可變更。例如原本使用 &lt;strong&gt;integers&lt;/strong&gt; 的欄位，則無法改寫入 &lt;strong&gt;string&lt;/strong&gt; 格式資料。&lt;/p&gt;
 
-&lt;h2 id=&quot;關於-http-回應訊息&quot;&gt;關於 HTTP 回應訊息&lt;/h2&gt;
+&lt;h2 id=&quot;http-&quot;&gt;關於 HTTP 回應訊息&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;2xx : &lt;code class=&quot;highlighter-rouge&quot;&gt;HTTP 204 No Content&lt;/code&gt; 與 &lt;code class=&quot;highlighter-rouge&quot;&gt;HTTP 200 OK&lt;/code&gt; 皆代表處理成功。&lt;/li&gt;
   &lt;li&gt;4xx : influxDB 無法處理請求&lt;/li&gt;
@@ -324,7 +324,7 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
     
       <item>
         <title>influxDB 備份與回復</title>
-        <description>&lt;h1 id=&quot;influxdb-備份與回復&quot;&gt;influxDB 備份與回復&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;influxdb-&quot;&gt;influxDB 備份與回復&lt;/h1&gt;
 
 &lt;ul&gt;
   &lt;li&gt;influxDB 具備對某個時間點實施&lt;strong&gt;“快照”&lt;/strong&gt;與回存的能力。&lt;/li&gt;
@@ -342,7 +342,7 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
   &lt;p&gt;註：開源版的 OSS influxDB 與 企業版的 InfluxEnterprise 資料庫備份無法互通使用&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h2 id=&quot;metastore-備份&quot;&gt;Metastore 備份&lt;/h2&gt;
+&lt;h2 id=&quot;metastore-&quot;&gt;Metastore 備份&lt;/h2&gt;
 
 &lt;p&gt;influxDB metastore 包含系統狀態、使用者資訊、資料庫、標記資料等等資訊。當節點執行時，可執行底下命令進行備份：&lt;/p&gt;
 
@@ -358,7 +358,7 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;database-備份&quot;&gt;Database 備份&lt;/h2&gt;
+&lt;h2 id=&quot;database-&quot;&gt;Database 備份&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;每個資料需要分開單獨備份&lt;/strong&gt;&lt;/p&gt;
 
@@ -390,14 +390,14 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;遠端備份&quot;&gt;遠端備份&lt;/h2&gt;
+&lt;h2 id=&quot;section&quot;&gt;遠端備份&lt;/h2&gt;
 &lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;-host&lt;/code&gt; 參數，指定遠端主機位址與埠號，可對遠端主機進行備份：&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ influxd backup -database mydatabase -host 10.0.0.1:8088 /tmp/mysnapshot
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;資料庫回復&quot;&gt;資料庫回復&lt;/h2&gt;
+&lt;h2 id=&quot;section-1&quot;&gt;資料庫回復&lt;/h2&gt;
 
 &lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;influxd restore&lt;/code&gt; 命令來復原資料庫。&lt;/p&gt;
 
@@ -474,7 +474,7 @@ telegraf
     
       <item>
         <title>Grafana 安裝程序</title>
-        <description>&lt;h1 id=&quot;透過套件管理程式安裝-grafana&quot;&gt;透過套件管理程式安裝 Grafana&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;grafana&quot;&gt;透過套件管理程式安裝 Grafana&lt;/h1&gt;
 
 &lt;h2 id=&quot;centos&quot;&gt;CentOS&lt;/h2&gt;
 &lt;p&gt;直接安裝最新穩定版&lt;/p&gt;
@@ -498,7 +498,7 @@ sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;套件安裝細節說明如下&quot;&gt;套件安裝細節說明如下：&lt;/h3&gt;
+&lt;h3 id=&quot;section&quot;&gt;套件安裝細節說明如下：&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;執行檔安裝於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/sbin/grafana-server&lt;/code&gt;&lt;/li&gt;
@@ -510,7 +510,7 @@ sslcacert=/etc/pki/tls/certs/ca-bundle.crt
   &lt;li&gt;預設 grafana 使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;sqlite3&lt;/code&gt; 資料庫，檔案位置在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/var/lib/grafana/grafana.db&lt;/code&gt;，當要升級 grafana 版本時記得先備份此檔案。 Grafana 亦支援使用 MySQL 或 Postgres 作為資料庫。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&quot;啟動方式&quot;&gt;啟動方式：&lt;/h4&gt;
+&lt;h4 id=&quot;section-1&quot;&gt;啟動方式：&lt;/h4&gt;
 
 &lt;p&gt;&lt;strong&gt;inid.d service&lt;/strong&gt;&lt;/p&gt;
 
@@ -580,7 +580,7 @@ $ sudo apt-get install -y apt-transport-https
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;套件安裝細節說明如下-1&quot;&gt;套件安裝細節說明如下：&lt;/h3&gt;
+&lt;h3 id=&quot;section-2&quot;&gt;套件安裝細節說明如下：&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;執行檔安裝於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/sbin/grafana-server&lt;/code&gt;&lt;/li&gt;
@@ -592,7 +592,7 @@ $ sudo apt-get install -y apt-transport-https
   &lt;li&gt;預設 grafana 使用 sqlite3 資料庫，檔案位置在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/var/lib/grafana/grafana.db&lt;/code&gt;，當要升級 grafana 版本時記得先備份此檔案。 Grafana 亦支援使用 MySQL 或 Postgres 作為資料庫。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&quot;啟動方式-1&quot;&gt;啟動方式：&lt;/h4&gt;
+&lt;h4 id=&quot;section-3&quot;&gt;啟動方式：&lt;/h4&gt;
 
 &lt;p&gt;&lt;strong&gt;inid.d service&lt;/strong&gt;&lt;/p&gt;
 
@@ -625,7 +625,7 @@ $ sudo systemctl enable grafana-server.service
     
       <item>
         <title>Raspberry Pi (Beaglebone) 使用 VNC 遠端桌面</title>
-        <description>&lt;h2 id=&quot;raspberry-pi--beaglebone-安裝-vnc&quot;&gt;Raspberry Pi / BeagleBone 安裝 VNC&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;raspberry-pi--beaglebone--vnc&quot;&gt;Raspberry Pi / BeagleBone 安裝 VNC&lt;/h2&gt;
 
 &lt;p&gt;在 Windows 系統上安裝 VNC server，可讓遠端使用者連線到目前電腦操作者的桌面，進行遠端操作，然而在 Linux 世界中，圖形桌面系統是多人多工的，如果你在套件庫中尋找 &lt;code class=&quot;highlighter-rouge&quot;&gt;vncserver&lt;/code&gt; 套件來安裝，結果可能與您預期的不太一樣。建立遠端連線後，得到卻是一個全新的可登入桌面環境，而不是操作中的螢幕畫面。&lt;/p&gt;
 
@@ -752,7 +752,7 @@ $ x11vnc -display :0    //指定要連線至 :0 螢幕(如果你只有一個 x-w
         <description>&lt;h2 id=&quot;chocolatey&quot;&gt;Chocolatey&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Chocolatey&lt;/strong&gt; 是一套 Windows 上的軟體套件管理程式，讓使用者可以用終端機指令的方式進行軟體的自動安裝、升級、移除動作，如同 Debian/Ubuntu 上的 &lt;code class=&quot;highlighter-rouge&quot;&gt;apt-get&lt;/code&gt; 或是 Fedora/RedHat 上的 &lt;code class=&quot;highlighter-rouge&quot;&gt;yum&lt;/code&gt; 一般。&lt;/p&gt;
 
-&lt;h3 id=&quot;安裝-chocolatey&quot;&gt;安裝 Chocolatey&lt;/h3&gt;
+&lt;h3 id=&quot;chocolatey-1&quot;&gt;安裝 Chocolatey&lt;/h3&gt;
 
 &lt;p&gt;以管理者權限打開命令列模式，輸入底下指令：&lt;/p&gt;
 
@@ -1016,10 +1016,10 @@ http {
     
       <item>
         <title>OAuth 2.0</title>
-        <description>&lt;h2 id=&quot;oauth-開放授權&quot;&gt;OAuth 開放授權&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;oauth-&quot;&gt;OAuth 開放授權&lt;/h2&gt;
 &lt;p&gt;透過一種 Token 機制，允許使用者讓第三方的應用程式存取該使用者在某一服務網站上儲存的資源(檔案、照片、影片等等)，而不用提供使用者名稱與密碼給第三方應用程式。&lt;/p&gt;
 
-&lt;h2 id=&quot;google-oauth-20-的運作方式&quot;&gt;Google OAuth 2.0 的運作方式&lt;/h2&gt;
+&lt;h2 id=&quot;google-oauth-20-&quot;&gt;Google OAuth 2.0 的運作方式&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;先從 Google Developers Console 取得 OAuth 2.0 client credentials。&lt;/li&gt;
   &lt;li&gt;Client 應用程式向 Google Authorization Server 請求一個 access token，然後將 token 轉送給欲使用的 Google API。&lt;/li&gt;
@@ -1031,7 +1031,7 @@ http {
   &lt;li&gt;前往 &lt;code class=&quot;highlighter-rouge&quot;&gt;憑證&lt;/code&gt;，選擇 &lt;code class=&quot;highlighter-rouge&quot;&gt;新增憑證&lt;/code&gt;，新增 &lt;code class=&quot;highlighter-rouge&quot;&gt;服務帳戶&lt;/code&gt;，下載憑證 json 檔&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id=&quot;在-python-中使用-oauth-20&quot;&gt;在 Python 中使用 OAuth 2.0&lt;/h2&gt;
+&lt;h2 id=&quot;python--oauth-20&quot;&gt;在 Python 中使用 OAuth 2.0&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;安裝 python 模組 &lt;code class=&quot;highlighter-rouge&quot;&gt;oauth2client&lt;/code&gt;：&lt;/p&gt;
@@ -1054,7 +1054,7 @@ http {
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3 id=&quot;範例使用-python-gspread-模組存取-google-試算表&quot;&gt;範例：使用 Python gspread 模組存取 Google 試算表&lt;/h3&gt;
+&lt;h3 id=&quot;python-gspread--google-&quot;&gt;範例：使用 Python gspread 模組存取 Google 試算表&lt;/h3&gt;
 
 &lt;p&gt;先透過 pip 安裝 gspread 模組&lt;/p&gt;
 

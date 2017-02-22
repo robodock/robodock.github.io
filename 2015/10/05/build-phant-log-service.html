@@ -62,7 +62,7 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h2 id="安裝-phant-服務程式">安裝 Phant 服務程式</h2>
+    <h2 id="phant-">安裝 Phant 服務程式</h2>
 
 <p><strong>Phant</strong> 是一個數據資料儲存管理服務的開源軟體，由開源硬體廠商 <strong>SparkFun</strong> 提供，簡潔易用，相當適合業餘個人玩家建置自己的數據記錄服務。程式以 <strong>node.js</strong> 開發，所以必須先在安裝主機上確認是否已有 <strong>node.js</strong> 開發環境。</p>
 
@@ -87,7 +87,7 @@ v0.10.36
 </code></pre>
 </div>
 
-<h2 id="啟動-phant">啟動 Phant</h2>
+<h2 id="phant">啟動 Phant</h2>
 <p>啟動 Phant 相當簡單，直接執行 <code class="highlighter-rouge">phant</code> 就可以了:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>root@beaglebone:~# phant
@@ -196,7 +196,7 @@ WantedBy=multi-user.target
 </code></pre>
 </div>
 
-<h2 id="在-phant-上建立資料流-stream">在 Phant 上建立資料流 Stream</h2>
+<h2 id="phant--stream">在 Phant 上建立資料流 Stream</h2>
 <p>每個記錄資料稱為資料流(Stream)，在 Phant 上可對不同的記錄項目建立不同的 Stream。</p>
 
 <p>透過網頁管理頁面建立 Stream 相當簡單，選取 <code class="highlighter-rouge">Create Stream</code> , 依照畫面說明進行即可。</p>
@@ -246,7 +246,7 @@ Connection closed by foreign host.
 
 <p>若是網頁介面，則會提供一個包含這三個 KEY 的 json 檔案供下載保存。</p>
 
-<h2 id="將記錄資料送至-phant-server">將記錄資料送至 Phant server</h2>
+<h2 id="phant-server">將記錄資料送至 Phant server</h2>
 
 <p>要將記錄資料送至 Phant Server 上，則是以網頁請求的方式：</p>
 
@@ -257,7 +257,7 @@ Connection closed by foreign host.
 <p>記得在每筆上傳的 http 請求中都必須包含 <code class="highlighter-rouge">PUBLIC_KEY</code> 與 <code class="highlighter-rouge">PRIVATE_KEY</code>。
 上傳成功後會看到 <code class="highlighter-rouge">1 success</code> 的回應訊息。</p>
 
-<h2 id="從-phant-取得資料">從 Phant 取得資料</h2>
+<h2 id="phant--1">從 Phant 取得資料</h2>
 
 <p><strong>Example</strong> CSV output</p>
 

@@ -62,7 +62,7 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h1 id="influxdb-備份與回復">influxDB 備份與回復</h1>
+    <h1 id="influxdb-">influxDB 備份與回復</h1>
 
 <ul>
   <li>influxDB 具備對某個時間點實施<strong>“快照”</strong>與回存的能力。</li>
@@ -80,7 +80,7 @@
   <p>註：開源版的 OSS influxDB 與 企業版的 InfluxEnterprise 資料庫備份無法互通使用</p>
 </blockquote>
 
-<h2 id="metastore-備份">Metastore 備份</h2>
+<h2 id="metastore-">Metastore 備份</h2>
 
 <p>influxDB metastore 包含系統狀態、使用者資訊、資料庫、標記資料等等資訊。當節點執行時，可執行底下命令進行備份：</p>
 
@@ -96,7 +96,7 @@
 </code></pre>
 </div>
 
-<h2 id="database-備份">Database 備份</h2>
+<h2 id="database-">Database 備份</h2>
 
 <p><strong>每個資料需要分開單獨備份</strong></p>
 
@@ -128,14 +128,14 @@
 </code></pre>
 </div>
 
-<h2 id="遠端備份">遠端備份</h2>
+<h2 id="section">遠端備份</h2>
 <p>使用 <code class="highlighter-rouge">-host</code> 參數，指定遠端主機位址與埠號，可對遠端主機進行備份：</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>$ influxd backup -database mydatabase -host 10.0.0.1:8088 /tmp/mysnapshot
 </code></pre>
 </div>
 
-<h2 id="資料庫回復">資料庫回復</h2>
+<h2 id="section-1">資料庫回復</h2>
 
 <p>使用 <code class="highlighter-rouge">influxd restore</code> 命令來復原資料庫。</p>
 

@@ -65,7 +65,7 @@
     <h2 id="chroot">Chroot</h2>
 <p>暫時將系統根目錄指到特定的目錄下，建立ㄧ個獨立的環境供測試、開發用。在此環境下執行的程式無法看到系統中的其他部分。</p>
 
-<h3 id="建立工具">建立工具</h3>
+<h3 id="section">建立工具</h3>
 <p>在 chroot 建立的環境中，需要基本的系統程式才能運作。手動建立環境程序太繁雜，還好有 <code class="highlighter-rouge">dchroot</code> 與 <code class="highlighter-rouge">debootstrap</code> 工具程式幫我們處理。</p>
 
 <p><code class="highlighter-rouge">dchroot</code> 用來管理不同的 chroot 環境，<code class="highlighter-rouge">debootstrap</code> 則用來在指定目錄中建立一個基本作業系統。附帶一提的是 <code class="highlighter-rouge">dchroot</code> 已被 <code class="highlighter-rouge">schroot</code> 取代，雖然仍可用 <code class="highlighter-rouge">dchroot</code> 指令存取，事實上會連結至 <code class="highlighter-rouge">schroot</code>。</p>
@@ -141,7 +141,7 @@ $sudo mount sysfs /test/sys -t sysfs
 </code></pre>
 </div>
 
-<h3 id="完成">完成</h3>
+<h3 id="section-1">完成</h3>
 
 <p>chroot 到子系統：</p>
 

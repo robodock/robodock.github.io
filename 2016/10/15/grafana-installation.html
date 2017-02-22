@@ -62,7 +62,7 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h1 id="透過套件管理程式安裝-grafana">透過套件管理程式安裝 Grafana</h1>
+    <h1 id="grafana">透過套件管理程式安裝 Grafana</h1>
 
 <h2 id="centos">CentOS</h2>
 <p>直接安裝最新穩定版</p>
@@ -86,7 +86,7 @@ sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 </code></pre>
 </div>
 
-<h3 id="套件安裝細節說明如下">套件安裝細節說明如下：</h3>
+<h3 id="section">套件安裝細節說明如下：</h3>
 
 <ul>
   <li>執行檔安裝於 <code class="highlighter-rouge">/usr/sbin/grafana-server</code></li>
@@ -98,7 +98,7 @@ sslcacert=/etc/pki/tls/certs/ca-bundle.crt
   <li>預設 grafana 使用 <code class="highlighter-rouge">sqlite3</code> 資料庫，檔案位置在 <code class="highlighter-rouge">/var/lib/grafana/grafana.db</code>，當要升級 grafana 版本時記得先備份此檔案。 Grafana 亦支援使用 MySQL 或 Postgres 作為資料庫。</li>
 </ul>
 
-<h4 id="啟動方式">啟動方式：</h4>
+<h4 id="section-1">啟動方式：</h4>
 
 <p><strong>inid.d service</strong></p>
 
@@ -168,7 +168,7 @@ $ sudo apt-get install -y apt-transport-https
 </code></pre>
 </div>
 
-<h3 id="套件安裝細節說明如下-1">套件安裝細節說明如下：</h3>
+<h3 id="section-2">套件安裝細節說明如下：</h3>
 
 <ul>
   <li>執行檔安裝於 <code class="highlighter-rouge">/usr/sbin/grafana-server</code></li>
@@ -180,7 +180,7 @@ $ sudo apt-get install -y apt-transport-https
   <li>預設 grafana 使用 sqlite3 資料庫，檔案位置在 <code class="highlighter-rouge">/var/lib/grafana/grafana.db</code>，當要升級 grafana 版本時記得先備份此檔案。 Grafana 亦支援使用 MySQL 或 Postgres 作為資料庫。</li>
 </ul>
 
-<h4 id="啟動方式-1">啟動方式：</h4>
+<h4 id="section-3">啟動方式：</h4>
 
 <p><strong>inid.d service</strong></p>
 
