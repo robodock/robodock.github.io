@@ -16,11 +16,11 @@ connmanctl 為 ConnMan 的標準命令列用戶端程式，有兩種使用方式
 ---
 在 BBB 上通常搭配 USB 無線網卡，接上網卡後須先啟用：
 
-	$connmanctl enable wifi
+	$sudo connmanctl enable wifi
 
 接下來掃描可用無線網路存取點：
 
-	$connmanctl scan wifi
+	$sudo connmanctl scan wifi
 	
 掃瞄完成後列出可用 AP:
 

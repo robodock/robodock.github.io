@@ -2,6 +2,7 @@
 layout: "post"
 title: "Let's Encrypt 免費網站憑證"
 date: "2016-10-24 14:08"
+category: [server]
 ---
 
 # 使用 Certbot ACME client 自動化流程 #
