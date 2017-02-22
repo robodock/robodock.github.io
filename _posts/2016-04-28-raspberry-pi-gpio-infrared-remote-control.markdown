@@ -69,7 +69,7 @@ LIRC 套件中包含了 `irrecord` 工具程式，可用來記錄遙控器每個
 
 我這邊使用的是 IRM-3638N3 series 的紅外線接收模組，接收頻率 38KHz，工作電壓為 0~6V。
 
-![IRM-3638N3](images/2016/IRM-3638N3.png)
+![IRM-3638N3](http://robodock.github.io/images/2016/04/IRM-3638N3.png)
 
 將接收模組的針腳 1 連接至 RPi GPIO Pin 23(GPIO IN)，針腳 2 連接至 GPIO pin 3(GND)，針腳 3 連接至 GPIO pin 1(+3.3V)，Raspberry Pi 的GPIO 腳位可參考下圖。
 
@@ -159,7 +159,7 @@ irrecord 是一個互動的程式，只要依照說明指示，一步步進行�
 
 ## 連接紅外線發射 LED
 
-![紅外線LED](https://googledrive.com/host/0B3VMyKy-nGUYUk4xZkFKUDlFU1E)
+![紅外線LED](http://robodock.github.io/images/2016/04/IRtransmit.png)
 
 網路上建議的 LED 接法像這樣，利用一個放大電晶體來驅動紅外線 LED，可讓遙控距離增加到數公尺的距離，如果只是要近距離測試，直接將 LED 接在 GPIO 上也是可以的。
 
@@ -167,7 +167,7 @@ irrecord 是一個互動的程式，只要依照說明指示，一步步進行�
 
 我這邊接起來的測試環境像這樣：
 
-![Raspberry Pi2 GPIO Infrared LED test](https://googledrive.com/host/0B3VMyKy-nGUYaEdTZnpoMzZZeG8)
+![Raspberry Pi2 GPIO Infrared LED test]((http://robodock.github.io/images/2016/04/IMG_4771.JPG)
 
 發送遙控訊號時：
 
