@@ -5,25 +5,246 @@
     <description>船塢日誌</description>
     <link>http://robodock.github.io//</link>
     <atom:link href="http://robodock.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 25 Oct 2016 13:21:14 +0800</pubDate>
-    <lastBuildDate>Tue, 25 Oct 2016 13:21:14 +0800</lastBuildDate>
-    <generator>Jekyll v3.1.6</generator>
+    <pubDate>Wed, 22 Feb 2017 17:16:19 +0800</pubDate>
+    <lastBuildDate>Wed, 22 Feb 2017 17:16:19 +0800</lastBuildDate>
+    <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>Let's Encrypt 免費網站憑證</title>
+        <description>&lt;h1 id=&quot;使用-certbot-acme-client-自動化流程&quot;&gt;使用 Certbot ACME client 自動化流程&lt;/h1&gt;
+
+&lt;p&gt;Let’s Encrypt 建議使用 EFF 的 Certbot ACME client 進行自動化流程，
+Certbot 網頁 &lt;a href=&quot;https://certbot.eff.org&quot;&gt;(https://certbot.eff.org)&lt;/a&gt; 提供各種不同網頁伺服器與作業系統的安裝說明。&lt;/p&gt;
+
+&lt;h2 id=&quot;centosrhel-7&quot;&gt;CentOS/RHEL 7&lt;/h2&gt;
+
+&lt;p&gt;Certbot 已經成為 EPEL 的套件之一，安裝 EPEL 套件庫後即可安裝。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo yum install epel-release
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;使用-nginx-伺服器&quot;&gt;使用 Nginx 伺服器&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;直接安裝 certbot&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ sudo yum install certbot
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 certbot 來取得所需憑證&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ certbot certonly
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果已有執行中的 Web Server，可利用 “webroot” plugin，在網頁目錄中做設定&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ certbot certonly --webroot -w /var/www/example -d example.com -d www.example.com -w /var/www/thing -d thing.is -d m.thing.is
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果要取得 “standalone” webserver 的憑證，須先停止 server daemon&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ certbot certonly --standalone -d example.com -d www.example.com
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;使用-apache-伺服器&quot;&gt;使用 Apache 伺服器&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;安裝 python-certbot-apache&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ yum install python-certbot-apache
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 Apache Plugin 進行自動設定&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ certbot --apache
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;或僅要取得憑證&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ certbot --apache certonly
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;自動更新&quot;&gt;自動更新&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Let’s Encrypt 憑證有效期僅為 90 天，建議設定自動更新&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ certbot renew --dry-run
+  測試成功後，可利用 cron 或 systemd 排定定期工作(官網建議一天檢查兩次)
+  $ certbot renew --quiet
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;centosrhel-6&quot;&gt;CentOS/RHEL 6&lt;/h2&gt;
+
+&lt;p&gt;首先安裝 EPEL 套件庫&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo yum install epel-release
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;CentOS 6 尚未有 Certbot 套件，須手動安裝&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ wget https://dl.eff.org/certbot-auto
+$ chmod a+x certbot-auto
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;使用 certbot 來取得所需憑證&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./certbot-auto
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;使用-nginx-伺服器-1&quot;&gt;使用 Nginx 伺服器&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;僅取得憑證&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ ./path/to/certbot-auto certonly
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 “webroot” plugin, 自動對網站目錄進行設定&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ $ ./path/to/certbot-auto certonly --webroot -w /var/www/example -d example.com -d www.example.com -w /var/www/thing -d thing.is -d m.thing.is
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;使用-apache-伺服器-1&quot;&gt;使用 Apache 伺服器&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 Apache Plugin 進行自動設定&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ ./path/to/certbot-auto --apache
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;或僅要取得憑證&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ ./path/to/certbot-auto --apache certonly
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;自動更新-1&quot;&gt;自動更新&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Let’s Encrypt 憑證有效期僅為 90 天，建議設定自動更新&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ ./path/to/certbot-auto renew --dry-run
+  測試成功後，可利用 cron 或 systemd 排定定期工作(官網建議一天檢查兩次)
+  $ ./path/to/certbot-auto renew --quiet
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;運作原理&quot;&gt;運作原理&lt;/h2&gt;
+
+&lt;p&gt;在網站伺服器上執行一個憑證管理代理程式，使用 ACME protocol 來向 Let’s Encrypt CA 自動取得瀏覽器信任憑證。&lt;/p&gt;
+
+&lt;p&gt;分為兩個階段：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;代理程式向 CA 證明網頁伺服器具有 domain 控制權。&lt;/li&gt;
+  &lt;li&gt;代理程式可請求、更新、撤銷管理 domain 的憑證。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;階段 1 : &lt;strong&gt;網域驗證&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;假設網站域名為 &lt;code class=&quot;highlighter-rouge&quot;&gt;example.com&lt;/code&gt;
+  當代理程式第一次聯繫 Let’s Encrypt CA 時，會產生一組新的金鑰對供後續使用。
+  流程開始，代理程式詢問 CA，需要做些什麼來證明網站對 &lt;code class=&quot;highlighter-rouge&quot;&gt;example.com&lt;/code&gt; 網域有控制權。
+  CA 將會尋找域名並要求一或數個質問挑戰，可能為：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;提供 &lt;code class=&quot;highlighter-rouge&quot;&gt;example.com&lt;/code&gt; 下的 DNS record&lt;/li&gt;
+      &lt;li&gt;提供 Well-known URI &lt;code class=&quot;highlighter-rouge&quot;&gt;https://example.com/&lt;/code&gt; 下的 HTTP resource&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;伴隨著質問挑戰，CA 也會提供一次性隨機數(nonce)要求代理程式以私鑰簽署，以證明代理程式對金鑰對有控制權。&lt;/p&gt;
+
+    &lt;p&gt;代理程式會回應挑戰，並在 &lt;code class=&quot;highlighter-rouge&quot;&gt;https://example.com&lt;/code&gt; 網站特定路徑下建立一個檔案，同時對 CA 提供的一次性隨機數(nonce)以私鑰簽署。完成這些步驟後，便通知 CA 已準備好檢驗。&lt;/p&gt;
+
+    &lt;p&gt;接下來便是 CA 的工作，CA 會檢驗一次性隨機數(nonce)的簽署，並嘗試從網站下載代理程式準備的檔案，確定內容正確。
+  一切檢查成功後，此 key pair 便會做為 &lt;code class=&quot;highlighter-rouge&quot;&gt;example.com&lt;/code&gt; 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;已驗證金鑰對&lt;/code&gt;。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;階段 2 : &lt;strong&gt;發證與撤銷&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;有了 &lt;code class=&quot;highlighter-rouge&quot;&gt;已驗證金鑰對&lt;/code&gt; 後，接下來的請求、更新、撤銷憑證動作就簡單了，只要送出使用金鑰對簽署的憑證管理請求即可。&lt;/p&gt;
+
+    &lt;p&gt;請求憑證時，代理程式會建構一個 &lt;code class=&quot;highlighter-rouge&quot;&gt;PKCS#10&lt;/code&gt; 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;CSR&lt;/code&gt;(Certificate Signing Request)，請求 CA 以對應公鑰發出 &lt;code class=&quot;highlighter-rouge&quot;&gt;example.com&lt;/code&gt; 的憑證。&lt;/p&gt;
+
+    &lt;p&gt;CSR 中包含以私鑰對 CSR 中公鑰的簽署，同時代理程式也會用 &lt;code class=&quot;highlighter-rouge&quot;&gt;example.com&lt;/code&gt; 的驗證金鑰對整個 CSR 進行簽署。&lt;/p&gt;
+
+    &lt;p&gt;當 Let’s Encrypt CA 收到請求後，會檢查兩者，如果一切正常，將以 Public key 發出 &lt;code class=&quot;highlighter-rouge&quot;&gt;example.com&lt;/code&gt; 的憑證回傳給代理程式。&lt;/p&gt;
+
+    &lt;p&gt;撤銷憑證時，agent 以 &lt;code class=&quot;highlighter-rouge&quot;&gt;example.com&lt;/code&gt; 驗證金鑰簽發撤銷請求。如果 CA 檢查正確，會將撤銷資訊發布至 &lt;code class=&quot;highlighter-rouge&quot;&gt;撤銷 Channel 中&lt;/code&gt; (CRLs, OCSP)，各家的瀏覽器得以更新採用。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 24 Oct 2016 14:08:00 +0800</pubDate>
+        <link>http://robodock.github.io//server/2016/10/24/letsencrypt.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//server/2016/10/24/letsencrypt.html</guid>
+        
+        
+        <category>server</category>
+        
+      </item>
     
       <item>
         <title>influxDB 使用 HTTP API 寫入資料</title>
-        <description>&lt;h1 id=&quot;http-api--influxdb&quot;&gt;使用 HTTP API 寫入資料到 influxDB&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;使用-http-api-寫入資料到-influxdb&quot;&gt;使用 HTTP API 寫入資料到 influxDB&lt;/h1&gt;
 
-&lt;h2 id=&quot;http-api-&quot;&gt;使用 HTTP API 建立資料庫&lt;/h2&gt;
+&lt;h2 id=&quot;使用-http-api-建立資料庫&quot;&gt;使用 HTTP API 建立資料庫&lt;/h2&gt;
 &lt;p&gt;透過傳送一個 HTTP &lt;code class=&quot;highlighter-rouge&quot;&gt;POST&lt;/code&gt; 請求至 &lt;code class=&quot;highlighter-rouge&quot;&gt;/query&lt;/code&gt; 網頁端點並設定參數 &lt;code class=&quot;highlighter-rouge&quot;&gt;q=CREATE DATABASE &amp;lt;new_database_name&amp;gt;&lt;/code&gt;，可建立資料庫：&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -i -XPOST http://localhost:8086/query --data-urlencode &quot;q=CREATE DATABASE mydb&quot;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;http-api--1&quot;&gt;使用 HTTP API 寫入資料&lt;/h2&gt;
+&lt;h2 id=&quot;使用-http-api-寫入資料&quot;&gt;使用 HTTP API 寫入資料&lt;/h2&gt;
 &lt;p&gt;透過傳送一個 HTTP &lt;code class=&quot;highlighter-rouge&quot;&gt;POST&lt;/code&gt; 請求至 &lt;code class=&quot;highlighter-rouge&quot;&gt;/write&lt;/code&gt; 網頁端點並指定相關參數，可將資料寫入 influxDB 資料庫。&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -i -XPOST &#39;http://localhost:8086/write?db=mydb&#39; --data-binary &#39;cpu_load_short,host=server01,region=us-west value=0.64 1434055562000000000&#39;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary 'cpu_load_short,host=server01,region=us-west value=0.64 1434055562000000000'
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
@@ -36,7 +257,7 @@
   &lt;li&gt;timestamp : &lt;code class=&quot;highlighter-rouge&quot;&gt;1434055562000000000&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;資料格式&lt;/h2&gt;
+&lt;h2 id=&quot;資料格式&quot;&gt;資料格式&lt;/h2&gt;
 
 &lt;p&gt;上述的資料型式即為典型的 influxDB 資料格式，influxDB 稱這為 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Line Protocol&lt;/code&gt;&lt;/strong&gt; ，說明如下：&lt;/p&gt;
 
@@ -47,7 +268,7 @@
   &lt;li&gt;timestamp : epoch 格式，但以 nanosecond 單位記錄(所以總位數為19位數)。在 influxDB 中，所有時間皆以 UTC 記錄。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;寫入多點資料&lt;/h3&gt;
+&lt;h3 id=&quot;寫入多點資料&quot;&gt;寫入多點資料&lt;/h3&gt;
 &lt;p&gt;多筆資料只要以 &lt;strong&gt;new line &lt;code class=&quot;highlighter-rouge&quot;&gt;\n&lt;/code&gt;&lt;/strong&gt; 字元分隔，即可在一個 HTTP 請求中，寫入多筆資料到資料庫中，效率也會比分開多次 HTTP 請求來的好。&lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -56,13 +277,13 @@
 
 &lt;p&gt;例如：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -i -XPOST &#39;http://localhost:8086/write?db=mydb&#39; --data-binary &#39;cpu_load_short,host=server02 value=0.67
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary 'cpu_load_short,host=server02 value=0.67
 cpu_load_short,host=server02,region=us-west value=0.55 1422568543702900257
-cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702900257&#39;
+cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702900257'
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;讀取檔案來寫入&lt;/h3&gt;
+&lt;h3 id=&quot;讀取檔案來寫入&quot;&gt;讀取檔案來寫入&lt;/h3&gt;
 &lt;p&gt;透過傳遞 &lt;code class=&quot;highlighter-rouge&quot;&gt;@filename&lt;/code&gt; 參數給 &lt;code class=&quot;highlighter-rouge&quot;&gt;curl&lt;/code&gt;，可將整個檔案資料寫入資料庫，當然檔案內容格式必須遵循前述的 &lt;code class=&quot;highlighter-rouge&quot;&gt;Line Protocol&lt;/code&gt;，注意換行符號僅使用 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;\n&lt;/code&gt;&lt;/strong&gt;，而非 windows 環境下使用的 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;\n\r&lt;/code&gt;&lt;/strong&gt; 換行字元，在 windows 環境中編輯資料檔案時須特別注意，建議使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;notepad++&lt;/code&gt; 之類的文書軟體來處理資料檔案。&lt;/p&gt;
 
 &lt;p&gt;例如：名為 &lt;code class=&quot;highlighter-rouge&quot;&gt;cpu_data.txt&lt;/code&gt; 的檔案中資料如下：&lt;/p&gt;
@@ -75,7 +296,7 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
 
 &lt;p&gt;將 &lt;code class=&quot;highlighter-rouge&quot;&gt;cpu_data.txt&lt;/code&gt; 檔案寫入 &lt;code class=&quot;highlighter-rouge&quot;&gt;mydb&lt;/code&gt; 資料庫 :&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -i -XPOST &#39;http://localhost:8086/write?db=mydb&#39; --data-binary @cpu_data.txt
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary @cpu_data.txt
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
@@ -87,7 +308,7 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
 &lt;p&gt;influxDB 是一種 Schemaless 資料庫，資料庫不需要固定樣式的資料表，可隨時加入額外的 measuremen、tag、field。
 但對於已使用中的欄位，則須維持相通的資料格式，不可變更。例如原本使用 &lt;strong&gt;integers&lt;/strong&gt; 的欄位，則無法改寫入 &lt;strong&gt;string&lt;/strong&gt; 格式資料。&lt;/p&gt;
 
-&lt;h2 id=&quot;http-&quot;&gt;關於 HTTP 回應訊息&lt;/h2&gt;
+&lt;h2 id=&quot;關於-http-回應訊息&quot;&gt;關於 HTTP 回應訊息&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;2xx : &lt;code class=&quot;highlighter-rouge&quot;&gt;HTTP 204 No Content&lt;/code&gt; 與 &lt;code class=&quot;highlighter-rouge&quot;&gt;HTTP 200 OK&lt;/code&gt; 皆代表處理成功。&lt;/li&gt;
   &lt;li&gt;4xx : influxDB 無法處理請求&lt;/li&gt;
@@ -103,7 +324,7 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
     
       <item>
         <title>influxDB 備份與回復</title>
-        <description>&lt;h1 id=&quot;influxdb-&quot;&gt;influxDB 備份與回復&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;influxdb-備份與回復&quot;&gt;influxDB 備份與回復&lt;/h1&gt;
 
 &lt;ul&gt;
   &lt;li&gt;influxDB 具備對某個時間點實施&lt;strong&gt;“快照”&lt;/strong&gt;與回存的能力。&lt;/li&gt;
@@ -121,7 +342,7 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
   &lt;p&gt;註：開源版的 OSS influxDB 與 企業版的 InfluxEnterprise 資料庫備份無法互通使用&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;h2 id=&quot;metastore-&quot;&gt;Metastore 備份&lt;/h2&gt;
+&lt;h2 id=&quot;metastore-備份&quot;&gt;Metastore 備份&lt;/h2&gt;
 
 &lt;p&gt;influxDB metastore 包含系統狀態、使用者資訊、資料庫、標記資料等等資訊。當節點執行時，可執行底下命令進行備份：&lt;/p&gt;
 
@@ -137,7 +358,7 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;database-&quot;&gt;Database 備份&lt;/h2&gt;
+&lt;h2 id=&quot;database-備份&quot;&gt;Database 備份&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;每個資料需要分開單獨備份&lt;/strong&gt;&lt;/p&gt;
 
@@ -169,14 +390,14 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;遠端備份&lt;/h2&gt;
+&lt;h2 id=&quot;遠端備份&quot;&gt;遠端備份&lt;/h2&gt;
 &lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;-host&lt;/code&gt; 參數，指定遠端主機位址與埠號，可對遠端主機進行備份：&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ influxd backup -database mydatabase -host 10.0.0.1:8088 /tmp/mysnapshot
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;資料庫回復&lt;/h2&gt;
+&lt;h2 id=&quot;資料庫回復&quot;&gt;資料庫回復&lt;/h2&gt;
 
 &lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;influxd restore&lt;/code&gt; 命令來復原資料庫。&lt;/p&gt;
 
@@ -235,7 +456,7 @@ unpacking /var/lib/influxdb/data/telegraf/default/2/000000005-000000001.tsm
 
 &lt;p&gt;可簡單快速執行資料庫查詢命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;show database&lt;/code&gt;，確定資料庫回復成功：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;influx -execute &#39;show databases&#39;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;influx -execute 'show databases'
 name: databases
 ---------------
 name
@@ -253,7 +474,7 @@ telegraf
     
       <item>
         <title>Grafana 安裝程序</title>
-        <description>&lt;h1 id=&quot;grafana&quot;&gt;透過套件管理程式安裝 Grafana&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;透過套件管理程式安裝-grafana&quot;&gt;透過套件管理程式安裝 Grafana&lt;/h1&gt;
 
 &lt;h2 id=&quot;centos&quot;&gt;CentOS&lt;/h2&gt;
 &lt;p&gt;直接安裝最新穩定版&lt;/p&gt;
@@ -277,7 +498,7 @@ sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;section&quot;&gt;套件安裝細節說明如下：&lt;/h3&gt;
+&lt;h3 id=&quot;套件安裝細節說明如下&quot;&gt;套件安裝細節說明如下：&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;執行檔安裝於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/sbin/grafana-server&lt;/code&gt;&lt;/li&gt;
@@ -289,7 +510,7 @@ sslcacert=/etc/pki/tls/certs/ca-bundle.crt
   &lt;li&gt;預設 grafana 使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;sqlite3&lt;/code&gt; 資料庫，檔案位置在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/var/lib/grafana/grafana.db&lt;/code&gt;，當要升級 grafana 版本時記得先備份此檔案。 Grafana 亦支援使用 MySQL 或 Postgres 作為資料庫。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&quot;section-1&quot;&gt;啟動方式：&lt;/h4&gt;
+&lt;h4 id=&quot;啟動方式&quot;&gt;啟動方式：&lt;/h4&gt;
 
 &lt;p&gt;&lt;strong&gt;inid.d service&lt;/strong&gt;&lt;/p&gt;
 
@@ -359,7 +580,7 @@ $ sudo apt-get install -y apt-transport-https
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;套件安裝細節說明如下：&lt;/h3&gt;
+&lt;h3 id=&quot;套件安裝細節說明如下-1&quot;&gt;套件安裝細節說明如下：&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;執行檔安裝於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/sbin/grafana-server&lt;/code&gt;&lt;/li&gt;
@@ -371,7 +592,7 @@ $ sudo apt-get install -y apt-transport-https
   &lt;li&gt;預設 grafana 使用 sqlite3 資料庫，檔案位置在 &lt;code class=&quot;highlighter-rouge&quot;&gt;/var/lib/grafana/grafana.db&lt;/code&gt;，當要升級 grafana 版本時記得先備份此檔案。 Grafana 亦支援使用 MySQL 或 Postgres 作為資料庫。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&quot;section-3&quot;&gt;啟動方式：&lt;/h4&gt;
+&lt;h4 id=&quot;啟動方式-1&quot;&gt;啟動方式：&lt;/h4&gt;
 
 &lt;p&gt;&lt;strong&gt;inid.d service&lt;/strong&gt;&lt;/p&gt;
 
@@ -404,7 +625,7 @@ $ sudo systemctl enable grafana-server.service
     
       <item>
         <title>Raspberry Pi (Beaglebone) 使用 VNC 遠端桌面</title>
-        <description>&lt;h2 id=&quot;raspberry-pi--beaglebone--vnc&quot;&gt;Raspberry Pi / BeagleBone 安裝 VNC&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;raspberry-pi--beaglebone-安裝-vnc&quot;&gt;Raspberry Pi / BeagleBone 安裝 VNC&lt;/h2&gt;
 
 &lt;p&gt;在 Windows 系統上安裝 VNC server，可讓遠端使用者連線到目前電腦操作者的桌面，進行遠端操作，然而在 Linux 世界中，圖形桌面系統是多人多工的，如果你在套件庫中尋找 &lt;code class=&quot;highlighter-rouge&quot;&gt;vncserver&lt;/code&gt; 套件來安裝，結果可能與您預期的不太一樣。建立遠端連線後，得到卻是一個全新的可登入桌面環境，而不是操作中的螢幕畫面。&lt;/p&gt;
 
@@ -531,11 +752,11 @@ $ x11vnc -display :0    //指定要連線至 :0 螢幕(如果你只有一個 x-w
         <description>&lt;h2 id=&quot;chocolatey&quot;&gt;Chocolatey&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Chocolatey&lt;/strong&gt; 是一套 Windows 上的軟體套件管理程式，讓使用者可以用終端機指令的方式進行軟體的自動安裝、升級、移除動作，如同 Debian/Ubuntu 上的 &lt;code class=&quot;highlighter-rouge&quot;&gt;apt-get&lt;/code&gt; 或是 Fedora/RedHat 上的 &lt;code class=&quot;highlighter-rouge&quot;&gt;yum&lt;/code&gt; 一般。&lt;/p&gt;
 
-&lt;h3 id=&quot;chocolatey-1&quot;&gt;安裝 Chocolatey&lt;/h3&gt;
+&lt;h3 id=&quot;安裝-chocolatey&quot;&gt;安裝 Chocolatey&lt;/h3&gt;
 
 &lt;p&gt;以管理者權限打開命令列模式，輸入底下指令：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;iex ((new-object net.webclient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))&quot; &amp;amp;&amp;amp; SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))&quot; &amp;amp;&amp;amp; SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
@@ -708,9 +929,9 @@ events {
 }
 
 http {
-    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
-                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
-                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+    log_format  main  '$remote_addr - $remote_user [$time_local] &quot;$request&quot; '
+                      '$status $body_bytes_sent &quot;$http_referer&quot; '
+                      '&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;';
 
     access_log  /var/log/nginx/access.log  main;
 
@@ -795,10 +1016,10 @@ http {
     
       <item>
         <title>OAuth 2.0</title>
-        <description>&lt;h2 id=&quot;oauth-&quot;&gt;OAuth 開放授權&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;oauth-開放授權&quot;&gt;OAuth 開放授權&lt;/h2&gt;
 &lt;p&gt;透過一種 Token 機制，允許使用者讓第三方的應用程式存取該使用者在某一服務網站上儲存的資源(檔案、照片、影片等等)，而不用提供使用者名稱與密碼給第三方應用程式。&lt;/p&gt;
 
-&lt;h2 id=&quot;google-oauth-20-&quot;&gt;Google OAuth 2.0 的運作方式&lt;/h2&gt;
+&lt;h2 id=&quot;google-oauth-20-的運作方式&quot;&gt;Google OAuth 2.0 的運作方式&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;先從 Google Developers Console 取得 OAuth 2.0 client credentials。&lt;/li&gt;
   &lt;li&gt;Client 應用程式向 Google Authorization Server 請求一個 access token，然後將 token 轉送給欲使用的 Google API。&lt;/li&gt;
@@ -810,7 +1031,7 @@ http {
   &lt;li&gt;前往 &lt;code class=&quot;highlighter-rouge&quot;&gt;憑證&lt;/code&gt;，選擇 &lt;code class=&quot;highlighter-rouge&quot;&gt;新增憑證&lt;/code&gt;，新增 &lt;code class=&quot;highlighter-rouge&quot;&gt;服務帳戶&lt;/code&gt;，下載憑證 json 檔&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id=&quot;python--oauth-20&quot;&gt;在 Python 中使用 OAuth 2.0&lt;/h2&gt;
+&lt;h2 id=&quot;在-python-中使用-oauth-20&quot;&gt;在 Python 中使用 OAuth 2.0&lt;/h2&gt;
 &lt;ol&gt;
   &lt;li&gt;
     &lt;p&gt;安裝 python 模組 &lt;code class=&quot;highlighter-rouge&quot;&gt;oauth2client&lt;/code&gt;：&lt;/p&gt;
@@ -833,7 +1054,7 @@ http {
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3 id=&quot;python-gspread--google-&quot;&gt;範例：使用 Python gspread 模組存取 Google 試算表&lt;/h3&gt;
+&lt;h3 id=&quot;範例使用-python-gspread-模組存取-google-試算表&quot;&gt;範例：使用 Python gspread 模組存取 Google 試算表&lt;/h3&gt;
 
 &lt;p&gt;先透過 pip 安裝 gspread 模組&lt;/p&gt;
 
@@ -847,10 +1068,10 @@ http {
 import gspread
 from oauth2client.client import SignedJwtAssertionCredentials
 
-json_key = json.load(open(&#39;My Project-xxxxxxxxxxxx.json&#39;))
-scope = [&#39;https://spreadsheets.google.com/feeds&#39;]
+json_key = json.load(open('My Project-xxxxxxxxxxxx.json'))
+scope = ['https://spreadsheets.google.com/feeds']
 
-credentials = SignedJwtAssertionCredentials(json_key[&#39;client_email&#39;], json_key[&#39;private_key&#39;], scope)
+credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
 
 gc = gspread.authorize(credentials)
 
@@ -861,110 +1082,6 @@ wks = gc.open(&quot;Googld Spread Sheet&quot;).sheet1
         <pubDate>Sat, 21 May 2016 23:15:46 +0800</pubDate>
         <link>http://robodock.github.io//2016/05/21/python-oauth-2-0.html</link>
         <guid isPermaLink="true">http://robodock.github.io//2016/05/21/python-oauth-2-0.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>使用 BeagleBone Black 或 Raspberry Pi 打造簡易的網路 VoIP/Voice Chat 設備 (2/2)</title>
-        <description>&lt;h2 id=&quot;python--seren&quot;&gt;使用 Python 來控制 Seren&lt;/h2&gt;
-
-&lt;h3 id=&quot;pybbio-&quot;&gt;安裝 PyBBIO 模組&lt;/h3&gt;
-
-&lt;p&gt;我這邊打算使用 Python 來處理 IO 控制，這樣就可透過按鍵或開關，來控制連線通訊，也可接個燈號顯示來電。&lt;/p&gt;
-
-&lt;p&gt;PyBBIO 模組應可達到我想要的功能。&lt;/p&gt;
-
-&lt;p&gt;先滿足相依性需求：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# apt-get install python-serial python-setuptools python-dev python-smbus python-pip
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;註：目前 PyBBIO 穩定版只支援到 3.8 版 Linux 核心。&lt;/p&gt;
-
-&lt;p&gt;同時需要 Device Tree 編譯器 dtc，若系統中沒有，可至下列位址安裝:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# wget -c https://raw.github.com/RobertCNelson/tools/master/pkgs/dtc.sh
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;上述環境準備好之後，安裝 PyBBIO Python 程式庫模組&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# pip install --upgrade PyBBIO
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;想要自己編譯的，可至下列位址下載:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# git clone git:/github.com/alexanderhiam/PyBBIO.git
-# cd PyBBIO
-# python setup.py install
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;我的 ugly 控制程式如下:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env python&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;bbio&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;bbio.libraries.EventIO&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;	&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bbio&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;的&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EventIO&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;可建立額外的事件偵測迴圈&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pexpect&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;使用&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pexpect&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;來建立子程序呼叫其他程式並與其溝通&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;bbio&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bbio_init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#指定對應GPIO針腳&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinAccept&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GPIO1_13&lt;/span&gt; 	&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P8_11&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinHangup&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GPIO1_12&lt;/span&gt; 	&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P8_12&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinCall&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GPIO1_15&lt;/span&gt;		&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P8_15&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinLED&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GPIO1_14&lt;/span&gt;    	&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P8_16&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#設定 GPIO 針腳功能&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinAccept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INPUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinHangup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INPUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinCall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INPUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pinMode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinLED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OUTPUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#建立子行程，呼叫 seren 程式，並給予相關參數&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;child&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pexpect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spawn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;seren -n Engine -NS -d hw:1,0&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#方便除錯，先將子行程輸出顯示在 stdout&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;logfile_read&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stdout&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#定義觸發事件與進行的動作，記得要回傳 EVENT_CONTINUE，事件才可重複觸發&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;accept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;/y&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EVENT_CONTINUE&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;hangup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;/H&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;digitalWrite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinLED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LOW&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EVENT_CONTINUE&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;/c 192.168.168.114&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EVENT_CONTINUE&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#建立事件偵測迴圈，並加進偵測事件，後方之數值 400 為消除 bounce 的延遲時間&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EventLoop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DigitalTrigger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinAccept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HIGH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;accept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;400&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DigitalTrigger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinHangup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HIGH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hangup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;400&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DigitalTrigger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinCall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HIGH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;400&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;event_loop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#透過偵測子行程 seren 的輸出回應，顯示來電燈號，因 expect事件會 blocking 其他行程，這裡指定 timeout 秒數為 1，以持續不斷偵測。&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&#39;is calling:&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pexpect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TIMEOUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-	    &lt;span class=&quot;c&quot;&gt;#print &#39;\nIncoming Call!&#39;&lt;/span&gt;
-	    &lt;span class=&quot;n&quot;&gt;digitalWrite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pinLED&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HIGH&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    	&lt;span class=&quot;k&quot;&gt;pass&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Thu, 19 May 2016 22:20:08 +0800</pubDate>
-        <link>http://robodock.github.io//2016/05/19/beaglebone-black-seren-voip-2.html</link>
-        <guid isPermaLink="true">http://robodock.github.io//2016/05/19/beaglebone-black-seren-voip-2.html</guid>
         
         
       </item>

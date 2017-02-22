@@ -62,16 +62,16 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h1 id="http-api--influxdb">使用 HTTP API 寫入資料到 influxDB</h1>
+    <h1 id="使用-http-api-寫入資料到-influxdb">使用 HTTP API 寫入資料到 influxDB</h1>
 
-<h2 id="http-api-">使用 HTTP API 建立資料庫</h2>
+<h2 id="使用-http-api-建立資料庫">使用 HTTP API 建立資料庫</h2>
 <p>透過傳送一個 HTTP <code class="highlighter-rouge">POST</code> 請求至 <code class="highlighter-rouge">/query</code> 網頁端點並設定參數 <code class="highlighter-rouge">q=CREATE DATABASE &lt;new_database_name&gt;</code>，可建立資料庫：</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE mydb"
 </code></pre>
 </div>
 
-<h2 id="http-api--1">使用 HTTP API 寫入資料</h2>
+<h2 id="使用-http-api-寫入資料">使用 HTTP API 寫入資料</h2>
 <p>透過傳送一個 HTTP <code class="highlighter-rouge">POST</code> 請求至 <code class="highlighter-rouge">/write</code> 網頁端點並指定相關參數，可將資料寫入 influxDB 資料庫。</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>curl -i -XPOST 'http://localhost:8086/write?db=mydb' --data-binary 'cpu_load_short,host=server01,region=us-west value=0.64 1434055562000000000'
@@ -87,7 +87,7 @@
   <li>timestamp : <code class="highlighter-rouge">1434055562000000000</code></li>
 </ul>
 
-<h2 id="section">資料格式</h2>
+<h2 id="資料格式">資料格式</h2>
 
 <p>上述的資料型式即為典型的 influxDB 資料格式，influxDB 稱這為 <strong><code class="highlighter-rouge">Line Protocol</code></strong> ，說明如下：</p>
 
@@ -98,7 +98,7 @@
   <li>timestamp : epoch 格式，但以 nanosecond 單位記錄(所以總位數為19位數)。在 influxDB 中，所有時間皆以 UTC 記錄。</li>
 </ul>
 
-<h3 id="section-1">寫入多點資料</h3>
+<h3 id="寫入多點資料">寫入多點資料</h3>
 <p>多筆資料只要以 <strong>new line <code class="highlighter-rouge">\n</code></strong> 字元分隔，即可在一個 HTTP 請求中，寫入多筆資料到資料庫中，效率也會比分開多次 HTTP 請求來的好。</p>
 
 <blockquote>
@@ -113,7 +113,7 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
 </code></pre>
 </div>
 
-<h3 id="section-2">讀取檔案來寫入</h3>
+<h3 id="讀取檔案來寫入">讀取檔案來寫入</h3>
 <p>透過傳遞 <code class="highlighter-rouge">@filename</code> 參數給 <code class="highlighter-rouge">curl</code>，可將整個檔案資料寫入資料庫，當然檔案內容格式必須遵循前述的 <code class="highlighter-rouge">Line Protocol</code>，注意換行符號僅使用 <strong><code class="highlighter-rouge">\n</code></strong>，而非 windows 環境下使用的 <strong><code class="highlighter-rouge">\n\r</code></strong> 換行字元，在 windows 環境中編輯資料檔案時須特別注意，建議使用 <code class="highlighter-rouge">notepad++</code> 之類的文書軟體來處理資料檔案。</p>
 
 <p>例如：名為 <code class="highlighter-rouge">cpu_data.txt</code> 的檔案中資料如下：</p>
@@ -138,7 +138,7 @@ cpu_load_short,direction=in,host=server01,region=us-west value=2.0 1422568543702
 <p>influxDB 是一種 Schemaless 資料庫，資料庫不需要固定樣式的資料表，可隨時加入額外的 measuremen、tag、field。
 但對於已使用中的欄位，則須維持相通的資料格式，不可變更。例如原本使用 <strong>integers</strong> 的欄位，則無法改寫入 <strong>string</strong> 格式資料。</p>
 
-<h2 id="http-">關於 HTTP 回應訊息</h2>
+<h2 id="關於-http-回應訊息">關於 HTTP 回應訊息</h2>
 <ul>
   <li>2xx : <code class="highlighter-rouge">HTTP 204 No Content</code> 與 <code class="highlighter-rouge">HTTP 200 OK</code> 皆代表處理成功。</li>
   <li>4xx : influxDB 無法處理請求</li>

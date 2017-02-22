@@ -62,7 +62,7 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h2 id="ffmpeg-">使用 FFmpeg 將序列圖片轉換成影片</h2>
+    <h2 id="使用-ffmpeg-將序列圖片轉換成影片">使用 FFmpeg 將序列圖片轉換成影片</h2>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ffmpeg -framerate 5 -i img%03d.png -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4
 </code></pre>

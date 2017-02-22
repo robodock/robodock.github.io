@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>在 Raspberry Pi 與 BeagleBone Black 上設定使用 Edimax EW-7811Un 迷你無線網卡</title>
-  <meta name="description" content="Edimax EW-7811Un 迷你無線網卡使用 Realtek RTL8188CUS 晶片，在 Linux Kernel 中以相容的 8192cu 驅動程式模組來驅動，體積小，堪稱 Raspberry Pi 與 BeagleBone 的絕配。&gt;註：這類迷你 USB 無線網卡在 BeagleBone 上使...">
+  <meta name="description" content="Edimax EW-7811Un 迷你無線網卡使用 Realtek RTL8188CUS 晶片，在 Linux Kernel 中以相容的 8192cu 驅動程式模組來驅動，體積小，堪稱 Raspberry Pi 與 BeagleBone 的絕配。  註：這類迷你 USB 無線網卡在 BeagleBone 上使用時...">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://robodock.github.io//2015/08/22/setting-edimax-ew-7811un-wifi-with-beaglebone-black-debian-image.html">
@@ -62,8 +62,10 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p><strong>Edimax EW-7811Un</strong> 迷你無線網卡使用 Realtek RTL8188CUS 晶片，在 Linux Kernel 中以相容的 8192cu 驅動程式模組來驅動，體積小，堪稱 Raspberry Pi 與 BeagleBone 的絕配。
-&gt;註：這類迷你 USB 無線網卡在 BeagleBone 上使用時會受到 HDMI 插槽的干擾，請參考<a href="http://">這篇</a></p>
+    <p><strong>Edimax EW-7811Un</strong> 迷你無線網卡使用 Realtek RTL8188CUS 晶片，在 Linux Kernel 中以相容的 8192cu 驅動程式模組來驅動，體積小，堪稱 Raspberry Pi 與 BeagleBone 的絕配。</p>
+<blockquote>
+  <p>註：這類迷你 USB 無線網卡在 BeagleBone 上使用時會受到 HDMI 插槽的干擾，請參考<a href="http://">這篇</a></p>
+</blockquote>
 
 <p>但各家 Linux Distribution 中搭配的無線網路管理工具不一，有些使用 <strong>connman</strong>，有些使用 <strong>wpasupplicant</strong>，有些則使用 <strong>wicd</strong>，設定方法也不一。</p>
 

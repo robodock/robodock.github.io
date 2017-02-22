@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Let's Encrypt 免費網站憑證</title>
+  <meta name="description" content="使用 Certbot ACME client 自動化流程">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://robodock.github.io//server/2016/10/24/letsencrypt.html">
+  <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://robodock.github.io//feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">RoboDock</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Let's Encrypt 免費網站憑證</h1>
+    <p class="post-meta"><time datetime="2016-10-24T14:08:00+08:00" itemprop="datePublished">Oct 24, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h1 id="使用-certbot-acme-client-自動化流程">使用 Certbot ACME client 自動化流程</h1>
+
+<p>Let’s Encrypt 建議使用 EFF 的 Certbot ACME client 進行自動化流程，
+Certbot 網頁 <a href="https://certbot.eff.org">(https://certbot.eff.org)</a> 提供各種不同網頁伺服器與作業系統的安裝說明。</p>
+
+<h2 id="centosrhel-7">CentOS/RHEL 7</h2>
+
+<p>Certbot 已經成為 EPEL 的套件之一，安裝 EPEL 套件庫後即可安裝。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ sudo yum install epel-release
+</code></pre>
+</div>
+
+<h3 id="使用-nginx-伺服器">使用 Nginx 伺服器</h3>
+
+<ul>
+  <li>
+    <p>直接安裝 certbot</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ sudo yum install certbot
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>使用 certbot 來取得所需憑證</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ certbot certonly
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>如果已有執行中的 Web Server，可利用 “webroot” plugin，在網頁目錄中做設定</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ certbot certonly --webroot -w /var/www/example -d example.com -d www.example.com -w /var/www/thing -d thing.is -d m.thing.is
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>如果要取得 “standalone” webserver 的憑證，須先停止 server daemon</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ certbot certonly --standalone -d example.com -d www.example.com
+</code></pre>
+    </div>
+  </li>
+</ul>
+
+<h3 id="使用-apache-伺服器">使用 Apache 伺服器</h3>
+
+<ul>
+  <li>
+    <p>安裝 python-certbot-apache</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ yum install python-certbot-apache
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>使用 Apache Plugin 進行自動設定</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ certbot --apache
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>或僅要取得憑證</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ certbot --apache certonly
+</code></pre>
+    </div>
+  </li>
+</ul>
+
+<h3 id="自動更新">自動更新</h3>
+
+<ul>
+  <li>
+    <p>Let’s Encrypt 憑證有效期僅為 90 天，建議設定自動更新</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ certbot renew --dry-run
+  測試成功後，可利用 cron 或 systemd 排定定期工作(官網建議一天檢查兩次)
+  $ certbot renew --quiet
+</code></pre>
+    </div>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="centosrhel-6">CentOS/RHEL 6</h2>
+
+<p>首先安裝 EPEL 套件庫</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ sudo yum install epel-release
+</code></pre>
+</div>
+
+<p>CentOS 6 尚未有 Certbot 套件，須手動安裝</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ wget https://dl.eff.org/certbot-auto
+$ chmod a+x certbot-auto
+</code></pre>
+</div>
+
+<p>使用 certbot 來取得所需憑證</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ ./certbot-auto
+</code></pre>
+</div>
+
+<h3 id="使用-nginx-伺服器-1">使用 Nginx 伺服器</h3>
+
+<ul>
+  <li>
+    <p>僅取得憑證</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ ./path/to/certbot-auto certonly
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>使用 “webroot” plugin, 自動對網站目錄進行設定</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ $ ./path/to/certbot-auto certonly --webroot -w /var/www/example -d example.com -d www.example.com -w /var/www/thing -d thing.is -d m.thing.is
+</code></pre>
+    </div>
+  </li>
+</ul>
+
+<h3 id="使用-apache-伺服器-1">使用 Apache 伺服器</h3>
+
+<ul>
+  <li>
+    <p>使用 Apache Plugin 進行自動設定</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ ./path/to/certbot-auto --apache
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>或僅要取得憑證</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ ./path/to/certbot-auto --apache certonly
+</code></pre>
+    </div>
+  </li>
+</ul>
+
+<h3 id="自動更新-1">自動更新</h3>
+
+<ul>
+  <li>
+    <p>Let’s Encrypt 憑證有效期僅為 90 天，建議設定自動更新</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  $ ./path/to/certbot-auto renew --dry-run
+  測試成功後，可利用 cron 或 systemd 排定定期工作(官網建議一天檢查兩次)
+  $ ./path/to/certbot-auto renew --quiet
+</code></pre>
+    </div>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="運作原理">運作原理</h2>
+
+<p>在網站伺服器上執行一個憑證管理代理程式，使用 ACME protocol 來向 Let’s Encrypt CA 自動取得瀏覽器信任憑證。</p>
+
+<p>分為兩個階段：</p>
+
+<ol>
+  <li>代理程式向 CA 證明網頁伺服器具有 domain 控制權。</li>
+  <li>代理程式可請求、更新、撤銷管理 domain 的憑證。</li>
+</ol>
+
+<ul>
+  <li>
+    <p>階段 1 : <strong>網域驗證</strong></p>
+
+    <p>假設網站域名為 <code class="highlighter-rouge">example.com</code>
+  當代理程式第一次聯繫 Let’s Encrypt CA 時，會產生一組新的金鑰對供後續使用。
+  流程開始，代理程式詢問 CA，需要做些什麼來證明網站對 <code class="highlighter-rouge">example.com</code> 網域有控制權。
+  CA 將會尋找域名並要求一或數個質問挑戰，可能為：</p>
+
+    <ul>
+      <li>提供 <code class="highlighter-rouge">example.com</code> 下的 DNS record</li>
+      <li>提供 Well-known URI <code class="highlighter-rouge">https://example.com/</code> 下的 HTTP resource</li>
+    </ul>
+
+    <p>伴隨著質問挑戰，CA 也會提供一次性隨機數(nonce)要求代理程式以私鑰簽署，以證明代理程式對金鑰對有控制權。</p>
+
+    <p>代理程式會回應挑戰，並在 <code class="highlighter-rouge">https://example.com</code> 網站特定路徑下建立一個檔案，同時對 CA 提供的一次性隨機數(nonce)以私鑰簽署。完成這些步驟後，便通知 CA 已準備好檢驗。</p>
+
+    <p>接下來便是 CA 的工作，CA 會檢驗一次性隨機數(nonce)的簽署，並嘗試從網站下載代理程式準備的檔案，確定內容正確。
+  一切檢查成功後，此 key pair 便會做為 <code class="highlighter-rouge">example.com</code> 的 <code class="highlighter-rouge">已驗證金鑰對</code>。</p>
+  </li>
+  <li>
+    <p>階段 2 : <strong>發證與撤銷</strong></p>
+
+    <p>有了 <code class="highlighter-rouge">已驗證金鑰對</code> 後，接下來的請求、更新、撤銷憑證動作就簡單了，只要送出使用金鑰對簽署的憑證管理請求即可。</p>
+
+    <p>請求憑證時，代理程式會建構一個 <code class="highlighter-rouge">PKCS#10</code> 的 <code class="highlighter-rouge">CSR</code>(Certificate Signing Request)，請求 CA 以對應公鑰發出 <code class="highlighter-rouge">example.com</code> 的憑證。</p>
+
+    <p>CSR 中包含以私鑰對 CSR 中公鑰的簽署，同時代理程式也會用 <code class="highlighter-rouge">example.com</code> 的驗證金鑰對整個 CSR 進行簽署。</p>
+
+    <p>當 Let’s Encrypt CA 收到請求後，會檢查兩者，如果一切正常，將以 Public key 發出 <code class="highlighter-rouge">example.com</code> 的憑證回傳給代理程式。</p>
+
+    <p>撤銷憑證時，agent 以 <code class="highlighter-rouge">example.com</code> 驗證金鑰簽發撤銷請求。如果 CA 檢查正確，會將撤銷資訊發布至 <code class="highlighter-rouge">撤銷 Channel 中</code> (CRLs, OCSP)，各家的瀏覽器得以更新採用。</p>
+  </li>
+</ul>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">RoboDock</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>RoboDock</li>
+          <li><a href="mailto:robodock@robodock.net">robodock@robodock.net</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/robodock"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">robodock</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/robo_dock"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">robo_dock</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>船塢日誌</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

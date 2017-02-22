@@ -62,7 +62,7 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h2 id="section">名詞解釋</h2>
+    <h2 id="名詞解釋">名詞解釋</h2>
 
 <h3 id="octopress-3"><em>Octopress 3</em></h3>
 <ul>
@@ -79,7 +79,7 @@
   <li><em>GitHub</em> 提供的免費網頁主機服務，主要使用對象為開源社群與資訊技術人員。</li>
 </ul>
 
-<h2 id="section-1">環境需求</h2>
+<h2 id="環境需求">環境需求</h2>
 
 <h3 id="git"><em>Git</em></h3>
 <p><strong>GitHub Pages</strong> 的服務是架構在 <strong>Git</strong> 工具之上，大部份 Linux 系統都已內建 Git 工具，如果使用的作業系統平台還沒安裝 Git 版本管理工具程式，請先安裝。最好也熟悉一下 Git 分支系統的觀念與操作。</p>
@@ -118,25 +118,29 @@ rbenv rehash
 <p>Ruby 環境建置好後，便可以方便使用 Ruby 的套件管理程式 <strong>gem</strong>，輕鬆安裝各項工具程式。</p>
 
 <h3 id="jekyll-1"><em>Jekyll</em></h3>
-<p>首先安裝 Jekyll
-&gt;
-<code class="highlighter-rouge">
-gem install jekyll
-</code></p>
+<p>首先安裝 Jekyll</p>
+<blockquote>
+
+  <div class="highlighter-rouge"><pre class="highlight"><code>gem install jekyll
+</code></pre>
+  </div>
+</blockquote>
 
 <h3 id="octopress"><em>Octopress</em></h3>
-<p>安裝 Octopress 3
-&gt;
-<code class="highlighter-rouge">
-gem install octopress
-</code></p>
+<p>安裝 Octopress 3</p>
+<blockquote>
+
+  <div class="highlighter-rouge"><pre class="highlight"><code>gem install octopress
+</code></pre>
+  </div>
+</blockquote>
 
 <p>基本安裝工作到此告一段落，開始進行設定。</p>
 
 <h2 id="octopress-3-cli-command">Octopress 3 CLI command</h2>
 <p>在 Octopress 3 中，大幅簡化了網頁建置程序，集中使用一個 <strong>‘octopress’</strong> 指令來達成。</p>
 
-<h3 id="octopress-">octopress 的命令參數如下:</h3>
+<h3 id="octopress-的命令參數如下">octopress 的命令參數如下:</h3>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>init &lt;PATH&gt;         # 初始化網頁框架檔案
 new &lt;PATH&gt;          # 執行 `jekyll new` + `octopress init`
@@ -151,7 +155,7 @@ deploy              # 透過 S3, Rsync, 或 GitHub pages 發佈網站
 </code></pre>
 </div>
 
-<h2 id="github-pages-1">設定 GitHub pages</h2>
+<h2 id="設定-github-pages">設定 GitHub pages</h2>
 
 <p>要使用 GitHub Pages 服務需要有 GitHub 帳號，事實上建置好後的部落格網址就是 <code class="highlighter-rouge">http://&lt;GitHub 帳號名稱&gt;.github.io</code> 如果還沒有 GitHub 帳號，先去註冊一個吧。</p>
 
@@ -163,7 +167,7 @@ deploy              # 透過 S3, Rsync, 或 GitHub pages 發佈網站
 
 <p>注意最後方有 git 字尾。</p>
 
-<h2 id="octopress-3-">新增 Octopress 3 工作目錄</h2>
+<h2 id="新增-octopress-3-工作目錄">新增 Octopress 3 工作目錄</h2>
 
 <p><strong>New</strong></p>
 
@@ -173,14 +177,14 @@ deploy              # 透過 S3, Rsync, 或 GitHub pages 發佈網站
 
 <p>基本上是執行 <code class="highlighter-rouge">jekyll new</code> + <code class="highlighter-rouge">octopress init</code> 兩個指令，會在指定的 &lt;path&gt; 目錄下建立 jekyll 與 octopress 網站的基礎目錄架構與檔案。</p>
 
-<h2 id="git-">起始工作目錄 .git 目錄</h2>
+<h2 id="起始工作目錄-git-目錄">起始工作目錄 .git 目錄</h2>
 <p>在新增的 Octopress 3 工作目錄下，起始 git 管理</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>$ git init
 </code></pre>
 </div>
 
-<h2 id="section-2">張貼新文章</h2>
+<h2 id="張貼新文章">張貼新文章</h2>
 
 <p><strong>New Post</strong></p>
 
@@ -222,7 +226,7 @@ deploy              # 透過 S3, Rsync, 或 GitHub pages 發佈網站
 
 <p>將已發佈的 <code class="highlighter-rouge">2015-08-01-some-post</code> 文章改成草稿(移至 <code class="highlighter-rouge">_draft</code> 資料夾，記得網站頁面要在 <code class="highlighter-rouge">deploy</code> 後才會改變。</p>
 
-<h2 id="section-3">網頁自動建置</h2>
+<h2 id="網頁自動建置">網頁自動建置</h2>
 
 <p>當文章寫好後，準備發佈</p>
 
@@ -240,7 +244,7 @@ deploy              # 透過 S3, Rsync, 或 GitHub pages 發佈網站
 
 <p>執行上述指令後，可在瀏覽器使用下列網址 <code class="highlighter-rouge">http://locolhost:4000</code> 預覽網頁。</p>
 
-<h2 id="github-pages-">將網站發佈到 GitHub Pages 上</h2>
+<h2 id="將網站發佈到-github-pages-上">將網站發佈到 GitHub Pages 上</h2>
 
 <p>網頁一切就緒後，便可利用前面建好的 GitHub Pages Repository ，將網頁發佈至 GitHub Pages 上。</p>
 
@@ -263,7 +267,7 @@ deploy              # 透過 S3, Rsync, 或 GitHub pages 發佈網站
 
 <p>注意上述動作僅將網站 ( <code class="highlighter-rouge">_site</code> 資料夾的內容)發佈至 GitHub Pages上，整個 octopress 工作目錄僅存在於本機上。如果你想在可在多部電腦上寫文章，並讓工作進度維持同步，可利用 GitHub 的分支 (branch) 功能，將工作目錄同步到 GitHub 上的另一個分支下，便可在不同電腦使用 git 的 <code class="highlighter-rouge">push</code> 與 <code class="highlighter-rouge">pull</code> 功能達到同步目的。請參考底下步驟：</p>
 
-<h2 id="octopress--github-pages">在多台電腦上使用 Octopress + GitHub Pages</h2>
+<h2 id="在多台電腦上使用-octopress--github-pages">在多台電腦上使用 Octopress + GitHub Pages</h2>
 
 <p>Octopress 使用兩個分支 <code class="highlighter-rouge">source</code> 與 <code class="highlighter-rouge">master</code>, <code class="highlighter-rouge">source</code> 分支包含用來產生網頁的工作目錄，包含草稿資料夾，而 <code class="highlighter-rouge">master</code> 則僅包含網站本身。</p>
 
