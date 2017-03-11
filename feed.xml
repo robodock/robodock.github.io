@@ -5,9 +5,139 @@
     <description>船塢日誌</description>
     <link>http://robodock.github.io//</link>
     <atom:link href="http://robodock.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 22 Feb 2017 21:33:43 +0800</pubDate>
-    <lastBuildDate>Wed, 22 Feb 2017 21:33:43 +0800</lastBuildDate>
+    <pubDate>Sat, 11 Mar 2017 23:56:27 +0800</pubDate>
+    <lastBuildDate>Sat, 11 Mar 2017 23:56:27 +0800</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
+    
+      <item>
+        <title>Windows Systinternals psexec 用法</title>
+        <description>&lt;p&gt;&lt;strong&gt;Sysinternals Suite 是一套 Windows 環境下的進階系統工具程式，其中的 &lt;code class=&quot;highlighter-rouge&quot;&gt;psexec&lt;/code&gt; 可用來在遠端電腦執行程式&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Usage:
+psexec [\\\\computer[,computer2[,...] | @file]] [-u user] [-p passwd] [-n s] [-r servicename] [-h] [-l] [-s] [-e] [-x] [-i] [session]] [-c[-f|-v]][-w directory][-d][-&amp;lt;priority&amp;gt;][-a n,n,...] cmd [arguments]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-a&lt;/code&gt; 指定程序使用哪一顆 CPU 來執行，例如 “-a 2,4” 表示使用 CPU 2 與 CPU 4.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-c&lt;/code&gt; 將程式複製到遠端電腦執行.若不指定則程式必須存在於遠端電腦系統路徑上.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-d&lt;/code&gt; 不等候程式執行完成(非互動式)&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-e&lt;/code&gt; 不要載入指定帳號 profile.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-f&lt;/code&gt; 強制複製程式到遠端電腦(即使已存在)&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-i&lt;/code&gt; 在遠端桌面上以互動方式執行，若不指定程式則執行命令列視窗.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-h&lt;/code&gt; 在 Vista 之後版本，以較高權限執行(如果有的話)&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-l&lt;/code&gt; 去除管理者群組權限，改以限制使用者方式執行.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-n&lt;/code&gt; 指定連線逾時時間&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-p&lt;/code&gt; 指定使用者帳號密碼，未指定時會顯示提示要求輸入&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-r&lt;/code&gt; 指定要建立或溝通的遠端服務&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-s&lt;/code&gt; 以系統帳號執行程式&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-u&lt;/code&gt; 指定使用者帳號名稱&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-v&lt;/code&gt; 只有在程式較新或版次較高時才複製檔案到遠端電腦&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-W&lt;/code&gt; 設定程式的工作目錄(在遠端電腦上)&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-x&lt;/code&gt; 顯示 Winlogon secure desktop UI(僅限本地端)&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-priority&lt;/code&gt; 指定 -low, -belownormal, -abovenormal, -high, -realtime 優先順序，或使用 -background 在 Vista 以後系統以 low memory 與 I/O priority 方式執行.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;computer&lt;/code&gt; 遠端電腦名稱，未指定時表示在本地端執行&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;@file&lt;/code&gt; 在 file 檔案中列出的電腦上執行程式.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cmd&lt;/code&gt; 要執行的程式名稱.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;arguments&lt;/code&gt; 程式參數(注意若有路徑名稱，需使用目標系統上的絕對路徑)&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-accepteula&lt;/code&gt; 避免 license 對話框出現&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;程式名稱或檔案路徑中有空白字元時，需用雙引號框起來。&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 08 Dec 2016 20:40:00 +0800</pubDate>
+        <link>http://robodock.github.io//2016/12/08/psexec.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/12/08/psexec.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Wordpress 建立 child theme</title>
+        <description>&lt;p&gt;&lt;strong&gt;Wordpress 中的 child theme 可繼承 parent theme 的所有功能與樣式，但又可同時自訂修改自有樣式。
+在網站中使用 child theme 可避免當 parent theme 更新時，影響到自訂部分。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;child-theme&quot;&gt;建立 child theme&lt;/h3&gt;
+
+&lt;p&gt;登入網頁伺服器主機，找到網站中的 theme 目錄，預設位置在 &lt;code class=&quot;highlighter-rouge&quot;&gt;wp-content/themes&lt;/code&gt; ，建立 child theme 子目錄，慣例可用 parenttheme-child 做名稱。此目錄底下則需要兩個檔案，&lt;code class=&quot;highlighter-rouge&quot;&gt;style.css&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;functions.php&lt;/code&gt;。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;child theme directory&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;style.css&lt;/strong&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;functions.php&lt;/strong&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;style.css&lt;/code&gt; 檔案內容必須開頭如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/*
+ Theme Name:   Twenty Fifteen Child
+ Theme URI:    http://example.com/twenty-fifteen-child/
+ Description:  Twenty Fifteen Child Theme
+ Author:       John Doe
+ Author URI:   http://example.com
+ Template:     twentyfifteen
+ Version:      1.0.0
+ License:      GNU General Public License v2 or later
+ License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+ Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
+ Text Domain:  twenty-fifteen-child
+*/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;其中 &lt;code class=&quot;highlighter-rouge&quot;&gt;Template&lt;/code&gt; 為繼承對應的 parent theme，其他則依狀況修改對應自己的網站設定。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;functions.php&lt;/code&gt; 則用來引入 stylesheets，內容如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;?php
+function my_theme_enqueue_styles() {
+
+    $parent_style = 'parent-style'; // This is 'twentyfifteen-style' for the Twenty Fifteen theme.
+
+    wp_enqueue_style( $parent_style, get_template_directory_uri() . '/style.css' );
+    wp_enqueue_style( 'child-style',
+        get_stylesheet_directory_uri() . '/style.css',
+        array( $parent_style ),
+        wp_get_theme()-&amp;gt;get('Version')
+    );
+}
+add_action( 'wp_enqueue_scripts', 'my_theme_enqueue_styles' );
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;如果網站中使用多個 .css 檔，則必須分別加入 function 中。&lt;/p&gt;
+
+&lt;p&gt;完成後即可在 Wordpress 佈景主題頁面中選取新增的 child theme 使用。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 05 Nov 2016 10:20:00 +0800</pubDate>
+        <link>http://robodock.github.io//2016/11/05/wordpress-child-theme.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/11/05/wordpress-child-theme.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Let's Encrypt 免費網站憑證</title>
@@ -718,11 +848,14 @@ $ x11vnc -display :0    //指定要連線至 :0 螢幕(如果你只有一個 x-w
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;安裝完 Ruby 環境後，需以管理者權限重新啟動命令列，相關指令才會生效，接著安裝 jekyll：&lt;/p&gt;
+&lt;p&gt;預設安裝目錄為 &lt;code class=&quot;highlighter-rouge&quot;&gt;C:\Tools\ruby23\&lt;/code&gt; ，新增兩個環境變數：&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ gem install jekyll
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GEM_PATH=&quot;C:\Tools\ruby23\&quot;
+GEM_HOME=&quot;C:\Tools\ruby23\&quot;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
+
+&lt;p&gt;安裝完 Ruby 環境後，需以管理者權限重新啟動命令列，相關指令才會生效&lt;/p&gt;
 
 &lt;p&gt;octopress 3 還需要 redcarpet 與 Ruby DevKit：&lt;/p&gt;
 
@@ -732,13 +865,80 @@ $ x11vnc -display :0    //指定要連線至 :0 螢幕(如果你只有一個 x-w
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
+&lt;p&gt;安裝完 devkit 後，需要到 devkit 安裝目錄編輯 config.yml，加入剛剛安裝好 ruby 的目錄位置，然後執行&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby dk.rb install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;另需手動將 devkit 執行檔目錄與隨附的 mingw 執行檔目錄位置加入系統路徑 &lt;code class=&quot;highlighter-rouge&quot;&gt;PATH&lt;/code&gt; 中&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:\Tools\DevKit2\bin
+C:\Tools\DevKit2\mingw\bin
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;接著安裝 jekyll：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ gem install jekyll
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 &lt;p&gt;安裝 Octopress 3&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ gem install octopress
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
+&lt;p&gt;安裝相關 gems 的正確版本&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ gem install addressable -v 2.4.0
+$ gem install ffi -v 1.9.14
+$ gem install sass -v 3.4.22
+$ gem install jekyll-sass-converter -v 1.4.0
+$ gem install rb-inotify -v 0.9.7
+$ gem install kramdown -v 1.12.0
+$ gem install rouge -v 1.10.1
+$ gem install jekyll -v 3.3.0
+$ gem install redcarpet -v 3.3.4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 &lt;p&gt;接下來關於 octopress 的使用請參考之前&lt;a href=&quot;http://robodock.github.io/2015/08/17/octopress-3-github-pages-blog.html&quot;&gt;這一篇&lt;/a&gt;。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;rubygemorg-ssl-error-&quot;&gt;2016/12 更新有關 rubygem.org SSL error 問題&lt;/h2&gt;
+
+&lt;p&gt;rubygems.org 網站原本使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;sha1&lt;/code&gt; 演算法作為 SSL 憑證計算
+，為因應 &lt;code class=&quot;highlighter-rouge&quot;&gt;sha1&lt;/code&gt; 安全性不足問題，已改用 &lt;code class=&quot;highlighter-rouge&quot;&gt;sha-256&lt;/code&gt; 演算法。&lt;/p&gt;
+
+&lt;p&gt;若使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;gem install&lt;/code&gt; 命令時發生如下錯誤，表示目前使用的SSL 憑證為 sha1 演算法，無法連接至新的 rubygems.org 網站：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;可手動安裝新的 &lt;code class=&quot;highlighter-rouge&quot;&gt;rubygem&lt;/code&gt; 來解決。&lt;/p&gt;
+
+&lt;p&gt;首先手動下載最新的 &lt;a href=&quot;https://rubygems.org/pages/download&quot;&gt;latest RubyGems&lt;/a&gt;，存放在易於存取的目錄下，例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;D:\&lt;/code&gt; ，此例中版本為 &lt;code class=&quot;highlighter-rouge&quot;&gt;rubygems-update-2.6.10.gem&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;接著在命令列視窗下執行：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;D:\&amp;gt;gem install --local D:\rubygems-update-2.6.10.gem
+D:\&amp;gt;update_rubygems
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;gem --version&lt;/code&gt; 確認安裝版本&lt;/p&gt;
+
+&lt;p&gt;成功後可安全移除上述檔案&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;D:\&amp;gt;gem uninstall rubygems-update -x
+Removing update_rubygems
+Successfully uninstalled rubygems-update-2.6.10
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 </description>
         <pubDate>Thu, 26 May 2016 21:57:23 +0800</pubDate>
         <link>http://robodock.github.io//2016/05/26/windows-quick-install-octopress-3.html</link>
@@ -797,291 +997,6 @@ $ choco install nodejs.install
         <pubDate>Wed, 25 May 2016 23:48:31 +0800</pubDate>
         <link>http://robodock.github.io//2016/05/25/chocolatey.html</link>
         <guid isPermaLink="true">http://robodock.github.io//2016/05/25/chocolatey.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>CentOS 7 安裝 LNMP server 環境</title>
-        <description>&lt;p&gt;&lt;strong&gt;有別於常見的 LAMP (Linux-Apache-MySQL-PHP) 網站伺服器環境，今天要來改用 Nginx 取代 Apache 做為網頁伺服器，這樣的組合成為 LNMP (Linux-Nginx-MySQL-PHP)&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;雖然標題寫著 CentOS 7，但在 Debian/Ubuntu 環境下改用對應的 apt-get 套件管理程式，應該也可順利安裝。&lt;/p&gt;
-
-&lt;h2 id=&quot;nginx&quot;&gt;Nginx&lt;/h2&gt;
-
-&lt;p&gt;安裝 Nginx web server，需要用到 epel repository&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ yum update
-$ yum install epel-release	\\使用epel repository
-$ yum install nginx
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;nginx 的預設網站目錄在 /usr/share/nginx/html，
-啟動 nginx web server&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ systemctl start nginx
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;設定開機啟動 nginx server 服務&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ systemctl enable nginx
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;mysql-mariadb&quot;&gt;MySQL (MariaDB)&lt;/h2&gt;
-
-&lt;p&gt;安裝 MySQL 資料庫，因 MySQL 已被 Oracle 收購，為避免閉源風險，CentOS 7 已改用 MySQL 的社群維護版本 Mariadb，基本上指令與程式庫與 MySQL 完全相同。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ yum install mariadb-server mariadb
-$ systemctl start mariadb.service    \\先啟動 mysql 資料庫伺服器，注意初始root帳號無密碼
-$ mysql_secure_installation          \\互動式的 mysql 起始安全性設定，只要遵照命令列提示，依序進行相關設定與 mysql root 密碼即可
-$ systemctl enable mariadb.service	\\設定開機執行 mariadb 服務
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;php-php-fpm&quot;&gt;PHP (php-fpm)&lt;/h2&gt;
-
-&lt;p&gt;安裝 PHP , php-mysql 與搭配 Nginx 時必須的的 php-fpm&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ yum install php php-fpm php-mysql
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;修正一下 php.ini 裡的設定，提高安全性&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vi /etc/php.ini
-
-找到下列這行 
-#cgi.fix_pathinfo = 1
-註解拿掉，修改為
-cgi.fix_pathinfo = 0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;接著設定 php-fpm 設定檔&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vi /etc/php-fpm.d/www.conf
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;可把 FastCGI 請求連接埠修改爲 unix socket&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;預設為：
-listen = 127.0.0.1:9000
-欲使用 unix socket 方式可改為如下：
-listen = /var/run/php-fpm/php-fpm.sock
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;將下列兩行前方的 # 取消&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;listen.owner = nobody
-listen.group = nobody
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;再將 user 與 group 皆設定為 CentOS 7 中 Nginx 套件安裝後的預設值&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;user = nginx
-group = nginx
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;啟動 php-fpm&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ systemctl start php-fpm
-$ systemctl enable php-fpm
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;phpmyadmin&quot;&gt;phpMyAdmin&lt;/h2&gt;
-
-&lt;p&gt;安裝管理 MySQL 的 phpMyAdmin&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ yum install phpMyAdmin
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;phpMyAdmin 的預設目錄在 /usr/share/phpMyAdmin, 要讓 nginx 網站伺服器可以使用 phpMyAdmin，可在 nginx 網站根目錄加入 phpMyAdmin 的路徑連結：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd /usr/share/nginx/html
-$ ln -s /usr/share/phpMyAdmin
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;另外 /var/lib/php 與 /var/lib/phpMyAdmin 目錄的預設使用者與群組為 apache.apache ，使用 Nginx 須將其使用者與群組設定為 nginx.nginx&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;example&quot;&gt;&lt;em&gt;Example&lt;/em&gt;&lt;/h2&gt;
-
-&lt;p&gt;/etc/nginx/nginx.conf&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;user nginx;
-worker_processes auto;
-error_log /var/log/nginx/error.log;
-pid /run/nginx.pid;
-
-events {
-    worker_connections 1024;
-}
-
-http {
-    log_format  main  '$remote_addr - $remote_user [$time_local] &quot;$request&quot; '
-                      '$status $body_bytes_sent &quot;$http_referer&quot; '
-                      '&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;';
-
-    access_log  /var/log/nginx/access.log  main;
-
-    sendfile            on;
-    tcp_nopush          on;
-    tcp_nodelay         on;
-    keepalive_timeout   65;
-    types_hash_max_size 2048;
-
-    include             /etc/nginx/mime.types;
-    default_type        application/octet-stream;
-
-    # Load modular configuration files from the /etc/nginx/conf.d directory.
-    # See http://nginx.org/en/docs/ngx_core_module.html#include
-    # for more information.
-    include /etc/nginx/conf.d/*.conf;
-
-    server {
-        listen       80 default_server;
-        listen       [::]:80 default_server;
-        server_name  localhost;
-        root    /usr/share/nginx/html;
-        index   index.html index.htm;
-
-        location / {
-                try_files $uri $uri/ =404;
-        }
-
-        error_page 404 /404.html;
-
-        error_page 500 502 503 504 /50x.html;
-            location = /50x.html {
-                root /usr/share/nginx/html;
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;要加入虛擬主機，只要在 /etc/nginx/conf.d 目錄中加入主機設定的即可，例如&lt;/p&gt;
-
-&lt;p&gt;/etc/nginx/conf.d/robodock.conf&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server {
-    server_name www.robodock.net;		\\網站名稱
-    root /home/robodock/wordpress;	\\網頁根目錄
-    index index.html index.php index.htm;
-
-    access_log /var/log/nginx/access.log;
-    error_log /var/log/nginx/error.log;
-
-    # set expiration of assets to MAX for caching
-    location ~* \.(ico|css|js|gif|jpe?g|png|ogg|ogv|svg|svgz|eot|otf|woff)(\?.+)?$ {
-        expires max;
-        log_not_found off;
-    }
-
-    server_tokens off;
-
-    # framework rewrite
-    location / {
-        try_files $uri $uri/ /index.php;
-    }
-
-    location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock;
-        fastcgi_index index.php;
-        fastcgi_split_path_info ^(.+\.php)(.*)$;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sat, 21 May 2016 23:28:45 +0800</pubDate>
-        <link>http://robodock.github.io//2016/05/21/centos-7-install-lnmp.html</link>
-        <guid isPermaLink="true">http://robodock.github.io//2016/05/21/centos-7-install-lnmp.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>OAuth 2.0</title>
-        <description>&lt;h2 id=&quot;oauth-&quot;&gt;OAuth 開放授權&lt;/h2&gt;
-&lt;p&gt;透過一種 Token 機制，允許使用者讓第三方的應用程式存取該使用者在某一服務網站上儲存的資源(檔案、照片、影片等等)，而不用提供使用者名稱與密碼給第三方應用程式。&lt;/p&gt;
-
-&lt;h2 id=&quot;google-oauth-20-&quot;&gt;Google OAuth 2.0 的運作方式&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;先從 Google Developers Console 取得 OAuth 2.0 client credentials。&lt;/li&gt;
-  &lt;li&gt;Client 應用程式向 Google Authorization Server 請求一個 access token，然後將 token 轉送給欲使用的 Google API。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;在 &lt;code class=&quot;highlighter-rouge&quot;&gt;Google Developers Console&lt;/code&gt; 建立一個新專案&lt;/li&gt;
-  &lt;li&gt;在 &lt;code class=&quot;highlighter-rouge&quot;&gt;API 和驗證&lt;/code&gt; 項目下，啟用 &lt;code class=&quot;highlighter-rouge&quot;&gt;Drive API&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;前往 &lt;code class=&quot;highlighter-rouge&quot;&gt;憑證&lt;/code&gt;，選擇 &lt;code class=&quot;highlighter-rouge&quot;&gt;新增憑證&lt;/code&gt;，新增 &lt;code class=&quot;highlighter-rouge&quot;&gt;服務帳戶&lt;/code&gt;，下載憑證 json 檔&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;python--oauth-20&quot;&gt;在 Python 中使用 OAuth 2.0&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;安裝 python 模組 &lt;code class=&quot;highlighter-rouge&quot;&gt;oauth2client&lt;/code&gt;：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; pip install --upgrade oauth2client
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;依系統中未包含 Python OpenSSL 模組時還需安裝：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; pip install PyOpenSSL
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;在 Raspberry Pi 上還需要安裝 libciff-dev 套件&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; sudo apt-get install libciff-dev
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;python-gspread--google-&quot;&gt;範例：使用 Python gspread 模組存取 Google 試算表&lt;/h3&gt;
-
-&lt;p&gt;先透過 pip 安裝 gspread 模組&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip install gspread
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;程式碼：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import json
-import gspread
-from oauth2client.client import SignedJwtAssertionCredentials
-
-json_key = json.load(open('My Project-xxxxxxxxxxxx.json'))
-scope = ['https://spreadsheets.google.com/feeds']
-
-credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
-
-gc = gspread.authorize(credentials)
-
-wks = gc.open(&quot;Googld Spread Sheet&quot;).sheet1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Sat, 21 May 2016 23:15:46 +0800</pubDate>
-        <link>http://robodock.github.io//2016/05/21/python-oauth-2-0.html</link>
-        <guid isPermaLink="true">http://robodock.github.io//2016/05/21/python-oauth-2-0.html</guid>
         
         
       </item>
