@@ -1,11 +1,14 @@
 ---
-layout: "post"
-title: "psexec 用法"
-date: "2016-12-08 20:40"
+layout: post
+title: "Windows Systinternals psexec 用法"
+date: 2016-12-08 20:40
 ---
 
-## Usage: ##
-psexec [\\\\computer[,computer2[,...] | @file]] [-u user] [-p passwd] [-n s] [-r servicename] [-h] [-l] [-s] [-e] [-x] [-i] [session]] [-c[-f|-v]][-w directory][-d][-<priority>][-a n,n,...] cmd [arguments]
+**Sysinternals Suite 是一套 Windows 環境下的進階系統工具程式，其中的 `psexec` 可用來在遠端電腦執行程式**
+
+    Usage:
+    psexec [\\\\computer[,computer2[,...] | @file]] [-u user] [-p passwd] [-n s] [-r servicename] [-h] [-l] [-s] [-e] [-x] [-i] [session]] [-c[-f|-v]][-w directory][-d][-<priority>][-a n,n,...] cmd [arguments]
+
 
 `-a` 指定程序使用哪一顆 CPU 來執行，例如 "-a 2,4" 表示使用 CPU 2 與 CPU 4.
 
