@@ -5,9 +5,346 @@
     <description>船塢日誌</description>
     <link>http://robodock.github.io//</link>
     <atom:link href="http://robodock.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 11 Mar 2017 23:56:27 +0800</pubDate>
-    <lastBuildDate>Sat, 11 Mar 2017 23:56:27 +0800</lastBuildDate>
+    <pubDate>Sun, 12 Mar 2017 08:19:27 +0800</pubDate>
+    <lastBuildDate>Sun, 12 Mar 2017 08:19:27 +0800</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
+    
+      <item>
+        <title>用 Raspberry Pi3 打造車牌辨識系統</title>
+        <description>&lt;p&gt;OpenALPR 為一開源車牌辨識程式庫(&lt;a href=&quot;https://github.com/openalpr/openalpr&quot;&gt;github連結&lt;/a&gt;)。
+最新的 Ubuntu 16.04 上已納入系統套件庫，可直接 apt-get 安裝，不過截至目前為止(2017/02) raspbian 上還沒有編譯好的套件，需要手動編譯安裝。&lt;/p&gt;
+
+&lt;p&gt;這裡亦列出 Ubuntu 16.04 上的套件安裝方法供參考&lt;/p&gt;
+
+&lt;h3 id=&quot;ubuntu-1604&quot;&gt;Ubuntu 16.04&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo apt-get update &amp;amp;&amp;amp; sudo apt-get install -y openalpr openalpr-daemon openalpr-utils libopenalpr-dev
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;用圖片檔測試結果：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ wget http://plates.openalpr.com/ea7the.jpg
+$ alpr -c us ea7the.jpg
+
+$ wget http://plates.openalpr.com/h786poj.jpg
+$ alpr -c eu h786poj.jpg
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+&lt;h1 id=&quot;raspberry-pi3--openalpr&quot;&gt;在 Raspberry Pi3 上安裝 OpenALPR&lt;/h1&gt;
+
+&lt;p&gt;影像辨識向來都是 CPU intensive 應用，加上底下的程式編譯過程須花費長久時間，在 Pi3 上需要一個多小時的編譯時間，Pi2 應該也跑得動但編譯時間會增加，Pi1 就不建議了。&lt;/p&gt;
+
+&lt;p&gt;系統使用 raspbian jessie，OpenALPR 需要 OpenCV 與 tesseract-ocr，可分別獨立安裝。&lt;/p&gt;
+
+&lt;h2 id=&quot;opencv&quot;&gt;安裝 OpenCV&lt;/h2&gt;
+
+&lt;p&gt;在 Raspberry Pi3 安裝 OpenCV 最詳盡的 step by step 步驟莫過於&lt;a href=&quot;http://www.pyimagesearch.com/2016/04/18/install-guide-raspberry-pi-3-raspbian-jessie-opencv-3/&quot;&gt;這篇&lt;/a&gt;了。摘要如下：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;確定記憶卡上有足夠的空間，下載與編譯需要用個 3~4G，我是用 8G 的卡安裝 raspbian lite，空間還夠用，記得使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo raspi-config&lt;/code&gt; 設定將檔案系統擴展到使用整張記憶卡空間。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安裝編譯環境與工具&lt;/p&gt;
+
+    &lt;p&gt;養成好習慣，先來個更新：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo apt-get update
+ $ sudo apt-get upgrade
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;安裝編譯環境與工具&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo apt-get install build-essential cmake pkg-config
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;一些必要的相依性套件&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo apt-get install libjpeg-dev libtiff5-dev libjasper-dev libpng12-dev
+ $ sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+ $ sudo apt-get install libxvidcore-dev libx264-dev
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;要使用 OpenCV 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;highgui&lt;/code&gt; 圖形介面的需要這個：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo apt-get install libgtk2.0-dev
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;矩陣數值運算會用到&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo apt-get install libatlas-base-dev gfortran
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;需要 python 標頭檔&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo apt-get install python2.7-dev python3-dev
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;下載 OpenCV 與 OpenCV_contrib 程式庫原始碼檔案並解壓縮：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cd ~
+ $ wget -O opencv.zip https://github.com/Itseez/opencv/archive/3.1.0.zip
+ $ unzip opencv.zip
+    
+ $ wget -O opencv_contrib.zip https://github.com/Itseez/opencv_contrib/archive/3.1.0.zip
+ $ unzip opencv_contrib.zip
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;接著來搞定 Python 環境，建議使用 virtualenv + virtualenvwrapper 建立獨立環境，可避免干擾系統相關 Python 程式庫。&lt;/p&gt;
+
+    &lt;p&gt;首先先重新手動安裝 pip，為什麼要手動安裝? 因為 raspbian 系統的 pip 版本太舊了!&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ wget https://bootstrap.pypa.io/get-pip.py
+ $ sudo python get-pip.py
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;安裝 virtualenv 與 virtualenvwrapper&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ sudo pip install virtualenv virtualenvwrapper
+ $ sudo rm -rf ~/.cache/pip
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.profile&lt;/code&gt;，在檔案最後加入下列幾行：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; # virtualenv and virtualenvwrapper
+ export WORKON_HOME=$HOME/.virtualenvs
+ source /usr/local/bin/virtualenvwrapper.sh
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;想要不登出，重新載入系統環境變數，可用：&lt;/p&gt;
+
+    &lt;p&gt;想要使用 python 2 的：&lt;/p&gt;
+
+ 	$ mkvirtualenv cv2 -p python2
+
+    &lt;p&gt;想要使用 python 3 的：&lt;/p&gt;
+
+ 	$ mkvirtualenv cv3 -p python3
+
+    &lt;p&gt;上面的 cv2/cv3 是自己取的名稱，方便辨識即可&lt;/p&gt;
+
+    &lt;p&gt;爾後要切換不同 python 環境，使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;workon xx&lt;/code&gt; 即可，離開環境則使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;deactivate&lt;/code&gt; 指令，例如：&lt;/p&gt;
+
+    &lt;p&gt;切換至名為 cv2 的 python 2 環境：&lt;/p&gt;
+
+ 	$ workon cv2
+
+    &lt;p&gt;切換至名為 cv3 的 python 3 環境：&lt;/p&gt;
+
+ 	$ workon cv3
+
+    &lt;p&gt;在系統提示符號前方會有一括號標示現在所處的 virtualenv 環境。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;開始編譯安裝 OpenCV&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cd ~/opencv-3.1.0/
+ $ mkdir build
+ $ cd build
+ $ cmake -D CMAKE_BUILD_TYPE=RELEASE \
+     -D CMAKE_INSTALL_PREFIX=/usr/local \
+     -D INSTALL_PYTHON_EXAMPLES=ON \
+     -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib-3.1.0/modules \
+     -D BUILD_EXAMPLES=ON ..
+ $ make -j4
+ $ sudo make install
+ $ sudo ldconfig
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;注意 python 2 與 python 3 環境編譯安裝的 CV2.so 檔名有些不同，python 2 版本安裝於 &lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/local/lib/python2.7/site-packages/cv2.so&lt;/code&gt;， python 3 則安裝為 &lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/local/lib/python3.4/site-packages/cv2.cpython-34m.so&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;在 virtualenv 環境中建立 cvs.so 檔連結&lt;/p&gt;
+
+    &lt;p&gt;python 2 環境：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cd ~/.virtualenvs/cv/lib/python2.7/site-packages/
+ $ ln -s /usr/local/lib/python2.7/site-packages/cv2.so cv2.so
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;python 3 環境：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ cd ~/.virtualenvs/cv/lib/python3.4/site-packages/
+ $ ln -s /usr/local/lib/python3.4/site-packages/cv2.cpython-34m.so cv2.so
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;測試&lt;/p&gt;
+
+ 	$ python
+ 	»&amp;gt; import cv2
+ 	»&amp;gt; cv2.&lt;strong&gt;version&lt;/strong&gt;
+ 	‘3.1.0’
+ 	»&amp;gt;
+
+    &lt;p&gt;大功告成!&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+&lt;h2 id=&quot;tesseract-ocr-&quot;&gt;安裝 tesseract-ocr 文字辨識程式庫&lt;/h2&gt;
+
+&lt;p&gt;首先準備編譯工具，部分套件在安裝 OpenCV 時亦會安裝。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install autoconf automake libtool
+sudo apt-get install autoconf-archive
+sudo apt-get install pkg-config
+sudo apt-get install libpng12-dev
+sudo apt-get install libjpeg8-dev
+sudo apt-get install libtiff5-dev
+sudo apt-get install zlib1g-dev
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;如果需要安裝辨識訓練工具，另需要下列套件&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install libicu-dev
+sudo apt-get install libpango1.0-dev
+sudo apt-get install libcairo2-dev
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;tesseract-ocr 需要 leptonica 影像演算法套件，先來安裝 leptonica 程式庫。&lt;/p&gt;
+
+&lt;h3 id=&quot;leptonica&quot;&gt;安裝 leptonica&lt;/h3&gt;
+
+&lt;p&gt;2017/02 版本&lt;a href=&quot;http://www.leptonica.org/source/leptonica-1.74.1.tar.gz&quot;&gt;下載&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;下載後解壓縮&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tar xvzf leptonica-1.74.1.tar.gz
+$ cd leptonica-1.74.1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;兩種安裝方式，擇一使用&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 autoconf&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ./configure --prefix=/usr/local/
+ make
+ sudo make install
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 cmake&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; mkdir build
+ cd build
+ cmake ..
+ make
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;tesseract-ocr&quot;&gt;安裝 tesseract-ocr&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone --depth 1 https://github.com/tesseract-ocr/tesseract.git
+cd tesseract
+./autogen.sh
+./configure --enable-debug LDFLAGS=&quot;-L/usr/local/lib&quot; CFLAGS=&quot;-I/usr/local/include&quot; 
+make
+sudo make install
+sudo ldconfig
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;另外需要語言資料檔&lt;/p&gt;
+
+&lt;p&gt;可從 &lt;code class=&quot;highlighter-rouge&quot;&gt;https://github.com/tesseract-ocr/tesseract/wiki/Data-Files&lt;/code&gt; 下載，存放於 tessdata 目錄&lt;/p&gt;
+
+&lt;p&gt;可設定環境變數指定資料檔路徑&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export TESSDATA_PREFIX=&quot;/usr/local/share/&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+&lt;h2 id=&quot;openalpr&quot;&gt;安裝 OpenALPR&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ git clone https://github.com/openalpr/openalpr.git
+$ cd openalpr/src
+
+修改 CMakeLists.txt， 加入下列兩行：
+SET (OpenCV_DIR &quot;/home/pi/opencv-3.1.0/build&quot;)
+SET (Tesseract_DIR &quot;/home/pi/tesseract&quot;)
+
+$ cmake ./
+
+如果出現 lib4cplus 找不到，請 `sudo apt-get install lib4cplus-dev`
+
+$ make
+
+如果出現 curl.h 找不到，請 `sudo apt-get install libcurl4-openssl-dev`
+
+$ sudo make install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;完成後下載個車牌圖片進行測試，加上 &lt;code class=&quot;highlighter-rouge&quot;&gt;--clock&lt;/code&gt; 參數，查看辨識計算時間&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ wget http://plates.openalpr.com/ea7the.jpg
+$ alpr -c us ea7the.jpg --clock
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;底下是我的 Pi3 實際輸出結果，圖形處理加上辨識時間小於 1 秒，已達實用階段，如果再透過 GPIO 連接一些 sensor 與 relay 控制，應該可以實作出一簡易車牌辨識的停車場閘門系統吧? Oh Ye! Raspberry Pi 好棒棒!&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pi@raspberrypi:~ $ alpr -c us ea7the.jpg --clock
+Info in bmfCreate: Generating pixa of bitmap fonts from string
+Total Time to process image: 482.089ms.
+plate0: 10 results -- Processing Time = 143.435ms.
+    - EA7THE     confidence: 91.0578
+    - EA7TBE     confidence: 84.133
+    - EA7T8E     confidence: 83.0083
+    - EA7TRE     confidence: 82.7869
+    - EA7TE      confidence: 82.5961
+    - EA7TME     confidence: 80.2908
+    - EA7TH6     confidence: 77.0045
+    - EA7THB     confidence: 75.5779
+    - EA7TH      confidence: 74.6576
+    - EA7TB6     confidence: 70.0797
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;hr /&gt;
+&lt;h2 id=&quot;section&quot;&gt;後記&lt;/h2&gt;
+
+&lt;p&gt;影像辨識系統採用都是學習演算法，要提高精準度，就必須提供大量的圖片資料供學習，建立辨識樣式。然而每個國家與地區車牌樣式、尺寸、字體不盡相同，需針對每個地區的車牌建立學習資料庫。&lt;/p&gt;
+
+&lt;p&gt;OpenALPR 目前已內建幾個區域如 US、EU、KR、SG 等樣式資料庫，但沒有台灣地區。加上台灣 2015 年改版的 7 位數車牌，字體與以往的舊系統大不相同，增加了辨識複雜度。&lt;/p&gt;
+
+&lt;p&gt;實際以本地車牌測試，舊式車牌(2015年以前)，直接以 US 樣式比對，已有相當不錯的正確率，信心度最高的項目通常即為正確車牌，但若遇到新式車牌，則經常會有頭尾掉字或誤認情形。&lt;/p&gt;
+
+&lt;p&gt;待有空時再來建立一個本地的車牌學習資料庫…&lt;/p&gt;
+</description>
+        <pubDate>Sun, 26 Feb 2017 20:21:00 +0800</pubDate>
+        <link>http://robodock.github.io//2017/02/26/openalpr.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2017/02/26/openalpr.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Windows Systinternals psexec 用法</title>
@@ -943,60 +1280,6 @@ Successfully uninstalled rubygems-update-2.6.10
         <pubDate>Thu, 26 May 2016 21:57:23 +0800</pubDate>
         <link>http://robodock.github.io//2016/05/26/windows-quick-install-octopress-3.html</link>
         <guid isPermaLink="true">http://robodock.github.io//2016/05/26/windows-quick-install-octopress-3.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Chocolatey 軟體套件管理</title>
-        <description>&lt;h2 id=&quot;chocolatey&quot;&gt;Chocolatey&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Chocolatey&lt;/strong&gt; 是一套 Windows 上的軟體套件管理程式，讓使用者可以用終端機指令的方式進行軟體的自動安裝、升級、移除動作，如同 Debian/Ubuntu 上的 &lt;code class=&quot;highlighter-rouge&quot;&gt;apt-get&lt;/code&gt; 或是 Fedora/RedHat 上的 &lt;code class=&quot;highlighter-rouge&quot;&gt;yum&lt;/code&gt; 一般。&lt;/p&gt;
-
-&lt;h3 id=&quot;chocolatey-1&quot;&gt;安裝 Chocolatey&lt;/h3&gt;
-
-&lt;p&gt;以管理者權限打開命令列模式，輸入底下指令：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))&quot; &amp;amp;&amp;amp; SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;使用 Chocolatey 安裝軟體：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ choco install nodejs 部分套件提供原始安裝版本，套件名稱後方會加上 .install 區分，這類套件可能需要管理者權限，例如：
-
-$ choco install nodejs.install
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;升級：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ choco upgrade nodejs
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;移除：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ choco uninstall flashplayer
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;尋找軟體套件：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ choco search docker
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;查看軟體資訊：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ choco info firefox
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;在&lt;a href=&quot;https://chocolatey.org/packages&quot;&gt;官網軟體套件清單&lt;/a&gt;頁面可查詢可安裝套件。&lt;/p&gt;
-</description>
-        <pubDate>Wed, 25 May 2016 23:48:31 +0800</pubDate>
-        <link>http://robodock.github.io//2016/05/25/chocolatey.html</link>
-        <guid isPermaLink="true">http://robodock.github.io//2016/05/25/chocolatey.html</guid>
         
         
       </item>
