@@ -1,9 +1,10 @@
 ---
 layout: post
 title: "DHCP Superscope"
+date: 2016-08-12T20:11:08+08:00
 ---
 
-##DCHP Superscope 使用筆記##
+## DCHP Superscope 筆記 ##
 
 Windows server 2008 DHCP Server 的管理工具
 

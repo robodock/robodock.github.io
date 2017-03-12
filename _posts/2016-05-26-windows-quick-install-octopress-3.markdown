@@ -10,27 +10,19 @@ date: 2016-05-26T21:57:23+08:00
 
 	$ choco install ruby -y
 
-預設安裝目錄為 `C:\Tools\ruby23\` ，新增兩個環境變數：
-
-    GEM_PATH="C:\Tools\ruby23\"
-    GEM_HOME="C:\Tools\ruby23\"
+預設安裝目錄為 `C:\Tools\ruby23\` 
 
 安裝完 Ruby 環境後，需以管理者權限重新啟動命令列，相關指令才會生效
 
- octopress 3 還需要 redcarpet 與 Ruby DevKit： 
+ octopress 3 還需要 `Ruby DevKit`： 
 
-同樣以管理者權限安裝 DevKit
+同樣以管理者權限啟動命令列，安裝 DevKit
 
 	$ choco install ruby2.devkit
 
 安裝完 devkit 後，需要到 devkit 安裝目錄編輯 config.yml，加入剛剛安裝好 ruby 的目錄位置，然後執行
 
     ruby dk.rb install
-
-另需手動將 devkit 執行檔目錄與隨附的 mingw 執行檔目錄位置加入系統路徑 `PATH` 中
-
-    C:\Tools\DevKit2\bin
-    C:\Tools\DevKit2\mingw\bin
 
 接著安裝 jekyll：
 
@@ -40,17 +32,8 @@ date: 2016-05-26T21:57:23+08:00
 
 	$ gem install octopress
 
-安裝相關 gems 的正確版本
+中文 Windows 的命令列視窗預設字碼頁為 `CP950`，如果使用 Octopress 或 jekyll 時出現 code page error 訊息例如：`invalid byte sequence in CP950`，可在命令列視窗中執行 `chcp 65001`，變更字碼頁為 `UTF-8`。
 
-    $ gem install addressable -v 2.4.0
-    $ gem install ffi -v 1.9.14
-    $ gem install sass -v 3.4.22
-    $ gem install jekyll-sass-converter -v 1.4.0
-    $ gem install rb-inotify -v 0.9.7
-    $ gem install kramdown -v 1.12.0
-    $ gem install rouge -v 1.10.1
-    $ gem install jekyll -v 3.3.0
-    $ gem install redcarpet -v 3.3.4
 
 接下來關於 octopress 的使用請參考之前[這一篇](http://robodock.github.io/2015/08/17/octopress-3-github-pages-blog.html)。
 
@@ -74,7 +57,7 @@ rubygems.org 網站原本使用 `sha1` 演算法作為 SSL 憑證計算
     D:\>gem install --local D:\rubygems-update-2.6.10.gem
     D:\>update_rubygems
 
-可使用 `gem --version` 確認安裝版本
+可使用 `gem --version` 確認安裝版本，此例中為 2.6.10
 
 成功後可安全移除上述檔案
 
