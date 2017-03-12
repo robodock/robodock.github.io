@@ -97,13 +97,13 @@ OpenALPR 為一開源車牌辨識程式庫([github連結](https://github.com/ope
    	
     
     想要使用 python 2 的：
-    
+        
     	$ mkvirtualenv cv2 -p python2
-    
+        
     想要使用 python 3 的：
-    
+        
     	$ mkvirtualenv cv3 -p python3
-    
+        
     上面的 cv2/cv3 是自己取的名稱，方便辨識即可
     
     爾後要切換不同 python 環境，使用 `workon xx` 即可，離開環境則使用 `deactivate` 指令，例如：
