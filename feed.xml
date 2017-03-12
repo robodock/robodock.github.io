@@ -5,8 +5,8 @@
     <description>船塢日誌</description>
     <link>http://robodock.github.io//</link>
     <atom:link href="http://robodock.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 12 Mar 2017 16:21:01 +0800</pubDate>
-    <lastBuildDate>Sun, 12 Mar 2017 16:21:01 +0800</lastBuildDate>
+    <pubDate>Sun, 12 Mar 2017 18:20:47 +0800</pubDate>
+    <lastBuildDate>Sun, 12 Mar 2017 18:20:47 +0800</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -412,6 +412,96 @@ psexec [\\\\computer[,computer2[,...] | @file]] [-u user] [-p passwd] [-n s] [-r
       </item>
     
       <item>
+        <title>GitHub fork 專案同步上游來源更新</title>
+        <description>&lt;h2 id=&quot;github-fork-&quot;&gt;GitHub fork 專案同步上游原始來源的更新&lt;/h2&gt;
+
+&lt;p&gt;從 GitHub 上 fork 下來的專案，當原始來源有更新後，要如何同步到自己的 fork repo 中? 至目前為止(2016/12)，尚無法直接在 GitHub 管理網頁上進行此動作，必須在本地端進行，步驟如下：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;將 fork 出來的專案 &lt;code class=&quot;highlighter-rouge&quot;&gt;clone&lt;/code&gt; 到本地端作業。&lt;/li&gt;
+  &lt;li&gt;開啟 &lt;code class=&quot;highlighter-rouge&quot;&gt;git bash&lt;/code&gt;，切換到 clone 下來的專案目錄中。&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;先檢視一下目前的遠端 repo 設定。&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ git remote -v
+ origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)
+ origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;新增名為 &lt;strong&gt;upstream&lt;/strong&gt; 的 “原始來源” repo 設定&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;確認一下遠端 repo 設定&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ git remote -v
+ origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)
+ origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)
+ upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (fetch)
+ upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (push)
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;fetch&lt;/code&gt; 指令來取得上游來源的更新，上游 &lt;code class=&quot;highlighter-rouge&quot;&gt;master&lt;/code&gt; 分支中的更新，會加到本地端的 &lt;code class=&quot;highlighter-rouge&quot;&gt;upstream/master&lt;/code&gt; 新分支。&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ git fetch upstream
+ remote: Counting objects: 75, done.
+ remote: Compressing objects: 100% (53/53), done.
+ remote: Total 62 (delta 27), reused 44 (delta 9)
+ Unpacking objects: 100% (62/62), done.
+ From https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY
+ * [new branch]      master     -&amp;gt; upstream/master
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;確定目前工作分支。&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ git checkout master
+ Switched to branch 'master'
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;merge&lt;/code&gt; 來將上游更新加入本地端。&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; $ git merge upstream/master
+ Updating a422352..5fdff0f
+ Fast-forward
+  README                    |    9 -------
+  README.md                 |    7 ++++++
+  2 files changed, 7 insertions(+), 9 deletions(-)
+  delete mode 100644 README
+  create mode 100644 README.md
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;若上游更新部分與本地端有衝突則需另行處理。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在本地端整合完成後，再 push 回自己 GitHub 上的 fork repo。&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Mon, 05 Dec 2016 14:12:11 +0800</pubDate>
+        <link>http://robodock.github.io//2016/12/05/github-fork-sync.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/12/05/github-fork-sync.html</guid>
+        
+        
+      </item>
+    
+      <item>
         <title>Wordpress 建立 child theme</title>
         <description>&lt;p&gt;&lt;strong&gt;Wordpress 中的 child theme 可繼承 parent theme 的所有功能與樣式，但又可同時自訂修改自有樣式。
 在網站中使用 child theme 可避免當 parent theme 更新時，影響到自訂部分。&lt;/strong&gt;&lt;/p&gt;
@@ -475,6 +565,278 @@ add_action( 'wp_enqueue_scripts', 'my_theme_enqueue_styles' );
         <pubDate>Sat, 05 Nov 2016 10:20:00 +0800</pubDate>
         <link>http://robodock.github.io//2016/11/05/wordpress-child-theme.html</link>
         <guid isPermaLink="true">http://robodock.github.io//2016/11/05/wordpress-child-theme.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>使用 Vagrant 輕鬆管理虛擬機</title>
+        <description>&lt;h2 id=&quot;vagrant-&quot;&gt;使用 Vagrant 輕鬆管理虛擬機&lt;/h2&gt;
+
+&lt;p&gt;vagrant 的觀念是這樣的，利用名為 &lt;strong&gt;Vagrantfile&lt;/strong&gt; 的虛擬機組態設定檔，達成可重複、快速部署的虛擬機環境。&lt;/p&gt;
+
+&lt;p&gt;vagrant 本身並不提供虛擬化環境，而是站在巨人的肩膀上，使用 &lt;strong&gt;VirtualBox&lt;/strong&gt;、&lt;strong&gt;VMware&lt;/strong&gt; 等等虛擬化軟體，方便開發者快速建立&lt;strong&gt;“可拋棄式”&lt;/strong&gt;的系統，方便開發測試。透過使用相同的 Vagrantfile，不同的開發工作者亦可使用相同的系統環境，避免許多系統相容性問題。&lt;/p&gt;
+
+&lt;p&gt;使用 Vagrant 時必須以 &lt;strong&gt;目錄&lt;/strong&gt; 為管理單位，有點類似 git 的觀念，首先在想要使用虛擬機的地方建立一個目錄(可想成一部虛擬機就是一個目錄)，起始 vagrant 環境設定後，便會在此目錄下建立 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Vagrantfile&lt;/code&gt;&lt;/strong&gt; 組態檔與隱藏子目錄 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;.vagrant&lt;/code&gt;&lt;/strong&gt; 存放系統控制相關資料。&lt;/p&gt;
+
+&lt;h2 id=&quot;virtualbox--vagrant&quot;&gt;安裝 VirtualBox 與 Vagrant&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;前面提到 Vagrant 是架構其他虛擬化軟體之上，首先需要安裝虛擬機軟體，這裡使用免費的 VirtualBox，請自行至&lt;a href=&quot;https://www.virtualbox.org/&quot;&gt;官網&lt;/a&gt;下載最新版 VirtualBox。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;接著到 Vagrant &lt;a href=&quot;https://www.vagrantup.com/downloads.html&quot;&gt;官網&lt;/a&gt;下載最新版的 vagrant，依照指示完成安裝。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;vagrant--1&quot;&gt;Vagrant 使用方法&lt;/h2&gt;
+
+&lt;p&gt;基本流程步驟如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vagrant init ubuntu/trusty64
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;表示在&lt;strong&gt;目前所在&lt;/strong&gt;目錄下初始化一個虛擬機環境，而使用系統範本為 &lt;code class=&quot;highlighter-rouge&quot;&gt;hashicorp/precise64&lt;/code&gt;。hashicorp 為創立 vagrant 的公司，官方提供許多不同 Linux 發行版本的系統範本供&lt;a href=&quot;https://atlas.hashicorp.com/boxes/search?provider=virtualbox&quot;&gt;下載&lt;/a&gt;，另外網路上亦可找到許多第三方提供之系統範本檔，此例中之 precise64 即為 Ubuntu 12.04 LTS 64-bit 版。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vagrant up
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;啟動虛擬機。沒錯，就是這麼簡單，您的電腦中已經有個執行中的 Ubuntu 12.04 的 Linux 機器了。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vagrant ssh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;透過 ssh 連線至剛剛執行的 Ubuntu 機器。注意，如果是在 Windows 下，若系統中未裝過其他可提供 &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh&lt;/code&gt; 的環境(例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;cygwin&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;git&lt;/code&gt;等)，可能無法透過此方式連線，必須自己使用像是 &lt;code class=&quot;highlighter-rouge&quot;&gt;putty&lt;/code&gt; 之類的 ssh client 程式，vagrant 虛擬機預設的 SSH 連線位址與埠號為：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;host 127.0.0.1
+port : 2222
+username : vagrant
+password : vagrant
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;結束 vagrant 虛擬機有三種方式：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vagrant suspend
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;會將目前執行階段儲存，當下次執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;vagrant up&lt;/code&gt; 後，可快速回復。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vagrant halt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;會在虛擬機中進行關機動作，但仍保留虛擬機的磁碟映像檔。下次執行 vagrant up 時，等同於冷開機。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vagrant destroy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;結束虛擬機並移除虛擬機映像檔。當下次執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;vagrant up&lt;/code&gt; 時，會等同於重新從 boxes 中 clone 一份建立新的虛擬機磁碟映像檔。&lt;/p&gt;
+
+&lt;h2 id=&quot;vagrant--2&quot;&gt;增加 Vagrant 虛擬機範本&lt;/h2&gt;
+
+&lt;p&gt;前述的 &lt;code class=&quot;highlighter-rouge&quot;&gt;vagrant init hashicorp/precise64&lt;/code&gt; 動作，事實上會從 hashicorp 下載一個標準精簡版的 Ubuntu 12.04 precise 64-bit 系統，稱為 &lt;code class=&quot;highlighter-rouge&quot;&gt;Vagrant Boxes&lt;/code&gt;，爾後想再建立同樣的系統時，便可直接 clone，使用者啟動虛擬機後，此 Box 檔是不會被修改的，所有的異動部分只存在於虛擬機目錄中。&lt;/p&gt;
+
+&lt;p&gt;我們可以先在系統中增加一些常用 Boxes，使用時便不須重新下載。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vagrant box add ubuntu/trusty64
+$ vagrant box add debian/jessie64
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;移除已下載的 Boxes：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vagrant box remove xx/xx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;更新 Boxes 虛擬機範本檔&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ vagrant box update --box debian/jessie64
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;註： 結束並移除 vagrant 虛擬機的指令 &lt;code class=&quot;highlighter-rouge&quot;&gt;$ vagrant destroy&lt;/code&gt; 只是移除虛擬機的映像檔，並不會移除 box，要移除 box 需要使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;$ vagrant box remove&lt;/code&gt; 指令。&lt;/p&gt;
+
+&lt;h2 id=&quot;provisioning-&quot;&gt;Provisioning 功能&lt;/h2&gt;
+
+&lt;p&gt;Vagrant Boxes 通常僅包含基本作業系統，當然我們可以啟動虛擬機後再自行安裝各種軟體，但是如果我們想要建立一個可重複使用、包含特定軟體環境(例如 Apache+MySQL+PHP)，便是 Provision 的功能了。&lt;/p&gt;
+
+&lt;h3 id=&quot;provisioning--1&quot;&gt;Provisioning 執行的時間點：&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;vagrant up 首次執行時(會自動建立環境設定)。如果環境已經建立，vagrant up 只是重啟虛擬機，此時並不會進行 provisioning。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在執行環境中執行 vagrant provision&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;執行 vagrant reload –provision&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;basic-provisioning&quot;&gt;Basic Provisioning&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config.vm.provision &quot;shell&quot;, inline: &quot;echo hello&quot;	
+
+或是
+
+config.vm.provision &quot;bootstrap&quot;, type: &quot;shell&quot; do |s|
+	s.inline = &quot;echo hello&quot;
+  	end
+
+第一個參數為 provision 名稱，type 指定 provision 形式
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;file-provisioner&quot;&gt;File Provisioner&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config.vm.provision &quot;file&quot;, source: &quot;~/.gitconfig&quot;, destination: &quot;.gitconfig&quot;
+
+source: host 上的檔案位置
+destination: 虛擬機上要存放的位置
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;shell-provisioner&quot;&gt;Shell Provisioner&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;inline 方式&lt;/p&gt;
+
+   	config.vm.provision “shell”, inline: “echo Hello, World”
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;path 方式&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  config.vm.provision &quot;shell&quot;, path: &quot;script.sh&quot;
+  config.vm.provision &quot;shell&quot;, path: &quot;https://example.com/provisioner.sh&quot;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;進階設定&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;啟用 VirtualBox 圖形介面&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  config.vm.provider &quot;virtualbox&quot; do |v|
+		v.gui = true
+  end
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;自訂 VM 主機名稱&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  config.vm.provider &quot;virtualbox&quot; do |v|
+		v.name = &quot;my_vm&quot;
+  end
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;有種使用方式稱為 Linked Clones，當第一個 VM(稱為 Master VM)從 box clone 建立後，爾後建立的 VM 可以不需要再從 box clone 一份，而是直接連結 Master VM，以此方式建立的 VM 僅包含異動於 Master VM 的部分，因此負擔較小。&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  config.vm.provider &quot;virtualbox&quot; do |v|
+		v.linked_clone = true
+  end
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;CPU 與 memory 設定&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  config.vm.provider &quot;virtualbox&quot; do |v|
+		v.memory = 1024
+		v.cpus = 2
+  end
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;網路設定&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Vagrant 支援 VirtualBox 的 internal network (即同個 Host 下建立的 VM 彼此為區網互通)：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  config.vm.network &quot;private_network&quot;, ip: &quot;192.168.50.4&quot;,
+  		virtualbox__intnet: true
+  end
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;若僅使用 “private_network” 設定，則為 host-only (VM 僅能與 Host 溝通)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;vagrant--docker&quot;&gt;Vagrant 使用 Docker&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Vagrant 可以直接使用 Docker registry 提供的 image:&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  config.vm.provider &quot;docker&quot; do |d|
+     d.image = &quot;foo/bar&quot;
+  end
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;當執行 vagrant up –provider=docker 時，便會使用 foo/bar image&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;或是使用 Dockerfile 自行建立 docker image&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  config.vm.provider &quot;docker&quot; do |d|
+  		d.build_dir = &quot;.&quot;
+  end
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;當執行 vagrant up –provider=docker時，vagrant 會在所在目錄下尋找 Dockerfile，並依此建立 docker container。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在原生系統無法支援 Linux container 的環境，例如 Windows，Vagrant 會自動執行一個 &lt;strong&gt;“host VM”&lt;/strong&gt; 來執行 Docker，預設使用名為 &lt;strong&gt;“boot2docker”&lt;/strong&gt; 的輕量 box，可加快啟動速度。如果需要，亦可指定其他的 box 作為 host VM。另外在一個 host VM 中可執行多個 docker container。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;指定自訂的 vagtantfile 作為啟動 Docker 的 host VM。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;一些 vagrant 與 Docker container 溝通的指令：&lt;/p&gt;
+
+    &lt;p&gt;查看 container 執行記錄檔資訊&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ vagrant docker-logs
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;啟動 container 中的 prog 程式&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  $ vagrant docker-run container -- prog
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Wed, 02 Nov 2016 10:52:23 +0800</pubDate>
+        <link>http://robodock.github.io//2016/11/02/vagrant.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/11/02/vagrant.html</guid>
         
         
       </item>
@@ -1094,131 +1456,51 @@ $ sudo systemctl enable grafana-server.service
       </item>
     
       <item>
-        <title>DHCP Superscope</title>
-        <description>&lt;h2 id=&quot;dchp-superscope-&quot;&gt;DCHP Superscope 筆記&lt;/h2&gt;
+        <title>SRTM GeoTiff 數值地形檔案處理</title>
+        <description>&lt;h2 id=&quot;srtm-geotiff-&quot;&gt;SRTM GeoTIFF 數值地形檔案處理&lt;/h2&gt;
 
-&lt;p&gt;Windows server 2008 DHCP Server 的管理工具&lt;/p&gt;
+&lt;h3 id=&quot;m--dem-&quot;&gt;下載 15m 精確度 DEM 數位高程資料&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://www.theearthsrelief.com/&quot;&gt;ClusterGIS Associate&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;支援在單一實體網路中使用多重邏輯IP區段(multinets)&lt;/li&gt;
-  &lt;li&gt;支援遠端 DHCP 與 BOOTP relay agents&lt;/li&gt;
-&lt;/ul&gt;
+&lt;h3 id=&quot;geotiff--usgsdem&quot;&gt;GeoTIFF 檔案轉換為 USGSDEM&lt;/h3&gt;
 
-&lt;p&gt;在 multinet 組態環境下，可使用 DHCP superscopes 來將個別 IP 位址範圍來分組與啟用。&lt;/p&gt;
+&lt;p&gt;需要透過 GDAL 來處理，GDAL 主要在 Unix/Linux 環境下開發，在
+Windows 環境下則可使用第三方編譯好的 GDAL binary 可執行檔，目前主要有 &lt;strong&gt;GISInternals&lt;/strong&gt;，&lt;strong&gt;MS4W&lt;/strong&gt;，&lt;strong&gt;OSGeo4W&lt;/strong&gt; 三處主要來源：&lt;/p&gt;
 
-&lt;p&gt;幾種使用狀況:&lt;/p&gt;
+&lt;p&gt;下載地點連結:&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;目前使用中的位址範圍已用盡，需要加入更多電腦。&lt;/li&gt;
-  &lt;li&gt;準備將用戶端電腦轉移到新的 IP 位址範圍。&lt;/li&gt;
-  &lt;li&gt;想要在單一實體網路中使用兩部 DHCP 伺服器來管理不同的邏輯 IP 網路。&lt;/li&gt;
-&lt;/ul&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://www.gisinternals.com/release.php&quot;&gt;GISInternals&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;a href=&quot;http://www.ms4w.com/&quot;&gt;MS4W&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i-technet.sec.s-msft.com/dynimg/IC292472.gif&quot; alt=&quot;Single Scope&quot; /&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;a href=&quot;https://trac.osgeo.org/osgeo4w/&quot;&gt;OSGeo4W&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;這裡以使用 GISInternals 來源為例，選擇適用的 CPU 與編譯器版本，若不使用其他套件，點進去後只要選取 core component 安裝。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i-technet.sec.s-msft.com/dynimg/IC196411.gif&quot; alt=&quot;Superscope&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;安裝完成後必須將 GDAL 的 bin 目錄加進系統路徑中，另新增一個名為 GDAL_DATA 的系統環境變數，並設定內容為 GDAL 的 gdal-data 目錄。&lt;/p&gt;
 
-&lt;p&gt;在網路 A 中包含了多個子網路，可設定superscope 除了為原本範圍(scope1)的成員，還可支援其他的邏輯子網路(scope 2 與 scope 3)。&lt;/p&gt;
+&lt;p&gt;如果想要利用 Python 來處理，則需要安裝 GDAL Python Library&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Example 3:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;使用 Anaconda Python 者可用 conda 來安裝：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i-technet.sec.s-msft.com/dynimg/IC196412.gif&quot; alt=&quot;Superscope for routed DHCP server&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;透過組態為 DHCP relay agent 功能的 Router，可提供遠端網路 Subnet B DHCP 服務。
-此例中 multinets 環境在遠端網路(Subnet B)，原來的 scope1 不需要加入 superscope。&lt;/p&gt;
-</description>
-        <pubDate>Fri, 12 Aug 2016 20:11:08 +0800</pubDate>
-        <link>http://robodock.github.io//2016/08/12/dhcp-superscope.html</link>
-        <guid isPermaLink="true">http://robodock.github.io//2016/08/12/dhcp-superscope.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Raspberry Pi (Beaglebone) 使用 VNC 遠端桌面</title>
-        <description>&lt;h2 id=&quot;raspberry-pi--beaglebone--vnc&quot;&gt;Raspberry Pi / BeagleBone 安裝 VNC&lt;/h2&gt;
-
-&lt;p&gt;在 Windows 系統上安裝 VNC server，可讓遠端使用者連線到目前電腦操作者的桌面，進行遠端操作，然而在 Linux 世界中，圖形桌面系統是多人多工的，如果你在套件庫中尋找 &lt;code class=&quot;highlighter-rouge&quot;&gt;vncserver&lt;/code&gt; 套件來安裝，結果可能與您預期的不太一樣。建立遠端連線後，得到卻是一個全新的可登入桌面環境，而不是操作中的螢幕畫面。&lt;/p&gt;
-
-&lt;p&gt;那有沒有辦法連線至操作中的 Linux 桌面環境螢幕畫面呢? 這就要靠 &lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;x11VNC&lt;/code&gt;&lt;/strong&gt; 套件來達成了。&lt;/p&gt;
-
-&lt;h2 id=&quot;x11vnc&quot;&gt;x11vnc&lt;/h2&gt;
-
-&lt;p&gt;安裝方式(以 Raspbian/jessie 系統為例):&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo apt-get install x11vnc
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ conda install gdal
+$ conda upgrade numpy
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;如果需要建立 vnc 連線密碼，可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;storepasswd&lt;/code&gt; 參數，依照指示輸入密碼:&lt;/p&gt;
+&lt;p&gt;GeoTIFF 轉檔 DEM&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ x11vnc -storepasswd
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;會產生一個預設路徑存放於 &lt;code class=&quot;highlighter-rouge&quot;&gt;.vnc/passwd&lt;/code&gt; 的加密文字檔。&lt;/p&gt;
-
-&lt;p&gt;簡單執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;x11vnc&lt;/code&gt; 即可啟動，常用設定如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ x11vnc -usepw  	//使用 .vnc/passwd 作為連線密碼
-
-$ x11vnc -nopw       //不要使用密碼
-
-$ x11vnc -bg         //在背景執行，但當遠端連線結束後亦會結束服務。
-$ x11vnc -bg -forever //在背景執行，但會持續執行等候連線。
-
-$ x11vnc -display :0    //指定要連線至 :0 螢幕(如果你只有一個 x-windows 顯示器，:0 就是你正在用的螢幕畫面)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;可執行 &lt;code class=&quot;highlighter-rouge&quot;&gt;x11vnc --help&lt;/code&gt; 可查看所有可用設定參數。&lt;/p&gt;
-
-&lt;p&gt;通常我們會想要系統啟動後便自動執行  vnc  服務，首先設定好開機自動登入圖形介面，然後編輯登入使用者家目錄下的  &lt;code class=&quot;highlighter-rouge&quot;&gt;.config/lxession/LXDE-pi/autostart&lt;/code&gt;，新增一行：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@x11vnc -bg -nevershared -forever -ultrafilexfer -nopw -display :0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;其中的 &lt;code class=&quot;highlighter-rouge&quot;&gt;-ultrafilexfer&lt;/code&gt; 參數用來支援 ultraVNC viewer 的檔案傳輸功能，如果你用的是 tightVNC，則改為 &lt;code class=&quot;highlighter-rouge&quot;&gt;-tightfilexfer&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;這樣子在啟動使用者桌面環境(LXDE)時，便會自動執行 x11vnc。&lt;/p&gt;
-</description>
-        <pubDate>Wed, 22 Jun 2016 08:26:27 +0800</pubDate>
-        <link>http://robodock.github.io//2016/06/22/raspberry-pi-beaglebone-x11vnc.html</link>
-        <guid isPermaLink="true">http://robodock.github.io//2016/06/22/raspberry-pi-beaglebone-x11vnc.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>複製 DHCP 保留位址到其他 DHCP 伺服器上</title>
-        <description>&lt;p&gt;在 &lt;strong&gt;Windows AD Domain&lt;/strong&gt; 中，通常也會架設多部之 &lt;strong&gt;DHCP&lt;/strong&gt; 伺服器作為備援，避免單一 DHCP 伺服器失效後，工作站無法取得 IP 位址的問題。然而截至 &lt;strong&gt;Windows Server 2008 R2&lt;/strong&gt; 版本， DHCP 伺服器尚未支援多部 DHCP 伺服器自動同步設定功能，特別是 DHCP 保留位址，必須在每部 DHCP 伺服器上輸入，底下是個變通的方法，可將設定好的 DHCP 保留位址匯出到其他 DHCP 伺服器使用。&lt;/p&gt;
-
-&lt;p&gt;在&lt;strong&gt;來源 DHCP 伺服器&lt;/strong&gt;上，執行下列命令：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;netsh dhcp server &amp;lt;伺服器IP&amp;gt; scope &amp;lt;scope 位址&amp;gt; dump&amp;gt;dump.txt
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;打開 dump.txt 檔，檔案中可找到如下格式之保留設定，複製這些行到新增檔案，將 Server.domain.com 替換為目標伺服器之 IP Address 或 server name。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Dhcp Server \\Server.domain.com Scope 192.168.0.0 Add reservedip 192.168.0.250 &amp;lt;&amp;lt;MAC Address&amp;gt;&amp;gt; &quot;DeviceName.domain.com&quot; &quot;&quot; &quot;BOTH&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;在&lt;strong&gt;目的地 DHCP 伺服器&lt;/strong&gt;上執行下列命令，import 進檔案：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;NETSH exec &amp;lt;&amp;lt;Filename&amp;gt;&amp;gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gdal_translate -of USGSDEM input.tif output.dem
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>Tue, 31 May 2016 10:03:13 +0800</pubDate>
-        <link>http://robodock.github.io//2016/05/31/copy-dhcp-reservations.html</link>
-        <guid isPermaLink="true">http://robodock.github.io//2016/05/31/copy-dhcp-reservations.html</guid>
+        <pubDate>Wed, 05 Oct 2016 22:11:31 +0800</pubDate>
+        <link>http://robodock.github.io//2016/10/05/geotiff-to-uscgdem.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/10/05/geotiff-to-uscgdem.html</guid>
         
         
       </item>
