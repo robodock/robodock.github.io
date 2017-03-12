@@ -1,10 +1,10 @@
 ---
 layout: "post"
-title: "Raspberry Pi3 打造 OpenALPR 車牌辨識系統"
+title: "用 Raspberry Pi3 打造車牌辨識系統"
 date: "2017-02-26 20:21"
 ---
 
-OpenALPR 為一開源車牌辨識程式庫, [github連結](https://github.com/openalpr/openalpr)。
+OpenALPR 為一開源車牌辨識程式庫([github連結](https://github.com/openalpr/openalpr))。
 最新的 Ubuntu 16.04 上已納入系統套件庫，可直接 apt-get 安裝，不過截至目前為止(2017/02) raspbian 上還沒有編譯好的套件，需要手動編譯安裝。
 
 這裡亦列出 Ubuntu 16.04 上的套件安裝方法供參考
@@ -21,7 +21,10 @@ OpenALPR 為一開源車牌辨識程式庫, [github連結](https://github.com/op
     $ wget http://plates.openalpr.com/h786poj.jpg
     $ alpr -c eu h786poj.jpg
 
+---
 # 在 Raspberry Pi3 上安裝 OpenALPR #
+
+影像辨識向來都是 CPU intensive 應用，加上底下的程式編譯過程須花費長久時間，在 Pi3 上需要一個多小時的編譯時間，Pi2 應該也跑得動但編譯時間會增加，Pi1 就不建議了。 
 
 系統使用 raspbian jessie，OpenALPR 需要 OpenCV 與 tesseract-ocr，可分別獨立安裝。
 
@@ -62,42 +65,42 @@ OpenALPR 為一開源車牌辨識程式庫, [github連結](https://github.com/op
         
 3. 下載 OpenCV 與 OpenCV_contrib 程式庫原始碼檔案並解壓縮：
 
-    $ cd ~
-    $ wget -O opencv.zip https://github.com/Itseez/opencv/archive/3.1.0.zip
-    $ unzip opencv.zip
-    
-    $ wget -O opencv_contrib.zip https://github.com/Itseez/opencv_contrib/archive/3.1.0.zip
-    $ unzip opencv_contrib.zip
+	    $ cd ~
+	    $ wget -O opencv.zip https://github.com/Itseez/opencv/archive/3.1.0.zip
+	    $ unzip opencv.zip
+	    
+	    $ wget -O opencv_contrib.zip https://github.com/Itseez/opencv_contrib/archive/3.1.0.zip
+	    $ unzip opencv_contrib.zip
     
 4. 接著來搞定 Python 環境，建議使用 virtualenv + virtualenvwrapper 建立獨立環境，可避免干擾系統相關 Python 程式庫。
 
     首先先重新手動安裝 pip，為什麼要手動安裝? 因為 raspbian 系統的 pip 版本太舊了!
     
-    $ wget https://bootstrap.pypa.io/get-pip.py
-    $ sudo python get-pip.py
+	    $ wget https://bootstrap.pypa.io/get-pip.py
+	    $ sudo python get-pip.py
     
     安裝 virtualenv 與 virtualenvwrapper
     
-    $ sudo pip install virtualenv virtualenvwrapper
-    $ sudo rm -rf ~/.cache/pip
+	    $ sudo pip install virtualenv virtualenvwrapper
+	    $ sudo rm -rf ~/.cache/pip
     
     修改 `~/.profile`，在檔案最後加入下列幾行：
     
-    # virtualenv and virtualenvwrapper
-    export WORKON_HOME=$HOME/.virtualenvs
-    source /usr/local/bin/virtualenvwrapper.sh
+	    # virtualenv and virtualenvwrapper
+	    export WORKON_HOME=$HOME/.virtualenvs
+	    source /usr/local/bin/virtualenvwrapper.sh
     
     想要不登出，重新載入系統環境變數，可用：
     
-    $ source ~/.profile
+   	
     
     想要使用 python 2 的：
     
-    $ mkvirtualenv cv2 -p python2
+    	$ mkvirtualenv cv2 -p python2
     
     想要使用 python 3 的：
     
-    $ mkvirtualenv cv3 -p python3
+    	$ mkvirtualenv cv3 -p python3
     
     上面的 cv2/cv3 是自己取的名稱，方便辨識即可
     
@@ -105,27 +108,27 @@ OpenALPR 為一開源車牌辨識程式庫, [github連結](https://github.com/op
     
     切換至名為 cv2 的 python 2 環境：
     
-    $ workon cv2
+    	$ workon cv2
     
     切換至名為 cv3 的 python 3 環境：
     
-    $ workon cv3
+    	$ workon cv3
     
-    在系統提示符號前方會有一括號提示現在所處的 virtualenv 環境。
+    在系統提示符號前方會有一括號標示現在所處的 virtualenv 環境。
     
 5. 開始編譯安裝 OpenCV
 
-    $ cd ~/opencv-3.1.0/
-    $ mkdir build
-    $ cd build
-    $ cmake -D CMAKE_BUILD_TYPE=RELEASE \
-        -D CMAKE_INSTALL_PREFIX=/usr/local \
-        -D INSTALL_PYTHON_EXAMPLES=ON \
-        -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib-3.1.0/modules \
-        -D BUILD_EXAMPLES=ON ..
-    $ make -j4
-    $ sudo make install
-    $ sudo ldconfig
+	    $ cd ~/opencv-3.1.0/
+	    $ mkdir build
+	    $ cd build
+	    $ cmake -D CMAKE_BUILD_TYPE=RELEASE \
+	        -D CMAKE_INSTALL_PREFIX=/usr/local \
+	        -D INSTALL_PYTHON_EXAMPLES=ON \
+	        -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib-3.1.0/modules \
+	        -D BUILD_EXAMPLES=ON ..
+	    $ make -j4
+	    $ sudo make install
+	    $ sudo ldconfig
 
     注意 python 2 與 python 3 環境編譯安裝的 CV2.so 檔名有些不同，python 2 版本安裝於 `/usr/local/lib/python2.7/site-packages/cv2.so`， python 3 則安裝為 `/usr/local/lib/python3.4/site-packages/cv2.cpython-34m.so`
     
@@ -133,25 +136,25 @@ OpenALPR 為一開源車牌辨識程式庫, [github連結](https://github.com/op
     
     python 2 環境：
     
-    $ cd ~/.virtualenvs/cv/lib/python2.7/site-packages/
-    $ ln -s /usr/local/lib/python2.7/site-packages/cv2.so cv2.so
+	    $ cd ~/.virtualenvs/cv/lib/python2.7/site-packages/
+	    $ ln -s /usr/local/lib/python2.7/site-packages/cv2.so cv2.so
     
     python 3 環境：
     
-    $ cd ~/.virtualenvs/cv/lib/python3.4/site-packages/
-    $ ln -s /usr/local/lib/python3.4/site-packages/cv2.cpython-34m.so cv2.so
+	    $ cd ~/.virtualenvs/cv/lib/python3.4/site-packages/
+	    $ ln -s /usr/local/lib/python3.4/site-packages/cv2.cpython-34m.so cv2.so
 
 6. 測試
 
-    $ python
-    >>> import cv2
-    >>> cv2.__version__
-    '3.1.0'
-    >>>
+    	$ python
+    	>>> import cv2
+    	>>> cv2.__version__
+    	'3.1.0'
+    	>>>
     
     大功告成!
 
-    
+---    
 ## 安裝 tesseract-ocr 文字辨識程式庫 ###
 
 首先準備編譯工具，部分套件在安裝 OpenCV 時亦會安裝。
@@ -185,18 +188,18 @@ tesseract-ocr 需要 leptonica 影像演算法套件，先來安裝 leptonica �
 
 1. 使用 autoconf
 
-    ./configure --prefix=/usr/local/
-    make
-    sudo make install
+	    ./configure --prefix=/usr/local/
+	    make
+	    sudo make install
 
 2. 使用 cmake
 
-    mkdir build
-    cd build
-    cmake ..
-    make
+	    mkdir build
+	    cd build
+	    cmake ..
+	    make
     
-## 安裝 tesseract-ocr  ##
+### 安裝 tesseract-ocr ###
 
     git clone --depth 1 https://github.com/tesseract-ocr/tesseract.git
     cd tesseract
@@ -208,11 +211,13 @@ tesseract-ocr 需要 leptonica 影像演算法套件，先來安裝 leptonica �
     
 另外需要語言資料檔
 
-可從 https://github.com/tesseract-ocr/tesseract/wiki/Data-Files 下載，存放於 tessdata 目錄
+可從 `https://github.com/tesseract-ocr/tesseract/wiki/Data-Files` 下載，存放於 tessdata 目錄
+
 可設定環境變數指定資料檔路徑
 
     export TESSDATA_PREFIX="/usr/local/share/"
 
+---
 ## 安裝 OpenALPR ##
 
     $ git clone https://github.com/openalpr/openalpr.git
@@ -230,5 +235,37 @@ tesseract-ocr 需要 leptonica 影像演算法套件，先來安裝 leptonica �
 
     如果出現 curl.h 找不到，請 `sudo apt-get install libcurl4-openssl-dev`
     
-    
+    $ sudo make install
 
+完成後下載個車牌圖片進行測試，加上 `--clock` 參數，查看辨識計算時間
+
+	$ wget http://plates.openalpr.com/ea7the.jpg
+    $ alpr -c us ea7the.jpg --clock
+
+底下是我的 Pi3 實際輸出結果，圖形處理加上辨識時間小於 1 秒，已達實用階段，如果再透過 GPIO 連接一些 sensor 與 relay 控制，應該可以實作出一簡易車牌辨識的停車場閘門系統吧? Oh Ye! Raspberry Pi 好棒棒! 
+
+	pi@raspberrypi:~ $ alpr -c us ea7the.jpg --clock
+	Info in bmfCreate: Generating pixa of bitmap fonts from string
+	Total Time to process image: 482.089ms.
+	plate0: 10 results -- Processing Time = 143.435ms.
+	    - EA7THE     confidence: 91.0578
+	    - EA7TBE     confidence: 84.133
+	    - EA7T8E     confidence: 83.0083
+	    - EA7TRE     confidence: 82.7869
+	    - EA7TE      confidence: 82.5961
+	    - EA7TME     confidence: 80.2908
+	    - EA7TH6     confidence: 77.0045
+	    - EA7THB     confidence: 75.5779
+	    - EA7TH      confidence: 74.6576
+	    - EA7TB6     confidence: 70.0797
+
+---
+## 後記 ##
+
+影像辨識系統採用都是學習演算法，要提高精準度，就必須提供大量的圖片資料供學習，建立辨識樣式。然而每個國家與地區車牌樣式、尺寸、字體不盡相同，需針對每個地區的車牌建立學習資料庫。
+
+OpenALPR 目前已內建幾個區域如 US、EU、KR、SG 等樣式資料庫，但沒有台灣地區。加上台灣 2015 年改版的 7 位數車牌，字體與以往的舊系統大不相同，增加了辨識複雜度。
+
+實際以本地車牌測試，舊式車牌(2015年以前)，直接以 US 樣式比對，已有相當不錯的正確率，信心度最高的項目通常即為正確車牌，但若遇到新式車牌，則經常會有頭尾掉字或誤認情形。
+
+待有空時再來建立一個本地的車牌學習資料庫...
