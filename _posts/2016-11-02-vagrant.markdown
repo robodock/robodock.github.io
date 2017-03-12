@@ -1,0 +1,186 @@
+---
+layout: post
+title: "使用 Vagrant 輕鬆管理虛擬機"
+date: 2016-11-02T10:52:23+08:00
+---
+## 使用 Vagrant 輕鬆管理虛擬機
+
+vagrant 的觀念是這樣的，利用名為 **Vagrantfile** 的虛擬機組態設定檔，達成可重複、快速部署的虛擬機環境。
+
+vagrant 本身並不提供虛擬化環境，而是站在巨人的肩膀上，使用 **VirtualBox**、**VMware** 等等虛擬化軟體，方便開發者快速建立**"可拋棄式"**的系統，方便開發測試。透過使用相同的 Vagrantfile，不同的開發工作者亦可使用相同的系統環境，避免許多系統相容性問題。
+
+使用 Vagrant 時必須以 **目錄** 為管理單位，有點類似 git 的觀念，首先在想要使用虛擬機的地方建立一個目錄(可想成一部虛擬機就是一個目錄)，起始 vagrant 環境設定後，便會在此目錄下建立 **`Vagrantfile`** 組態檔與隱藏子目錄 **`.vagrant`** 存放系統控制相關資料。
+
+## 安裝 VirtualBox 與 Vagrant
+
+- 前面提到 Vagrant 是架構其他虛擬化軟體之上，首先需要安裝虛擬機軟體，這裡使用免費的 VirtualBox，請自行至[官網](https://www.virtualbox.org/)下載最新版 VirtualBox。
+
+- 接著到 Vagrant [官網](https://www.vagrantup.com/downloads.html)下載最新版的 vagrant，依照指示完成安裝。
+
+## Vagrant 使用方法
+
+基本流程步驟如下：
+
+	$ vagrant init ubuntu/trusty64
+
+表示在**目前所在**目錄下初始化一個虛擬機環境，而使用系統範本為 `hashicorp/precise64`。hashicorp 為創立 vagrant 的公司，官方提供許多不同 Linux 發行版本的系統範本供[下載](https://atlas.hashicorp.com/boxes/search?provider=virtualbox)，另外網路上亦可找到許多第三方提供之系統範本檔，此例中之 precise64 即為 Ubuntu 12.04 LTS 64-bit 版。
+
+	$ vagrant up
+
+啟動虛擬機。沒錯，就是這麼簡單，您的電腦中已經有個執行中的 Ubuntu 12.04 的 Linux 機器了。
+
+	$ vagrant ssh
+
+透過 ssh 連線至剛剛執行的 Ubuntu 機器。注意，如果是在 Windows 下，若系統中未裝過其他可提供 `ssh` 的環境(例如 `cygwin`、`git`等)，可能無法透過此方式連線，必須自己使用像是 `putty` 之類的 ssh client 程式，vagrant 虛擬機預設的 SSH 連線位址與埠號為：
+	
+	host 127.0.0.1
+	port : 2222
+	username : vagrant
+	password : vagrant
+
+結束 vagrant 虛擬機有三種方式：
+
+	$ vagrant suspend
+
+會將目前執行階段儲存，當下次執行 `vagrant up` 後，可快速回復。
+
+	$ vagrant halt
+
+會在虛擬機中進行關機動作，但仍保留虛擬機的磁碟映像檔。下次執行 vagrant up 時，等同於冷開機。
+
+	$ vagrant destroy
+
+結束虛擬機並移除虛擬機映像檔。當下次執行 `vagrant up` 時，會等同於重新從 boxes 中 clone 一份建立新的虛擬機磁碟映像檔。
+
+## 增加 Vagrant 虛擬機範本
+
+前述的 `vagrant init hashicorp/precise64` 動作，事實上會從 hashicorp 下載一個標準精簡版的 Ubuntu 12.04 precise 64-bit 系統，稱為 `Vagrant Boxes`，爾後想再建立同樣的系統時，便可直接 clone，使用者啟動虛擬機後，此 Box 檔是不會被修改的，所有的異動部分只存在於虛擬機目錄中。
+
+我們可以先在系統中增加一些常用 Boxes，使用時便不須重新下載。
+	
+	$ vagrant box add ubuntu/trusty64
+	$ vagrant box add debian/jessie64
+
+移除已下載的 Boxes：
+
+	$ vagrant box remove xx/xx
+	
+更新 Boxes 虛擬機範本檔
+
+	$ vagrant box update --box debian/jessie64
+
+註： 結束並移除 vagrant 虛擬機的指令 `$ vagrant destroy` 只是移除虛擬機的映像檔，並不會移除 box，要移除 box 需要使用 `$ vagrant box remove` 指令。
+
+## Provisioning 功能
+
+Vagrant Boxes 通常僅包含基本作業系統，當然我們可以啟動虛擬機後再自行安裝各種軟體，但是如果我們想要建立一個可重複使用、包含特定軟體環境(例如 Apache+MySQL+PHP)，便是 Provision 的功能了。
+
+### Provisioning 執行的時間點：
+
+- vagrant up 首次執行時(會自動建立環境設定)。如果環境已經建立，vagrant up 只是重啟虛擬機，此時並不會進行 provisioning。
+
+- 在執行環境中執行 vagrant provision
+
+- 執行 vagrant reload --provision
+
+### Basic Provisioning 
+	
+	config.vm.provision "shell", inline: "echo hello"	
+	
+	或是
+
+	config.vm.provision "bootstrap", type: "shell" do |s|
+    	s.inline = "echo hello"
+  	end
+
+	第一個參數為 provision 名稱，type 指定 provision 形式
+
+### File Provisioner
+	
+	config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
+
+	source: host 上的檔案位置
+	destination: 虛擬機上要存放的位置
+
+### Shell Provisioner
+
+- inline 方式
+
+	 	config.vm.provision "shell", inline: "echo Hello, World"
+	
+- path 方式
+	
+		config.vm.provision "shell", path: "script.sh"
+		config.vm.provision "shell", path: "https://example.com/provisioner.sh"
+
+---
+
+## 進階設定
+
+- 啟用 VirtualBox 圖形介面
+
+		config.vm.provider "virtualbox" do |v|
+  			v.gui = true
+		end
+
+- 自訂 VM 主機名稱
+
+		config.vm.provider "virtualbox" do |v|
+  			v.name = "my_vm"
+		end
+
+- 有種使用方式稱為 Linked Clones，當第一個 VM(稱為 Master VM)從 box clone 建立後，爾後建立的 VM 可以不需要再從 box clone 一份，而是直接連結 Master VM，以此方式建立的 VM 僅包含異動於 Master VM 的部分，因此負擔較小。
+
+		config.vm.provider "virtualbox" do |v|
+  			v.linked_clone = true
+		end
+
+- CPU 與 memory 設定
+
+		config.vm.provider "virtualbox" do |v|
+  			v.memory = 1024
+  			v.cpus = 2
+		end
+
+### 網路設定
+
+- Vagrant 支援 VirtualBox 的 internal network (即同個 Host 下建立的 VM 彼此為區網互通)：
+
+		config.vm.network "private_network", ip: "192.168.50.4",
+    		virtualbox__intnet: true
+		end
+	
+	若僅使用 "private_network" 設定，則為 host-only (VM 僅能與 Host 溝通)
+
+## Vagrant 使用 Docker
+
+- Vagrant 可以直接使用 Docker registry 提供的 image:
+
+		config.vm.provider "docker" do |d|
+		   d.image = "foo/bar"
+		end
+
+	當執行 vagrant up --provider=docker 時，便會使用 foo/bar image
+
+- 或是使用 Dockerfile 自行建立 docker image
+
+		config.vm.provider "docker" do |d|
+    		d.build_dir = "."
+		end
+	
+	當執行 vagrant up --provider=docker時，vagrant 會在所在目錄下尋找 Dockerfile，並依此建立 docker container。
+
+在原生系統無法支援 Linux container 的環境，例如 Windows，Vagrant 會自動執行一個 **"host VM"** 來執行 Docker，預設使用名為 **"boot2docker"** 的輕量 box，可加快啟動速度。如果需要，亦可指定其他的 box 作為 host VM。另外在一個 host VM 中可執行多個 docker container。
+
+- 指定自訂的 vagtantfile 作為啟動 Docker 的 host VM。
+
+- 一些 vagrant 與 Docker container 溝通的指令：
+    
+    查看 container 執行記錄檔資訊
+
+		$ vagrant docker-logs
+	
+    啟動 container 中的 prog 程式
+
+		$ vagrant docker-run container -- prog
+	

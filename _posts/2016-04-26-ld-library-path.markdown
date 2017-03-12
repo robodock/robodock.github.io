@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Linux 動態連結程式庫搜尋路徑"
-date: 2017-02-26 20:11
+date: 2016-04-26 20:11
 ---
 
 ## LD_LIBRARY_PATH ##
