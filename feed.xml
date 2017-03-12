@@ -5,14 +5,15 @@
     <description>船塢日誌</description>
     <link>http://robodock.github.io//</link>
     <atom:link href="http://robodock.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 12 Mar 2017 08:19:27 +0800</pubDate>
-    <lastBuildDate>Sun, 12 Mar 2017 08:19:27 +0800</lastBuildDate>
+    <pubDate>Sun, 12 Mar 2017 15:55:54 +0800</pubDate>
+    <lastBuildDate>Sun, 12 Mar 2017 15:55:54 +0800</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
         <title>用 Raspberry Pi3 打造車牌辨識系統</title>
-        <description>&lt;p&gt;OpenALPR 為一開源車牌辨識程式庫(&lt;a href=&quot;https://github.com/openalpr/openalpr&quot;&gt;github連結&lt;/a&gt;)。
-最新的 Ubuntu 16.04 上已納入系統套件庫，可直接 apt-get 安裝，不過截至目前為止(2017/02) raspbian 上還沒有編譯好的套件，需要手動編譯安裝。&lt;/p&gt;
+        <description>&lt;p&gt;OpenALPR 為一開源車牌辨識程式庫(&lt;a href=&quot;https://github.com/openalpr/openalpr&quot;&gt;github連結&lt;/a&gt;)。&lt;/p&gt;
+
+&lt;p&gt;最新的 Ubuntu 16.04 上已納入系統套件庫，可直接 apt-get 安裝，不過截至目前為止(2017/02) raspbian 上還沒有編譯好的套件，需要手動編譯安裝。&lt;/p&gt;
 
 &lt;p&gt;這裡亦列出 Ubuntu 16.04 上的套件安裝方法供參考&lt;/p&gt;
 
@@ -33,6 +34,7 @@ $ alpr -c eu h786poj.jpg
 &lt;/div&gt;
 
 &lt;hr /&gt;
+
 &lt;h1 id=&quot;raspberry-pi3--openalpr&quot;&gt;在 Raspberry Pi3 上安裝 OpenALPR&lt;/h1&gt;
 
 &lt;p&gt;影像辨識向來都是 CPU intensive 應用，加上底下的程式編譯過程須花費長久時間，在 Pi3 上需要一個多小時的編譯時間，Pi2 應該也跑得動但編譯時間會增加，Pi1 就不建議了。&lt;/p&gt;
@@ -281,6 +283,7 @@ sudo ldconfig
 &lt;/div&gt;
 
 &lt;hr /&gt;
+
 &lt;h2 id=&quot;openalpr&quot;&gt;安裝 OpenALPR&lt;/h2&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ git clone https://github.com/openalpr/openalpr.git
@@ -1091,6 +1094,51 @@ $ sudo systemctl enable grafana-server.service
       </item>
     
       <item>
+        <title>DHCP Superscope</title>
+        <description>&lt;h2 id=&quot;dchp-superscope-&quot;&gt;DCHP Superscope 筆記&lt;/h2&gt;
+
+&lt;p&gt;Windows server 2008 DHCP Server 的管理工具&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;支援在單一實體網路中使用多重邏輯IP區段(multinets)&lt;/li&gt;
+  &lt;li&gt;支援遠端 DHCP 與 BOOTP relay agents&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在 multinet 組態環境下，可使用 DHCP superscopes 來將個別 IP 位址範圍來分組與啟用。&lt;/p&gt;
+
+&lt;p&gt;幾種使用狀況:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;目前使用中的位址範圍已用盡，需要加入更多電腦。&lt;/li&gt;
+  &lt;li&gt;準備將用戶端電腦轉移到新的 IP 位址範圍。&lt;/li&gt;
+  &lt;li&gt;想要在單一實體網路中使用兩部 DHCP 伺服器來管理不同的邏輯 IP 網路。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Example 1:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i-technet.sec.s-msft.com/dynimg/IC292472.gif&quot; alt=&quot;Single Scope&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Example 2:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i-technet.sec.s-msft.com/dynimg/IC196411.gif&quot; alt=&quot;Superscope&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在網路 A 中包含了多個子網路，可設定superscope 除了為原本範圍(scope1)的成員，還可支援其他的邏輯子網路(scope 2 與 scope 3)。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Example 3:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i-technet.sec.s-msft.com/dynimg/IC196412.gif&quot; alt=&quot;Superscope for routed DHCP server&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;透過組態為 DHCP relay agent 功能的 Router，可提供遠端網路 Subnet B DHCP 服務。
+此例中 multinets 環境在遠端網路(Subnet B)，原來的 scope1 不需要加入 superscope。&lt;/p&gt;
+</description>
+        <pubDate>Fri, 12 Aug 2016 20:11:08 +0800</pubDate>
+        <link>http://robodock.github.io//2016/08/12/dhcp-superscope.html</link>
+        <guid isPermaLink="true">http://robodock.github.io//2016/08/12/dhcp-superscope.html</guid>
+        
+        
+      </item>
+    
+      <item>
         <title>Raspberry Pi (Beaglebone) 使用 VNC 遠端桌面</title>
         <description>&lt;h2 id=&quot;raspberry-pi--beaglebone--vnc&quot;&gt;Raspberry Pi / BeagleBone 安裝 VNC&lt;/h2&gt;
 
@@ -1171,115 +1219,6 @@ $ x11vnc -display :0    //指定要連線至 :0 螢幕(如果你只有一個 x-w
         <pubDate>Tue, 31 May 2016 10:03:13 +0800</pubDate>
         <link>http://robodock.github.io//2016/05/31/copy-dhcp-reservations.html</link>
         <guid isPermaLink="true">http://robodock.github.io//2016/05/31/copy-dhcp-reservations.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Windows 環境快速安裝 Octopress 3</title>
-        <description>&lt;p&gt;搭配 Chocolatey 套件管理程式(有關 Chocolatey 的安裝，請看&lt;a href=&quot;http://robodock.github.io/2016/05/25/chocolatey.html&quot;&gt;這篇&lt;/a&gt;)，在 Windows 下安裝 Octopress 3 有了更快速的方法：&lt;/p&gt;
-
-&lt;p&gt;以管理者權限啟動命令列：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ choco install ruby -y
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;預設安裝目錄為 &lt;code class=&quot;highlighter-rouge&quot;&gt;C:\Tools\ruby23\&lt;/code&gt; ，新增兩個環境變數：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GEM_PATH=&quot;C:\Tools\ruby23\&quot;
-GEM_HOME=&quot;C:\Tools\ruby23\&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;安裝完 Ruby 環境後，需以管理者權限重新啟動命令列，相關指令才會生效&lt;/p&gt;
-
-&lt;p&gt;octopress 3 還需要 redcarpet 與 Ruby DevKit：&lt;/p&gt;
-
-&lt;p&gt;同樣以管理者權限安裝 DevKit&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ choco install ruby2.devkit
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;安裝完 devkit 後，需要到 devkit 安裝目錄編輯 config.yml，加入剛剛安裝好 ruby 的目錄位置，然後執行&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby dk.rb install
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;另需手動將 devkit 執行檔目錄與隨附的 mingw 執行檔目錄位置加入系統路徑 &lt;code class=&quot;highlighter-rouge&quot;&gt;PATH&lt;/code&gt; 中&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;C:\Tools\DevKit2\bin
-C:\Tools\DevKit2\mingw\bin
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;接著安裝 jekyll：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ gem install jekyll
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;安裝 Octopress 3&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ gem install octopress
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;安裝相關 gems 的正確版本&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ gem install addressable -v 2.4.0
-$ gem install ffi -v 1.9.14
-$ gem install sass -v 3.4.22
-$ gem install jekyll-sass-converter -v 1.4.0
-$ gem install rb-inotify -v 0.9.7
-$ gem install kramdown -v 1.12.0
-$ gem install rouge -v 1.10.1
-$ gem install jekyll -v 3.3.0
-$ gem install redcarpet -v 3.3.4
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;接下來關於 octopress 的使用請參考之前&lt;a href=&quot;http://robodock.github.io/2015/08/17/octopress-3-github-pages-blog.html&quot;&gt;這一篇&lt;/a&gt;。&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;rubygemorg-ssl-error-&quot;&gt;2016/12 更新有關 rubygem.org SSL error 問題&lt;/h2&gt;
-
-&lt;p&gt;rubygems.org 網站原本使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;sha1&lt;/code&gt; 演算法作為 SSL 憑證計算
-，為因應 &lt;code class=&quot;highlighter-rouge&quot;&gt;sha1&lt;/code&gt; 安全性不足問題，已改用 &lt;code class=&quot;highlighter-rouge&quot;&gt;sha-256&lt;/code&gt; 演算法。&lt;/p&gt;
-
-&lt;p&gt;若使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;gem install&lt;/code&gt; 命令時發生如下錯誤，表示目前使用的SSL 憑證為 sha1 演算法，無法連接至新的 rubygems.org 網站：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;可手動安裝新的 &lt;code class=&quot;highlighter-rouge&quot;&gt;rubygem&lt;/code&gt; 來解決。&lt;/p&gt;
-
-&lt;p&gt;首先手動下載最新的 &lt;a href=&quot;https://rubygems.org/pages/download&quot;&gt;latest RubyGems&lt;/a&gt;，存放在易於存取的目錄下，例如 &lt;code class=&quot;highlighter-rouge&quot;&gt;D:\&lt;/code&gt; ，此例中版本為 &lt;code class=&quot;highlighter-rouge&quot;&gt;rubygems-update-2.6.10.gem&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;接著在命令列視窗下執行：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;D:\&amp;gt;gem install --local D:\rubygems-update-2.6.10.gem
-D:\&amp;gt;update_rubygems
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;可使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;gem --version&lt;/code&gt; 確認安裝版本&lt;/p&gt;
-
-&lt;p&gt;成功後可安全移除上述檔案&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;D:\&amp;gt;gem uninstall rubygems-update -x
-Removing update_rubygems
-Successfully uninstalled rubygems-update-2.6.10
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Thu, 26 May 2016 21:57:23 +0800</pubDate>
-        <link>http://robodock.github.io//2016/05/26/windows-quick-install-octopress-3.html</link>
-        <guid isPermaLink="true">http://robodock.github.io//2016/05/26/windows-quick-install-octopress-3.html</guid>
         
         
       </item>

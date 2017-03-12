@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Windows 環境快速安裝 Octopress 3</title>
-  <meta name="description" content="搭配 Chocolatey 套件管理程式(有關 Chocolatey 的安裝，請看這篇)，在 Windows 下安裝 Octopress 3 有了更快速的方法：">
+  <title>DHCP Superscope</title>
+  <meta name="description" content="DCHP Superscope 筆記">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://robodock.github.io//2016/05/26/windows-quick-install-octopress-3.html">
+  <link rel="canonical" href="http://robodock.github.io//2016/08/12/dhcp-superscope.html">
   <link rel="alternate" type="application/rss+xml" title="RoboDock" href="http://robodock.github.io//feed.xml">
 </head>
 
@@ -57,86 +57,46 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Windows 環境快速安裝 Octopress 3</h1>
-    <p class="post-meta"><time datetime="2016-05-26T21:57:23+08:00" itemprop="datePublished">May 26, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">DHCP Superscope</h1>
+    <p class="post-meta"><time datetime="2016-08-12T20:11:08+08:00" itemprop="datePublished">Aug 12, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>搭配 Chocolatey 套件管理程式(有關 Chocolatey 的安裝，請看<a href="http://robodock.github.io/2016/05/25/chocolatey.html">這篇</a>)，在 Windows 下安裝 Octopress 3 有了更快速的方法：</p>
+    <h2 id="dchp-superscope-">DCHP Superscope 筆記</h2>
 
-<p>以管理者權限啟動命令列：</p>
+<p>Windows server 2008 DHCP Server 的管理工具</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ choco install ruby -y
-</code></pre>
-</div>
+<ul>
+  <li>支援在單一實體網路中使用多重邏輯IP區段(multinets)</li>
+  <li>支援遠端 DHCP 與 BOOTP relay agents</li>
+</ul>
 
-<p>預設安裝目錄為 <code class="highlighter-rouge">C:\Tools\ruby23\</code></p>
+<p>在 multinet 組態環境下，可使用 DHCP superscopes 來將個別 IP 位址範圍來分組與啟用。</p>
 
-<p>安裝完 Ruby 環境後，需以管理者權限重新啟動命令列，相關指令才會生效</p>
+<p>幾種使用狀況:</p>
 
-<p>octopress 3 還需要 <code class="highlighter-rouge">Ruby DevKit</code>：</p>
+<ul>
+  <li>目前使用中的位址範圍已用盡，需要加入更多電腦。</li>
+  <li>準備將用戶端電腦轉移到新的 IP 位址範圍。</li>
+  <li>想要在單一實體網路中使用兩部 DHCP 伺服器來管理不同的邏輯 IP 網路。</li>
+</ul>
 
-<p>同樣以管理者權限啟動命令列，安裝 DevKit</p>
+<p><strong>Example 1:</strong></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ choco install ruby2.devkit
-</code></pre>
-</div>
+<p><img src="https://i-technet.sec.s-msft.com/dynimg/IC292472.gif" alt="Single Scope" /></p>
 
-<p>安裝完 devkit 後，需要到 devkit 安裝目錄編輯 config.yml，加入剛剛安裝好 ruby 的目錄位置，然後執行</p>
+<p><strong>Example 2:</strong></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ruby dk.rb install
-</code></pre>
-</div>
+<p><img src="https://i-technet.sec.s-msft.com/dynimg/IC196411.gif" alt="Superscope" /></p>
 
-<p>接著安裝 jekyll：</p>
+<p>在網路 A 中包含了多個子網路，可設定superscope 除了為原本範圍(scope1)的成員，還可支援其他的邏輯子網路(scope 2 與 scope 3)。</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ gem install jekyll
-</code></pre>
-</div>
+<p><strong>Example 3:</strong></p>
 
-<p>安裝 Octopress 3</p>
+<p><img src="https://i-technet.sec.s-msft.com/dynimg/IC196412.gif" alt="Superscope for routed DHCP server" /></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$ gem install octopress
-</code></pre>
-</div>
-
-<p>中文 Windows 的命令列視窗預設字碼頁為 <code class="highlighter-rouge">CP950</code>，如果使用 Octopress 或 jekyll 時出現 code page error 訊息例如：<code class="highlighter-rouge">invalid byte sequence in CP950</code>，可在命令列視窗中執行 <code class="highlighter-rouge">chcp 65001</code>，變更字碼頁為 <code class="highlighter-rouge">UTF-8</code>。</p>
-
-<p>接下來關於 octopress 的使用請參考之前<a href="http://robodock.github.io/2015/08/17/octopress-3-github-pages-blog.html">這一篇</a>。</p>
-
-<hr />
-
-<h2 id="rubygemorg-ssl-error-">2016/12 更新有關 rubygem.org SSL error 問題</h2>
-
-<p>rubygems.org 網站原本使用 <code class="highlighter-rouge">sha1</code> 演算法作為 SSL 憑證計算
-，為因應 <code class="highlighter-rouge">sha1</code> 安全性不足問題，已改用 <code class="highlighter-rouge">sha-256</code> 演算法。</p>
-
-<p>若使用 <code class="highlighter-rouge">gem install</code> 命令時發生如下錯誤，表示目前使用的SSL 憑證為 sha1 演算法，無法連接至新的 rubygems.org 網站：</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed
-</code></pre>
-</div>
-
-<p>可手動安裝新的 <code class="highlighter-rouge">rubygem</code> 來解決。</p>
-
-<p>首先手動下載最新的 <a href="https://rubygems.org/pages/download">latest RubyGems</a>，存放在易於存取的目錄下，例如 <code class="highlighter-rouge">D:\</code> ，此例中版本為 <code class="highlighter-rouge">rubygems-update-2.6.10.gem</code></p>
-
-<p>接著在命令列視窗下執行：</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>D:\&gt;gem install --local D:\rubygems-update-2.6.10.gem
-D:\&gt;update_rubygems
-</code></pre>
-</div>
-
-<p>可使用 <code class="highlighter-rouge">gem --version</code> 確認安裝版本，此例中為 2.6.10</p>
-
-<p>成功後可安全移除上述檔案</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>D:\&gt;gem uninstall rubygems-update -x
-Removing update_rubygems
-Successfully uninstalled rubygems-update-2.6.10
-</code></pre>
-</div>
+<p>透過組態為 DHCP relay agent 功能的 Router，可提供遠端網路 Subnet B DHCP 服務。
+此例中 multinets 環境在遠端網路(Subnet B)，原來的 scope1 不需要加入 superscope。</p>
 
   </div>
 

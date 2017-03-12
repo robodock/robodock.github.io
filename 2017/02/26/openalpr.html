@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>用 Raspberry Pi3 打造車牌辨識系統</title>
-  <meta name="description" content="OpenALPR 為一開源車牌辨識程式庫(github連結)。最新的 Ubuntu 16.04 上已納入系統套件庫，可直接 apt-get 安裝，不過截至目前為止(2017/02) raspbian 上還沒有編譯好的套件，需要手動編譯安裝。">
+  <meta name="description" content="OpenALPR 為一開源車牌辨識程式庫(github連結)。">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://robodock.github.io//2017/02/26/openalpr.html">
@@ -62,8 +62,9 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>OpenALPR 為一開源車牌辨識程式庫(<a href="https://github.com/openalpr/openalpr">github連結</a>)。
-最新的 Ubuntu 16.04 上已納入系統套件庫，可直接 apt-get 安裝，不過截至目前為止(2017/02) raspbian 上還沒有編譯好的套件，需要手動編譯安裝。</p>
+    <p>OpenALPR 為一開源車牌辨識程式庫(<a href="https://github.com/openalpr/openalpr">github連結</a>)。</p>
+
+<p>最新的 Ubuntu 16.04 上已納入系統套件庫，可直接 apt-get 安裝，不過截至目前為止(2017/02) raspbian 上還沒有編譯好的套件，需要手動編譯安裝。</p>
 
 <p>這裡亦列出 Ubuntu 16.04 上的套件安裝方法供參考</p>
 
@@ -84,6 +85,7 @@ $ alpr -c eu h786poj.jpg
 </div>
 
 <hr />
+
 <h1 id="raspberry-pi3--openalpr">在 Raspberry Pi3 上安裝 OpenALPR</h1>
 
 <p>影像辨識向來都是 CPU intensive 應用，加上底下的程式編譯過程須花費長久時間，在 Pi3 上需要一個多小時的編譯時間，Pi2 應該也跑得動但編譯時間會增加，Pi1 就不建議了。</p>
@@ -332,6 +334,7 @@ sudo ldconfig
 </div>
 
 <hr />
+
 <h2 id="openalpr">安裝 OpenALPR</h2>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>$ git clone https://github.com/openalpr/openalpr.git
